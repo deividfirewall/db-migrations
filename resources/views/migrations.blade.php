@@ -82,7 +82,7 @@
                                             </tr>
                                         </tfoot>
                                     </table>
-                                    <div class="absolute -bottom-16 -left-16 h-36 w-[calc(100%+8rem)] bg-gradient-to-b from-transparent via-white to-red-300 dark:via-zinc-900 dark:to-zinc-900"></div>
+                                    
                                 </div>
 
                                 <div class="relative flex items-center gap-6 lg:items-end">

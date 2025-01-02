@@ -41,7 +41,7 @@ class OtrosCatalogosSeeder extends Seeder
         ];
         DB::table('cat_status_subastas')->insert($CatStatusSubasta);
 
-        CatStatusEmpenio::create([
+        $catStatusEmpenios = [
             ['id' => 1, 'status_empenio' => 'Depositaria'],
             ['id' => 2, 'status_empenio' => 'Periodo de Gracia'],
             ['id' => 3, 'status_empenio' => 'Almoneda'],
@@ -59,6 +59,8 @@ class OtrosCatalogosSeeder extends Seeder
             ['id' => 15, 'status_empenio' => 'Venta Parcial'],
             ['id' => 16, 'status_empenio' => 'Bloqueado'],
             ['id' => 17, 'status_empenio' => 'Espera'],
-        ]);
+        ];
+        DB::table('cat_status_empenios')->insert($catStatusEmpenios);
+
     }
 }

@@ -11,23 +11,22 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('t_empenio_products', function (Blueprint $table) {
+        Schema::create('t_sol_subastas', function (Blueprint $table) {
             $table->id();
-            $table->tinyInteger('contenido');
-            $table->text('descripcion');
-            $table->string('marca',64);
-            $table->string('serie',96);
-            $table->foreignId('t_empenio_id')->constrained()->cascadeOnDelete();
-            
+            $table->date('fecha_subasta');
+            $table->foreignId('t_boleta_id')->constrained();
+            $table->decimal('capital', 10, 2);
+            $table->decimal('avaluo', 10, 2);
+            $table->integer('tipo_empenio');
             $table->timestamps();
         });
     }
 
-    /** 
+    /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('t_empenio_products');
+        Schema::dropIfExists('t_sol_subastas');
     }
 };

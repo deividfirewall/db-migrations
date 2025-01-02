@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->decimal('prestamo', 10, 2)->default(0);
             $table->decimal('avaluo', 10, 2);
-            $table->decimal('interes', 10, 2)->default(0);              //no hay datos en la tabla
+            //$table->decimal('interes', 10, 2)->default(0);              //no hay datos en la tabla
             $table->decimal('recargo', 10, 2)->default(0);              //lo quitamos $table->decimal('almacenaje', 10, 2)->default(0);
             $table->decimal('abono', 10, 2)->default(0);
             $table->dateTime('fecha_movimiento');
@@ -33,10 +33,10 @@ return new class extends Migration
             $table->decimal('comision_avaluo', 10, 2)->default(0);
             $table->decimal('comision_almoneda', 10, 2)->default(0);
             $table->integer('compuesto')->default(0);
-            $table->integer('ban_modificar')->default(0);
+            //$table->integer('ban_modificar')->default(0);
             $table->integer('ban_retroceso')->default(0);
             $table->integer('ban_almoneda')->default(0);
-            $table->integer('status_alternativo')->default(0);
+            //$table->integer('status_alternativo')->default(0);
 
             $table->timestamps();
         });

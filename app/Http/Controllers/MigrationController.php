@@ -18,43 +18,65 @@ class MigrationController extends Controller
     public function __construct()
     {
         $this->allTables = [
-            ['id'=> 0 ,'origen' =>'u_operadores', 'reg_o'=> 0   //DB::connection('sucursal')->table('u_operadores')->count()
-                      ,'destino'=>'users','reg_d'=> 0   //DB::table('users')->count()
+            ['id'=> 0 ,'origen' =>'u_operadores', 'reg_o'=> DB::connection('sucursal')->table('u_operadores')->count()
+                      ,'destino'=>'users','reg_d'=> DB::table('users')->count()
                       ,'avance'=>'0'],
-            ['id'=> 1 ,'origen' =>'u_pignotarios', 'reg_o'=> 0  //DB::connection('sucursal')->table('u_pignotarios')->count()
-                      ,'destino'=>'pignorantes','reg_d'=> 0 //DB::table('pignorantes')->count()
+            ['id'=> 1 ,'origen' =>'u_pignotarios', 'reg_o'=> DB::connection('sucursal')->table('u_pignotarios')->count()
+                      ,'destino'=>'pignorantes','reg_d'=> DB::table('pignorantes')->count()
                       ,'avance'=>'0'],
-            ['id'=> 2 ,'origen'  =>'t_boleta', 'reg_o'=> 0  //DB::connection('sucursal')->table('t_boleta')->count()
-                      ,'destino' =>'t_boletas','reg_d'=> 0  //DB::table('t_boletas')->count()
+            ['id'=> 2 ,'origen'  =>'t_boleta', 'reg_o'=> DB::connection('sucursal')->table('t_boleta')->count()
+                      ,'destino' =>'t_boletas','reg_d'=> DB::table('t_boletas')->count()
                       ,'avance'=>'0'],
-            ['id'=> 3 ,'origen' =>'t_boleta_pagos', 'reg_o'=> 0 //DB::connection('sucursal')->table('t_boleta_pagos')->count()
-                      ,'destino'=>'t_boleta_pagos','reg_d'=> 0  //DB::table('t_boleta_pagos')->count()
+            ['id'=> 3 ,'origen' =>'t_boleta_pagos', 'reg_o'=> DB::connection('sucursal')->table('t_boleta_pagos')->count()
+                      ,'destino'=>'t_boleta_pagos','reg_d'=> DB::table('t_boleta_pagos')->count()
                       ,'avance'=>'0'],
-            ['id'=> 4 ,'origen' =>'t_empenios', 'reg_o'=> 0 //DB::connection('sucursal')->table('t_empenios')->count()
-                      ,'destino'=>'t_empenios','reg_d'=> 0  //DB::table('t_empenios')->count()
+            ['id'=> 4 ,'origen' =>'t_empenios', 'reg_o'=> DB::connection('sucursal')->table('t_empenios')->count()
+                      ,'destino'=>'t_empenios','reg_d'=> DB::table('t_empenios')->count()
                       ,'avance'=>'0'],
-            ['id'=> 5 ,'origen' =>'t_empenios_boleta_relacion', 'reg_o'=> 0 //DB::connection('sucursal')->table('t_empenios_boleta_relacion')->count()
-                      ,'destino'=>'t_emp_bol_relations','reg_d'=> 0 //DB::table('t_emp_bol_relations')->count()
+            ['id'=> 5 ,'origen' =>'t_empenios_boleta_relacion', 'reg_o'=> DB::connection('sucursal')->table('t_empenios_boleta_relacion')->count()
+                      ,'destino'=>'t_emp_bol_relations','reg_d'=> DB::table('t_emp_bol_relations')->count()
                       ,'avance'=>'0'],
-            ['id'=> 6 ,'origen' =>'t_empenios_metal', 'reg_o'=> 0   //DB::connection('sucursal')->table('t_empenios_metal')->count()
-                      ,'destino'=>'t_empenio_metals','reg_d'=> 0    //DB::table('t_empenio_metals')->count()
+            ['id'=> 6 ,'origen' =>'t_empenios_metal', 'reg_o'=> DB::connection('sucursal')->table('t_empenios_metal')->count()
+                      ,'destino'=>'t_empenio_metals','reg_d'=> DB::table('t_empenio_metals')->count()
                       ,'avance'=>'0'],
-            ['id'=> 7 ,'origen' =>'t_empenios_productos', 'reg_o'=> 0   //DB::connection('sucursal')->table('t_empenios_productos')->count()
-                      ,'destino'=>'t_empenio_products','reg_d'=> 0  //DB::table('t_empenio_products')->count()
+            ['id'=> 7 ,'origen' =>'t_empenios_productos', 'reg_o'=> DB::connection('sucursal')->table('t_empenios_productos')->count()
+                      ,'destino'=>'t_empenio_products','reg_d'=> DB::table('t_empenio_products')->count()
                       ,'avance'=>'0'],
-            ['id'=> 8 ,'origen' =>'t_control_interno', 'reg_o'=> 0  //DB::connection('sucursal')->table('t_control_interno')->count()
-                      ,'destino'=>'t_ctrl_internos','reg_d'=> 0 //DB::table('t_ctrl_internos')->count()
+            ['id'=> 8 ,'origen' =>'t_control_interno', 'reg_o'=> DB::connection('sucursal')->table('t_control_interno')->count()
+                      ,'destino'=>'t_ctrl_internos','reg_d'=> DB::table('t_ctrl_internos')->count()
                       ,'avance'=>'0'],
-            ['id'=> 9 ,'origen' =>'t_caja_monto_operador', 'reg_o'=> 0  //DB::connection('sucursal')->table('t_caja_monto_operador')->count()
-                      ,'destino'=>'t_cajas','reg_d'=> 0 //DB::table('t_cajas')->count()
+            ['id'=> 9 ,'origen' =>'t_caja_monto_operador', 'reg_o'=> DB::connection('sucursal')->table('t_caja_monto_operador')->count()
+                      ,'destino'=>'t_cajas','reg_d'=> DB::table('t_cajas')->count()
                       ,'avance'=>'0'],
-            ['id'=> 10,'origen' =>'h_t_boleta', 'reg_o'=> 0 //DB::connection('sucursal')->table('h_t_boleta')->count()
-                      ,'destino'=>'h_boletas','reg_d'=> 0   //DB::table('h_boletas')->count()
+            ['id'=> 10,'origen' =>'h_t_boleta', 'reg_o'=> DB::connection('sucursal')->table('h_t_boleta')->count()
+                      ,'destino'=>'h_boletas','reg_d'=> DB::table('h_boletas')->count()
                       ,'avance'=>'0'],
             ['id'=> 11,'origen' =>'u_pignotarios_solidarios', 'reg_o'=>DB::connection('sucursal')->table('u_pignotarios_solidarios')->distinct()->select('pignorante_solidario')->count()
                       ,'destino'=>'pignorante_solidarios','reg_d'=>DB::table('t_boletas')->whereNotNull('pignorante_solidario_id')->count()   
                       //,'destino'=>'pignorante_solidarios','reg_d'=>DB::table('pignorante_solidarios')->count()   //->whereNotNull('created_at')
                       ,'avance'=>'0'],
+
+
+                      
+            ['id'=> 12,'origen' =>'t_solicitudes_dias_gracia', 'reg_o'=> DB::connection('sucursal')->table('t_solicitudes_dias_gracia')->count()
+            ,'destino'=>'t_sol_dias_gracias','reg_d'=> DB::table('t_sol_dias_gracias')->count()
+            ,'avance'=>'0'],
+
+            ['id'=> 13,'origen' =>'t_solicitudes_almoneda', 'reg_o'=> DB::connection('sucursal')->table('t_solicitudes_almoneda')->count()
+            ,'destino'=>'t_sol_almonedas','reg_d'=> DB::table('t_sol_almonedas')->count()
+            ,'avance'=>'0'],
+            
+
+            ['id'=> 14,'origen' =>'t_solicitudes_subasta', 'reg_o'=> DB::connection('sucursal')->table('t_solicitudes_subasta')->count()
+            ,'destino'=>'t_sol_subastas','reg_d'=> DB::table('t_sol_subastas')->count()
+            ,'avance'=>'0'],
+
+            ['id'=> 15,'origen' =>'t_subasta', 'reg_o'=> DB::connection('sucursal')->table('t_subasta')->count()
+            ,'destino'=>'t_subastas','reg_d'=> DB::table('t_subastas')->count()
+            ,'avance'=>'0'],
+            
+             //[t_boleta_id, c_fecha_subasta_id, c_status_subasta_id]
+
         ];
 
 
@@ -73,10 +95,6 @@ class MigrationController extends Controller
             t_num_tickets [t_boleta_id, c_status_boleta_id]
             t_reposicion[boleta_id, c_status_empenio_id]
             t_retasas [t_boleta_id]
-            t_solicitudes_almoneda [t_boleta_id]
-            t_solicitudes_dias_gracia [t_boleta_id]
-            t_solicitudes_subasta [t_boleta_id]
-            t_subasta [t_boleta_id, c_fecha_subasta_id, c_status_subasta_id]
             t_suspencion_dias [u_operador_id]
             t_venta_vitrina
             
@@ -96,143 +114,237 @@ class MigrationController extends Controller
         $allTables = $this->allTables;
         return view('migrations', compact('databaseName', 'allTables'));
 
+        /*  ELIMINAMOS 29 TABLAS INNECESARIAS         
+         DROP TABLE 
+            c_cotiza_producto_08112015, 
+            c_fecha_reporte, 
+            c_nivel, 
+            c_printer_operador, 
+            c_printer_operador_tipo, 
+            c_sub_productos_08112015, 
+            c_sub_productos_2014_12_12, 
+            c_sucursal_12042015, 
+            c_sucursal_v1, 
+            c_status_usuario,
+            c_intereses,
+            c_tipo_prestamo_12042015, 
+            c_tipo_printer, 
+            h_rp_subasta, 
+            rg_dda07, 
+            rg_ddd04, 
+            rg_de02, 
+            rg_dra06, 
+            rg_drd03, 
+            temporal, 
+            t_boleta_202006, 
+            t_boleta_pagos_19022015, 
+            t_boleta_pagos_old_19022015,
+            t_boetas_pagos_mal_NoVenta, 
+            t_boleta_migracion,
+            t_empenios_2014_12_12, 
+            t_empenios_metal_2014_12_12, 
+            t_empenios_productos_2014_12_12, 
+            t_migration_missing, 
+            t_subasta_copy;
+        */
+    
+        /* u_pignotarios: Antes de migrar, se debera de ejecutar lo siguiente en la base de datos origen
+            UPDATE u_pignotarios SET nombre = TRIM(nombre);
+            UPDATE u_pignotarios SET nombre = REPLACE(nombre, ' ', ' ');
+            UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'ÃƒÂƒÃ‚ÂƒÃƒÂ‚Ã‚Â‘', 'Ñ'); 
+            UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'ÃƒÂƒÃ‚Â‘', 'Ñ'); 
+            UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'ÃƒÂ‘', 'Ñ'); 
 
-    /* Antes de migrar, se debera de ejecutar lo siguiente en la base de datos origen
-        VSCRES51120420M500
-        MZCRMR86120120M300
-        MRGRCR63081520M400  >>> Cp MUY LARGO
+            UPDATE u_pignotarios SET direccion = REPLACE(direccion, 'ÃƒÂƒÃ‚Â‘', 'Ñ'); 
+            UPDATE u_pignotarios SET direccion = REPLACE(direccion, 'ÃƒÂ‘', 'Ñ'); 
 
-        UPDATE `u_pignotarios` SET `ife` = 'VSCRES51120420M500_BORRAR' WHERE `u_pignotarios`.`id` = 13735 AND `u_pignotarios`.`ife` = 'VSCRES51120420M500'; 
-        UPDATE `u_pignotarios` SET `telefono` = '9512096237' WHERE `u_pignotarios`.`id` = 21291 AND `u_pignotarios`.`ife` = 'VSCRES51120420M500'; 
-        UPDATE h_t_boleta SET u_pignorante_id = 21291 WHERE u_pignorante_id = 13735; 
-        UPDATE t_boleta SET u_pignorante_id = 21291 WHERE u_pignorante_id = 13735; 
-        UPDATE t_empenios SET u_pignorante_id = 21291 WHERE u_pignorante_id = 13735; 
-        UPDATE t_boleta_cancelado SET u_pignorante_id = 21291 WHERE u_pignorante_id = 13735; 
-        
-        pignorantes repetidos: (2879,5641)
-        UPDATE `u_pignotarios` SET `ife` = 'GRGRCC85041220M600_BORRAR' WHERE `u_pignotarios`.`id` = 5641 AND `u_pignotarios`.`ife` = 'GRGRCC85041220M600'; 
-        SELECT * FROM h_t_boleta WHERE u_pignorante_id in (2879,5641); 
-            UPDATE h_t_boleta SET u_pignorante_id = 2879 WHERE u_pignorante_id = 5641; 
-        SELECT * FROM t_boleta WHERE u_pignorante_id in (2879,5641); 
-            UPDATE t_boleta SET u_pignorante_id = 2879 WHERE u_pignorante_id = 5641; 
-        SELECT * FROM t_empenios WHERE u_pignorante_id in (2879,5641); 
-            UPDATE t_empenios SET u_pignorante_id = 2879 WHERE u_pignorante_id = 5641; 
-        SELECT * FROM t_boleta_cancelado WHERE u_pignorante_id in (2879,5641); 
-            UPDATE t_boleta_cancelado SET u_pignorante_id = 2879 WHERE u_pignorante_id = 5641; 
-        ~~En tabla t_reposicion el pignorante no esta referenciado, solo se actualiza el nombre
-        ~~ Habria que referenciarlo mediante el idBoleta
+            UPDATE h_t_boleta SET comision_avaluo = '109.581' WHERE h_t_boleta.id_interno = 1772075; 
             
-        >>> boleta con datos en null
-            DELETE FROM t_boleta WHERE `t_boleta`.`id` = 10474068               
-        >>> boleta con comision_avaluo numero muy largo
-            UPDATE `t_boleta` SET `comision_avaluo` = '1095.81' WHERE `t_boleta`.`id` = 10604876;       
-            UPDATE `h_t_boleta` SET `comision_avaluo` = '10958100' WHERE `h_t_boleta`.`id_interno` = 1771886; 
+            VSCRES51120420M500  ::: REPETIDO (13735 --> 21291)   
+            SELECT * FROM u_pignotarios WHERE ife = 'VSCRES51120420M500'; 
+            UPDATE u_pignotarios SET ife = 'VSCRES51120420M500_BORRAR' WHERE u_pignotarios.id = 13735 AND u_pignotarios.ife = 'VSCRES51120420M500'; 
+            UPDATE u_pignotarios SET telefono = '9512096237' WHERE u_pignotarios.id = 21291 AND u_pignotarios.ife = 'VSCRES51120420M500'; 
+            UPDATE h_t_boleta SET u_pignorante_id = 21291 WHERE u_pignorante_id = 13735; 
+            UPDATE t_boleta SET u_pignorante_id = 21291 WHERE u_pignorante_id = 13735; 
+            UPDATE t_empenios SET u_pignorante_id = 21291 WHERE u_pignorante_id = 13735; 
+            UPDATE t_boleta_cancelado SET u_pignorante_id = 21291 WHERE u_pignorante_id = 13735; 
+            
+            MZCRMR86120120M300  ::: REPETIDO   (22870 --> 23996)
+            SELECT * FROM u_pignotarios WHERE ife = 'MZCRMR86120120M300'; 
+            UPDATE u_pignotarios SET ife = 'MZCRMR86120120M300_BORRAR' WHERE u_pignotarios.id = 22870 AND u_pignotarios.ife = 'MZCRMR86120120M300';  
+            UPDATE h_t_boleta SET u_pignorante_id = 23996 WHERE u_pignorante_id = 22870; 
+            UPDATE t_boleta SET u_pignorante_id = 23996 WHERE u_pignorante_id = 22870; 
+            UPDATE t_empenios SET u_pignorante_id = 23996 WHERE u_pignorante_id = 22870; 
+            UPDATE t_boleta_cancelado SET u_pignorante_id = 23996 WHERE u_pignorante_id = 22870;
 
-        >>> Borramos 6356 registros de t_boleta_pagos que no existe relacion de 654 boletas en la tabla t_boleta 
-            SELECT DISTINCT t_boleta_pagos.t_boleta_id 
-            FROM t_boleta_pagos 
-            LEFT JOIN t_boleta ON t_boleta_pagos.t_boleta_id = t_boleta.id 
-            WHERE t_boleta.id IS null; 
-        ❌  DELETE t_boleta_pagos 
-            FROM t_boleta_pagos 
-            LEFT JOIN t_boleta ON t_boleta_pagos.t_boleta_id = t_boleta.id 
-            WHERE t_boleta.id IS null; 
+            GRGRCC85041220M600  ::: REPETIDO (5641 --> 2879)
+            SELECT * FROM u_pignotarios WHERE ife = 'GRGRCC85041220M600'; 
+            UPDATE u_pignotarios SET ife = 'GRGRCC85041220M600_BORRAR' WHERE u_pignotarios.id = 5641 AND u_pignotarios.ife = 'GRGRCC85041220M600'; 
+            UPDATE h_t_boleta SET u_pignorante_id = 2879 WHERE u_pignorante_id = 5641; 
+            UPDATE t_boleta SET u_pignorante_id = 2879 WHERE u_pignorante_id = 5641; 
+            UPDATE t_empenios SET u_pignorante_id = 2879 WHERE u_pignorante_id = 5641; 
+            UPDATE t_boleta_cancelado SET u_pignorante_id = 2879 WHERE u_pignorante_id = 5641; 
+
+            MRGRCR63081520M400  >>> Cp MUY LARGO
+            SELECT * FROM u_pignotarios WHERE ife = 'MRGRCR63081520M400'; 
+        */
         
-        >>> verificamos las t_empenios_id que no existen en la tabla t_empenios
+        /* t_reposicion
+            ~~En tabla t_reposicion el pignorante no esta referenciado, SE ALMACENA EL nombre completo
+            ~~ Habria que referenciarlo mediante el idBoleta
+            SELECT * FROM t_reposicion WHERE pignotario LIKE '%ƒ%'; 
+            UPDATE t_reposicion SET pignotario = REPLACE(pignotario, 'ÃƒÂ‘', 'Ñ'); 
+        */
+
+        /* t_boleta
+            
+            >>> boleta con datos en null
+                DELETE FROM t_boleta WHERE t_boleta.id = 10474068               
+            >>> boleta con comision_avaluo numero muy largo
+                UPDATE t_boleta SET comision_avaluo = '1095.81' WHERE t_boleta.id = 10604876;       
+                UPDATE h_t_boleta SET comision_avaluo = '1095.81' WHERE h_t_boleta.id_interno = 1771886; 
+
+            >>> Borramos 6356 registros de t_boleta_pagos que no existe relacion de 654 boletas en la tabla t_boleta 
+                SELECT DISTINCT t_boleta_pagos.t_boleta_id 
+                FROM t_boleta_pagos 
+                LEFT JOIN t_boleta ON t_boleta_pagos.t_boleta_id = t_boleta.id 
+                WHERE t_boleta.id IS null; 
+            ❌ DELETE t_boleta_pagos 
+                FROM t_boleta_pagos 
+                LEFT JOIN t_boleta ON t_boleta_pagos.t_boleta_id = t_boleta.id 
+                WHERE t_boleta.id IS null; 
+            
+        */
+
+        /* t_empenios_boleta_relacion, t_empenios, t_empenios_metal, t_empenios_productos
+            >>> t_empenios_boleta_relacion :: verificamos las t_boleta_id que no existen en la tabla t_boletas ~824 boletas
             SELECT DISTINCT t_empenios_boleta_relacion.t_boleta_id, t_empenios.id 
             FROM t_empenios_boleta_relacion 
             LEFT JOIN t_boleta ON t_empenios_boleta_relacion.t_boleta_id = t_boleta.id 
             LEFT JOIN t_empenios ON t_empenios_boleta_relacion.t_empenios_id = t_empenios.id 
             WHERE t_boleta.id IS NULL;
-
-
-        >>> verificamos las t_boleta_id que no existen en la tabla t_boleta
-            SELECT DISTINCT t_empenios_boleta_relacion.t_boleta_id 
-            FROM t_empenios_boleta_relacion 
-            LEFT JOIN t_boleta ON t_empenios_boleta_relacion.t_boleta_id = t_boleta.id 
-            WHERE t_boleta.id IS NULL; 
-        ❌  DELETE t_empenios_boleta_relacion 
-            FROM t_empenios_boleta_relacion 
-            LEFT JOIN t_boleta ON t_empenios_boleta_relacion.t_boleta_id = t_boleta.id 
-            WHERE t_boleta.id IS NULL; 
-       
-        >>> verificamos los registros de t_control_interno que no tienen relacion con t_boleta    
-            SELECT * 
-            FROM t_control_interno 
-            LEFT JOIN t_boleta ON t_control_interno.t_boleta_id = t_boleta.id 
-            WHERE t_boleta.id IS null; 
-        ❌  DELETE t_control_interno 
-            FROM t_control_interno 
-            LEFT JOIN t_boleta ON t_control_interno.t_boleta_id = t_boleta.id 
-            WHERE t_boleta.id IS null;
-
-        >>> se corrigue un error donde un registro de t_empenios no tiene un pignorante_id
-        🔃  UPDATE `t_empenios` SET `u_pignorante_id` = 1933 WHERE u_pignorante_id = 27441 AND id IN (144879, 152894,152893,193264); 
-
-        >>> las ventas en subasta, no guardan el id del operador en la tabla t_caja_monto_operador
-            SELECT * FROM `t_caja_monto_operador` WHERE u_operadores_id = 0; 
-        🔃  UPDATE `t_caja_monto_operador` SET `u_operadores_id` = 126 WHERE u_operadores_id = 0; 
-
-        >>> Se corrigue un error donde el contenido de un productos no se guardo
-        🔃  UPDATE `t_empenios_productos` SET `contenido` = '1' WHERE `t_empenios_productos`.`id` = 236634; 
-
-        >>> Se corrigue un error donde el monto de la caja rebasa el valor permitido de 8 enteros y 2 decimales
-            SELECT * FROM `t_caja_monto_operador` WHERE caja > 100000000.00; 
-        🔃  UPDATE `t_caja_monto_operador` SET `caja` = 10000000.00 WHERE caja > 99999999; 
- 
-        >>> eliminamos espacion en blanco al inicio y al final de los nombres
-        🔃  UPDATE u_pignotarios_solidarios SET pignorante_solidario = TRIM(pignorante_solidario); 
-        🔃  UPDATE u_pignotarios_solidarios SET pignorante_solidario = UPPER(pignorante_solidario); 
-        🔃  UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, '  ', ' '); 
-
-        >>> Revisamos los registros de pignorante_solidarios sean nombres invalidos, para ser eliminados
-        SELECT pignorante_solidario, COUNT(t_boleta_id) FROM `u_pignotarios_solidarios` WHERE LENGTH(pignorante_solidario) < 9 GROUP BY pignorante_solidario; 
-        ❌  DELETE FROM u_pignotarios_solidarios WHERE LENGTH(pignorante_solidario) < 9 
-
-
-        SELECT DISTINCT pignorante_solidario FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '% DEJA%'; 
-        ❌  DELETE FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '% DEJA%' AND LENGTH(pignorante_solidario) < 12
-        SELECT DISTINCT pignorante_solidario FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%EL M%' AND LENGTH(pignorante_solidario) < 12 
-        ❌  DELETE FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%EL M%' AND LENGTH(pignorante_solidario) < 12;  
-        SELECT DISTINCT pignorante_solidario FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%ELLA%' AND LENGTH(pignorante_solidario) < 15;
-        ❌  DELETE FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%ELLA%' AND LENGTH(pignorante_solidario) < 15;   
-        SELECT DISTINCT pignorante_solidario FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '% SOLA %'; 
-        ❌  DELETE FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%SOLA%' AND LENGTH(pignorante_solidario) < 12; 
-        SELECT DISTINCT pignorante_solidario FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '% MIXSMO %'; 
-        ❌  DELETE FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%MIXSMO%'; 
-        SELECT DISTINCT pignorante_solidario FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '% MIS%'; 
-        ❌  DELETE FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '% MIS%' AND LENGTH(pignorante_solidario) < 15; 
-        SELECT DISTINCT pignorante_solidario FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '% MISMO%'; 
-        ❌  DELETE FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '% MISMO%'; 
-        SELECT * FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%VIVE SOLA%'
-        ❌  DELETE FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%VIVE SOLA%'; 
-        SELECT * FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%ELLA %'; 
-
-        SELECT * FROM `u_pignotarios_solidarios` WHERE pignorante_solidario LIKE '%ƒƒ%';
-        🔃  UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'Ã', 'ƒ');
-            UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'Â', 'ƒ');
-            UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, '±', 'ƒ');
-            UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, '†', 'ƒ');
-            UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'Æ', 'ƒ');
-            UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'ƒ‚', 'ƒ');
-            UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'ƒ‘', 'ƒ');
-            UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'ƒ’', 'ƒ');
-            UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'ƒƒ', 'ƒ'); 
-        SELECT * FROM `u_pignotarios_solidarios` WHERE pignorante_solidario LIKE '%ƒƒ%';
-        🔃  UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'ƒ', 'Ñ'); 
+            ❌ DELETE t_empenios_boleta_relacion 
+                FROM t_empenios_boleta_relacion 
+                LEFT JOIN t_boleta ON t_empenios_boleta_relacion.t_boleta_id = t_boleta.id 
+                LEFT JOIN t_empenios ON t_empenios_boleta_relacion.t_empenios_id = t_empenios.id 
+                WHERE t_boleta.id IS NULL; 
             
-    */
+            >>> t_empenios :: borramos los empeños que no tienen relacion t_empenios_boleta_relacion ~824 empeños
+            SELECT t_empenios.*
+            FROM    t_empenios
+            LEFT JOIN t_empenios_boleta_relacion ON t_empenios_boleta_relacion.t_empenios_id = t_empenios.id
+            WHERE t_empenios_boleta_relacion.id IS NULL;
+            ❌ DELETE t_empenios 
+               FROM t_empenios 
+               LEFT JOIN t_empenios_boleta_relacion ON t_empenios_boleta_relacion.t_empenios_id = t_empenios.id
+               WHERE t_empenios_boleta_relacion.id IS NULL;
+
+            >>> t_empenios_metal :: borramos los empeños que no tienen relacion t_empenios_boleta_relacion ~673 empeños de metal
+            SELECT t_empenios_metal.* FROM t_empenios_metal 
+              LEFT JOIN t_empenios ON t_empenios.id = t_empenios_metal.t_empenios_id WHERE t_empenios.id IS NULL;
+            SELECT t_empenios_metal.* FROM    t_empenios_metal
+              LEFT JOIN t_empenios_boleta_relacion ON t_empenios_boleta_relacion.t_empenios_id = t_empenios_metal.t_empenios_id
+            WHERE t_empenios_boleta_relacion.id IS NULL;
+             ❌ DELETE t_empenios_metal
+                FROM    t_empenios_metal
+                LEFT JOIN t_empenios_boleta_relacion ON t_empenios_boleta_relacion.t_empenios_id = t_empenios_metal.t_empenios_id
+                WHERE t_empenios_boleta_relacion.id IS NULL;
+            >>> t_empenios_productos :: borramos los empeños que no tienen relacion t_empenios_boleta_relacion ~114 empeños de productos
+             ❌ DELETE t_empenios_productos.*
+                FROM    t_empenios_productos
+                LEFT JOIN t_empenios_boleta_relacion ON t_empenios_boleta_relacion.t_empenios_id = t_empenios_productos.t_empenios_id
+                WHERE t_empenios_boleta_relacion.id IS NULL;
+
+            >>> t_empenios :: se corrigue un error donde un registro de t_empenios no tiene un pignorante_id
+            🔃  UPDATE t_empenios SET u_pignorante_id = 1933 WHERE u_pignorante_id = 27441 AND id IN (144879, 152894,152893,193264); 
+            >>> Se corrigue un error donde el contenido de un productos no se guardo
+            🔃  UPDATE t_empenios_productos SET contenido = '1' WHERE t_empenios_productos.id = 236634;
+
+        */
+
+        /* t_control_interno
+            >>> t_control_interno :: verificamos los registros que no tienen relacion con t_boleta    
+                SELECT *  FROM t_control_interno 
+                LEFT JOIN t_boleta ON t_control_interno.t_boleta_id = t_boleta.id 
+                WHERE t_boleta.id IS null; 
+            ❌ DELETE t_control_interno  FROM t_control_interno 
+                LEFT JOIN t_boleta ON t_control_interno.t_boleta_id = t_boleta.id 
+                WHERE t_boleta.id IS null;
+        */
+
+        /* t_caja_monto_operador
+            >>> t_caja_monto_operador :: las ventas en subasta, no guardan el id del operador en la tabla t_caja_monto_operador
+                SELECT * FROM t_caja_monto_operador WHERE u_operadores_id = 0; 
+             🔃 UPDATE t_caja_monto_operador SET u_operadores_id = 126 WHERE u_operadores_id = 0; 
+            >>> t_caja_monto_operador :: Se corrigue un error donde el monto de la caja rebasa el valor permitido de 8 enteros y 2 decimales
+                SELECT * FROM t_caja_monto_operador WHERE caja > 100000000.00; 
+             🔃 UPDATE t_caja_monto_operador SET caja = 1000000.00 WHERE caja > 99999999;
+        */
+
+        /* u_pignotarios_solidarios
+            >>> eliminamos espacion en blanco al inicio y al final de los nombres
+            🔃  UPDATE u_pignotarios_solidarios SET pignorante_solidario = TRIM(pignorante_solidario); 
+            🔃  UPDATE u_pignotarios_solidarios SET pignorante_solidario = UPPER(pignorante_solidario); 
+            🔃  UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, '  ', ' '); 
+
+            >>> Revisamos los registros de pignorante_solidarios sean nombres invalidos, para ser eliminados
+            SELECT pignorante_solidario, COUNT(t_boleta_id) FROM u_pignotarios_solidarios WHERE LENGTH(pignorante_solidario) < 9 GROUP BY pignorante_solidario; 
+            ❌  DELETE FROM u_pignotarios_solidarios WHERE LENGTH(pignorante_solidario) < 9 
+            SELECT DISTINCT pignorante_solidario FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '% DEJA%'; 
+            ❌  DELETE FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '% DEJA%' AND LENGTH(pignorante_solidario) < 12
+            SELECT DISTINCT pignorante_solidario FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%EL M%' AND LENGTH(pignorante_solidario) < 12 
+            ❌  DELETE FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%EL M%' AND LENGTH(pignorante_solidario) < 12;  
+            SELECT DISTINCT pignorante_solidario FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%ELLA%' AND LENGTH(pignorante_solidario) < 15;
+            ❌  DELETE FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%ELLA%' AND LENGTH(pignorante_solidario) < 15;   
+            SELECT DISTINCT pignorante_solidario FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '% SOLA %'; 
+            ❌  DELETE FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%SOLA%' AND LENGTH(pignorante_solidario) < 12; 
+            SELECT DISTINCT pignorante_solidario FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '% MIXSMO %'; 
+            ❌  DELETE FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%MIXSMO%'; 
+            SELECT DISTINCT pignorante_solidario FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '% MIS%'; 
+            ❌  DELETE FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '% MIS%' AND LENGTH(pignorante_solidario) < 15; 
+            SELECT DISTINCT pignorante_solidario FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '% MISMO%'; 
+            ❌  DELETE FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '% MISMO%'; 
+            SELECT * FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%VIVE SOLA%'
+            ❌  DELETE FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%VIVE SOLA%'; 
+            SELECT * FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%ELLA %'; 
+
+            SELECT * FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%ƒƒ%';
+            🔃  UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'Ã', 'ƒ');
+                UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'Â', 'ƒ');
+                UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, '±', 'ƒ');
+                UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, '†', 'ƒ');
+                UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'Æ', 'ƒ');
+                UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'ƒ‚', 'ƒ');
+                UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'ƒ‘', 'ƒ');
+                UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'ƒ’', 'ƒ');
+                UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'ƒƒ', 'ƒ'); 
+            SELECT * FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%ƒƒ%';
+            🔃  UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'ƒ', 'Ñ'); 
+            
+        */
+
+        /* t_subasta
+        
+            DELETE FROM t_subasta WHERE `t_subasta`.`id` = 13739
+        */
 
         /*  TERMINADA LA MIGRACION
             bash-4.4# mysql -u root -p
             mysql> exit
-            # RESPALDO DE TODA LA BASE
+            # RESPALDO DE LA BASE DE DATOS SIEMP A UN ARCHIVO
                 bash-4.4# mysqldump -u root -p siemp > /tmp/siemp_bkp_241210.sql
             # RESPALDO DE TODA LA BASE CON COMPRESION, PERO NO ESTA INSTALADO EN EL CONTENEDOR DE MYSQL
                 bash-4.4# mysqldump -u root -p siemp | gzip > siemp_matriz.sql.gz
             # RESPALDO SELECTIVO DE TABLAS (NO CATALOGOS)
-                bash-4.4# mysqldump -u root -p siemp users pignorantes t_boletas t_boleta_pagos t_empenios t_emp_bol_relations t_empenio_metals t_empenio_products t_ctrl_internos t_cajas h_boletas pignorante_solidarios > /tmp/siemp_bkp_no_cat_241211.sql
-
+                bash-4.4# 
+                    mysqldump -u root -p siemp users pignorantes t_boletas t_boleta_pagos t_empenios t_emp_bol_relations t_empenio_metals t_empenio_products t_ctrl_internos t_cajas h_boletas pignorante_solidarios > /tmp/siemp_bkp_no_cat_241211.sql
+                    mysqldump -u root -p siemp users > /tmp/241208_siemp_users.sql
+                    mysqldump -u root -p siemp pignorantes pignorante_solidarios > /tmp/241208_siemp_pigs.sql
+                    mysqldump -u root -p siemp t_boletas t_empenios t_emp_bol_relations t_empenio_metals t_empenio_products > /tmp/241211_siemp_bol_emp_met_prods.sql
+                    mysqldump -u root -p siemp t_boleta_pagos > /tmp/241211_siemp_pagos.sql
+                    mysqldump -u root -p siemp t_ctrl_internos > /tmp/241211_siemp_ctrl_int.sql
+                    mysqldump -u root -p siemp t_cajas > /tmp/241211_siemp_cajas.sql
+                    mysqldump -u root -p siemp h_boletas > /tmp/241211_siemp_h_boleta.sql
             # desde el plugin de docker lo descargamos de la carpeta tmp a db_backups
             # desde el explorador de windows lo comprimimos 
         */
@@ -252,6 +364,10 @@ class MigrationController extends Controller
             case 9:     $this->migraTCajas(9);          break;
             case 10:    $this->migraHBoleta(10);        break;
             case 11:    $this->migraPig_Solidarios(11); break;
+            case 12:    $this->migraTSolDiasGracias(12);break;
+            case 13:    $this->migraTSolAlmonedas(13);  break;
+            case 14:    $this->migraTSolSubastas(14);   break;
+            case 15:    $this->migraTSubastas(15);      break;            
             default:    return to_route('migrations.index')->with('error', 'no existe tabla seleccionada');
         }
         return to_route('migrations.index');
@@ -424,9 +540,9 @@ class MigrationController extends Controller
         $lastRecord = DB::table($dTable)->orderBy('id', 'desc')->first();
 
         if(!$lastRecord){
-            $oRegistros = DB::connection('sucursal')->table($oTable)->limit(80000)->get();
+            $oRegistros = DB::connection('sucursal')->table($oTable)->limit(50000)->get();
         }else{
-            $oRegistros = DB::connection('sucursal')->table($oTable)->where('id', '>', $lastRecord->id)->limit(80000)->get();
+            $oRegistros = DB::connection('sucursal')->table($oTable)->where('id', '>', $lastRecord->id)->limit(50000)->get();
         }
         $regsel = [];
         $status = 'success';
@@ -440,7 +556,7 @@ class MigrationController extends Controller
                     'id'                    => $registro->id,
                     'prestamo'              => $registro->prestamo,
                     'avaluo'                => $registro->avaluo,
-                    'interes'               => $registro->interes,
+                    // 'interes'               => $registro->interes,
                     'recargo'               => $registro->recargo,
                     'abono'                 => $registro->abono,
                     'fecha_movimiento'      => $registro->fecha_movimiento,
@@ -890,7 +1006,7 @@ class MigrationController extends Controller
             ->select('t_boleta.u_pignorante_id','u_pignotarios_solidarios.pignorante_solidario')
                 ->join('t_boleta','t_boleta.id','=','u_pignotarios_solidarios.t_boleta_id')
                 ->orderBy('u_pignotarios_solidarios.pignorante_solidario')   
-                ->offset(31829)     //--> de 10,000 en 10,000 hasta el total de registros
+                ->offset(10000)     //--> de 10,000 en 10,000 hasta el total de registros
                 ->limit(10000)                             
                 ->get();
 
@@ -979,6 +1095,196 @@ class MigrationController extends Controller
                 $mesage = $e->getMessage();
                 dd($mesage);
             }
+        }
+
+        return redirect('migrations.index')->with($status, $mesage);
+    }
+    private function migraTSolDiasGracias($table_selected)
+    {
+        $oTable = $this->allTables[$table_selected]['origen'];
+        $dTable = $this->allTables[$table_selected]['destino'];
+
+        $lastRecord = DB::table($dTable)->orderBy('id', 'desc')->first();
+
+        if(!$lastRecord){
+            $oRegistros = DB::connection('sucursal')->table($oTable)->orderBy('id_reg','asc')->limit(50000)->get();
+        }else{
+            $oRegistros = DB::connection('sucursal')->table($oTable)->where('id_reg', '>', $lastRecord->id)->orderBy('id_reg','asc')->limit(50000)->get();
+        }
+        $regsel = [];
+        $status = 'success';
+        $mesage = 'Registros migrados correctamente';
+        
+        DB::beginTransaction();
+        try{
+            $counter = 0;
+            foreach ($oRegistros as $registro) {
+                $regsel = [
+                    'id'            => $registro->id_reg,
+                    't_boleta_id'  => $registro->id,
+                    'fecha_movimiento'  => $registro->fecha_movimiento,
+                    'fecha_vencimiento'=> $registro->fecha_vencimiento,
+                    'tipo_empenio' => $registro->tipo_producto,
+                    'dias_gracia' => $registro->dias_gracia,
+                    'prestamo' => $registro->prestamo,
+                ];
+                DB::table($dTable)->insert($regsel);
+                $counter++;
+
+                if ($counter % 5000 == 0) {
+                    DB::commit();
+                    DB::beginTransaction();
+                }
+            }
+            DB::commit();
+        }catch(\Exception $e){
+            DB::rollback();
+            $status = 'error'; 
+            $mesage = $e->getMessage();
+            dd( $regsel,$mesage, $oRegistros);
+        }
+
+        return redirect('migrations.index')->with($status, $mesage);
+    }
+    private function migraTSolAlmonedas($table_selected)
+    {
+        $oTable = $this->allTables[$table_selected]['origen'];
+        $dTable = $this->allTables[$table_selected]['destino'];
+
+        $lastRecord = DB::table($dTable)->orderBy('id', 'desc')->first();
+
+        if(!$lastRecord){
+            $oRegistros = DB::connection('sucursal')->table($oTable)->orderBy('id_reg','asc')->limit(50000)->get();
+        }else{
+            $oRegistros = DB::connection('sucursal')->table($oTable)->where('id_reg', '>', $lastRecord->id)->orderBy('id_reg','asc')->limit(50000)->get();
+        }
+        $regsel = [];
+        $status = 'success';
+        $mesage = 'Registros migrados correctamente';
+        
+        DB::beginTransaction();
+        try{
+            $counter = 0;
+            foreach ($oRegistros as $registro) {
+                $regsel = [
+                    'id'            => $registro->id_reg,
+                    't_boleta_id'   => $registro->id,
+                    'fecha_movimiento'  => $registro->fecha_movimiento,
+                    'fecha_vencimiento' => $registro->fecha_vencimiento,
+                    'capital'   => $registro->capital,
+                    'avaluo'    => $registro->avaluo,
+                    'tipo_empenio'  => $registro->tipo_producto,
+                    // 'partida'   => $registro->partida,                   //SIN DATOS EN BD
+                    // 'ultima_operacion'  => $registro->ultima_operacion, //SIN DATOS EN BD
+
+                ];
+                DB::table($dTable)->insert($regsel);
+                $counter++;
+
+                if ($counter % 5000 == 0) {
+                    DB::commit();
+                    DB::beginTransaction();
+                }
+            }
+            DB::commit();
+        }catch(\Exception $e){
+            DB::rollback();
+            $status = 'error'; 
+            $mesage = $e->getMessage();
+            dd( $regsel,$mesage, $oRegistros);
+        }
+
+        return redirect('migrations.index')->with($status, $mesage);
+    }
+    private function migraTSolSubastas($table_selected)
+    {
+        $oTable = $this->allTables[$table_selected]['origen'];
+        $dTable = $this->allTables[$table_selected]['destino'];
+
+        $lastRecord = DB::table($dTable)->orderBy('id', 'desc')->first();
+
+        if(!$lastRecord){
+            $oRegistros = DB::connection('sucursal')->table($oTable)->orderBy('id_reg','asc')->limit(50000)->get();
+        }else{
+            $oRegistros = DB::connection('sucursal')->table($oTable)->where('id_reg', '>', $lastRecord->id)->orderBy('id_reg','asc')->limit(50000)->get();
+        }
+        $regsel = [];
+        $status = 'success';
+        $mesage = 'Registros migrados correctamente';
+        
+        DB::beginTransaction();
+        try{
+            $counter = 0;
+            foreach ($oRegistros as $registro) {
+                $regsel = [
+                    'id'            => $registro->id_reg,
+                    't_boleta_id'   => $registro->id,
+                    'fecha_subasta' => $registro->fecha_subasta,
+                    'capital'       => $registro->capital,
+                    'avaluo'        => $registro->avaluo,
+                    'tipo_empenio'  => $registro->tipo_producto,
+
+                ];
+                DB::table($dTable)->insert($regsel);
+                $counter++;
+
+                if ($counter % 5000 == 0) {
+                    DB::commit();
+                    DB::beginTransaction();
+                }
+            }
+            DB::commit();
+        }catch(\Exception $e){
+            DB::rollback();
+            $status = 'error'; 
+            $mesage = $e->getMessage();
+            dd( $regsel,$mesage, $oRegistros);
+        }
+
+        return redirect('migrations.index')->with($status, $mesage);
+    }
+    private function migraTSubastas($table_selected)
+    {
+        $oTable = $this->allTables[$table_selected]['origen'];
+        $dTable = $this->allTables[$table_selected]['destino'];
+        
+        $lastRecord = DB::table($dTable)->orderBy('id', 'desc')->first();
+
+        if(!$lastRecord){
+            $oRegistros = DB::connection('sucursal')->table($oTable)->orderBy('id','asc')->limit(40000)->get();
+        }else{
+            $oRegistros = DB::connection('sucursal')->table($oTable)->where('id', '>', $lastRecord->id)->orderBy('id','asc')->limit(40000)->get();
+        }
+        $regsel = [];
+        $status = 'success';
+        $mesage = 'Registros migrados correctamente';
+        
+        DB::beginTransaction();
+        try{
+            $counter = 0;
+            foreach ($oRegistros as $registro) {
+                $regsel = [
+                    'id'                    => $registro->id,
+                    't_subasta_fecha_id'    => $registro->c_fecha_subasta_id,
+                    'cat_status_subasta_id' => $registro->c_status_subasta_id,
+                    't_boleta_id'           => $registro->t_boleta_id,
+                    'precio_sugerido'       => $registro->precio_sugerido,
+                    'precio_venta_subasta'  => $registro->precio_venta_subasta,
+                ];
+                DB::table($dTable)->insert($regsel);
+                $counter++;
+
+                if ($counter % 5000 == 0) {
+                    DB::commit();
+                    DB::beginTransaction();
+                }
+            }
+            DB::commit();
+        }catch(\Exception $e){
+            DB::rollback();
+            $status = 'error'; 
+            $mesage = $e->getMessage();
+            dd($regsel,$mesage, $oRegistros);
         }
 
         return redirect('migrations.index')->with($status, $mesage);

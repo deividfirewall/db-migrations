@@ -27,7 +27,7 @@ class DatabaseSeeder extends Seeder
             PrestamosSeeder::class,
             LocalidadesSeeder::class,
             StatusEmpenioSeeder::class,
-            TipoOperacionSeeder::class,
+            OtrosCatalogosSeeder::class,
 
         ]);
 

@@ -11,13 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('t_empenio_metals', function (Blueprint $table) {
+        Schema::create('t_sol_dias_gracias', function (Blueprint $table) {
             $table->id();
-            $table->text('descripcion');
-            $table->decimal('peso',8,2);
-            $table->decimal('pesoTotal',8,2);
-            $table->foreignId('t_empenio_id')->constrained()->cascadeOnDelete();
-            $table->integer('cat_metal_cotiza_id');
+            $table->date('fecha_movimiento');
+            $table->date('fecha_vencimiento');
+            $table->foreignId('t_boleta_id')->constrained();
+            $table->integer('tipo_empenio');
+            $table->integer('dias_gracia');
+            $table->decimal('prestamo', 10, 2);
             $table->timestamps();
         });
     }
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('t_empenio_metals');
+        Schema::dropIfExists('t_sol_dias_gracias');
     }
 };
