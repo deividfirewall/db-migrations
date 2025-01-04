@@ -84,7 +84,6 @@ class MigrationController extends Controller
             rg_rod13
             r_rg_cg11
             r_ro_cg12 [u_operador_id]
-            t_bloqueadas
             t_boleta_cancelado [t_boleta_id, u_operador_id, c_status_empenio_id, c_tipo_operacion_id, u_pignorante_id, c_tipo_producto_id]
             t_comprador
             t_compra_vitrina [t_boleta_id, t_comprador_id, t_subasta_id, c_status_demasia_id]
@@ -98,6 +97,7 @@ class MigrationController extends Controller
             t_suspencion_dias [u_operador_id]
             t_venta_vitrina
             
+            t_bloqueadas        SOLO HAY 46 BOLETAS antigua:10460349 del 2019-12-06, reciente:10555424 DEL 2020-02-28
             t_boletas_pagos_mal_no_venta    >>> ultimo uso en 2018
             t_boleta_migracion              >>> ultimo uso en 2014
             u_directores                    >>> ahora se utiliza la tabla users

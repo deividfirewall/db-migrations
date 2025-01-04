@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BackupController;
 use App\Http\Controllers\CatalogsController;
 use App\Http\Controllers\MigrationController;
 use App\Http\Controllers\WelcomeController;
@@ -11,6 +12,8 @@ Route::resource('migrations', MigrationController::class);
 
 Route::resource('catalogs', CatalogsController::class);
 
+Route::get('/backup/{table}', [BackupController::class, 'backupTable'])->name('backup.table');
+Route::get('/backup/download/{fileName}', [BackupController::class, 'downloadBackup'])->name('backup.download');
 
 // Cuando se cambia la configuración de la base de datos(en el archivo .env), se debe reiniciar el contenedor de Docker de la siguiente manera:
 // docker system prune -f

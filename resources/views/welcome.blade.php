@@ -53,10 +53,10 @@
                                                 <th class="p-1">ID</th>
                                                 <th class="p-1">Origen</th>
                                                 <th class="p-1">#reg</th>
-                                                <th class="p-1">Acciones</th>
+                                                <th class="p-1">DUMP</th>
                                                 <th class="p-1">Destino</th>
                                                 <th class="p-1">#reg</th>
-                                                <th class="p-1">Migration</th>
+                                                <th class="p-1">DOWNLOAD</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -68,18 +68,22 @@
 
                                                     <td>
                                                         @if( $table['reg_o'] === $table['reg_d'] )
-                                                            <span class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">OK</span>
-                                                        @else
-                                                            <form action="{{ route('migrations.update',$table['id']) }}" method="POST">
-                                                                @csrf
-                                                                @method('PATCH')
-                                                                <button type="submit" class="bg-blue-400 text-white px-1 rounded-md hover:bg-red-400">MIGRAR >></button>
-                                                            </form>    
+                                                            <a href="{{ route('backup.table', $table['destino']) }}">
+                                                                -⚙-
+                                                            </a>
+                                                        @else    
+                                                            <span class="bg-red-100 me-2 px-2.5 py-0.5 rounded dark:bg-red-900">🕜</span>
                                                         @endif
                                                     </td>
                                                     <td>{{ $table['destino'] }}</td>
                                                     <td>{{ $table['reg_d'] }}</td>
-                                                    <td>{{ $table['avance'] }}</td>
+                                                    <td>
+                                                        @if( $table['descarga'] === 1 )
+                                                            <a href="{{ route('backup.download',$table['destino']) }}" class="bg-blue-400 text-white px-1 rounded-md hover:bg-red-400">👉💾</a>
+                                                        @else    
+                                                            <span class="bg-red-100 me-2 px-2.5 py-0.5 rounded dark:bg-red-900">🚫</span>
+                                                        @endif
+                                                    </td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
@@ -128,9 +132,17 @@
                                 <div class="pt-3 sm:pt-5">
                                     <h2 class="text-xl font-semibold text-black dark:text-white">Laravel News</h2>
 
+                                    @if(session('success'))
+                                        <div style="color: green; border: 1px solid green; padding: 10px;">
+                                            {{ session('success') }}
+                                        </div>
+                                    @endif
                                     <p>  -  </p>
-                                    <p>  -  </p>
-                                    <p>  -  </p>
+                                    @if(session('error'))
+                                        <div style="color: red; border: 1px solid red; padding: 10px;">
+                                            {{ session('error') }}
+                                        </div>
+                                    @endif
                                     <p>  -  </p>
                                 </div>
 
