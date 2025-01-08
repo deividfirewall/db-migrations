@@ -32,7 +32,7 @@
                                 
 
                                     <a href="{{ route('catalogs.index') }}" class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
-                                        ir a catalogs
+                                        Ir a catalogos
                                     </a>
                                
                             </nav>
@@ -90,10 +90,24 @@
 
                                 </div>
                             </div>
+                            <div  class="flex items-start gap-4 rounded-lg bg-white p-6 shadow-[0px_14px_34px_0px_rgba(0,0,0,0.08)] ring-1 ring-white/[0.05] transition duration-300 hover:text-black/70 hover:ring-black/20 focus:outline-none focus-visible:ring-[#FF2D20] lg:pb-10 dark:bg-zinc-900 dark:ring-zinc-800 dark:hover:text-white/70 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#FF2D20]">
+                                <div class="flex size-12 shrink-0 items-center justify-center rounded-full bg-[#FF2D20]/10 sm:size-16">
+                                    ✅
+                                </div>
+
+                                <div class="pt-3 sm:pt-5">
+                                    <h2 class="text-xl font-semibold text-black dark:text-white">MIGRACIONES</h2>
+
+                                    <div style="color: blue; padding: 10px;" > base de datos origen: {{ $databaseName }} </div>
+                                    <div style="color: green; padding: 10px;" > base de datos destino: siemp </div>
+                                   
+                                </div>
+
+                            </div>
 
                             <div  class="flex items-start gap-4 rounded-lg bg-white p-4 shadow-[0px_14px_34px_0px_rgba(0,0,0,0.08)] ring-1 ring-white/[0.05] transition duration-300 hover:text-black/70 hover:ring-black/20 focus:outline-none focus-visible:ring-[#FF2D20] lg:pb-10 dark:bg-zinc-900 dark:ring-zinc-800 dark:hover:text-white/70 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#FF2D20]">
                                 <div class="flex size-12 shrink-0 items-center justify-center rounded-full bg-[#FF2D20]/10 sm:size-16">
-                                    ✅
+                                    💥
                                 </div>
 
                                 @if ($message = Session::get('success'))
@@ -106,42 +120,29 @@
                                     </div>
                                 @else
                                     <div class="alert alert-danger text-center">
-                                        <h2>SIN ACCIONES</h2>
+                                        <h2>STATUS</h2>
                                     </div>
                                 @endif
 
-                                ➡
+                                
                             </div>
 
-                            <a href="https://laravel-news.com" class="flex items-start gap-4 rounded-lg bg-white p-6 shadow-[0px_14px_34px_0px_rgba(0,0,0,0.08)] ring-1 ring-white/[0.05] transition duration-300 hover:text-black/70 hover:ring-black/20 focus:outline-none focus-visible:ring-[#FF2D20] lg:pb-10 dark:bg-zinc-900 dark:ring-zinc-800 dark:hover:text-white/70 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#FF2D20]">
+                            <div class="flex items-start gap-4 rounded-lg bg-white p-6 shadow-[0px_14px_34px_0px_rgba(0,0,0,0.08)] ring-1 ring-white/[0.05] transition duration-300 hover:text-black/70 hover:ring-black/20 focus:outline-none focus-visible:ring-[#FF2D20] lg:pb-10 dark:bg-zinc-900 dark:ring-zinc-800 dark:hover:text-white/70 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#FF2D20]">
                                 <div class="flex size-12 shrink-0 items-center justify-center rounded-full bg-[#FF2D20]/10 sm:size-16">
                                     💢
                                 </div>
 
                                 <div class="pt-3 sm:pt-5">
-                                    <h2 class="text-xl font-semibold text-black dark:text-white">News</h2>
+                                    <h2 class="text-xl font-semibold text-black dark:text-white">PENDIENTES</h2>
 
-                                    <p class="mt-4 text-sm/relaxed">...</p>
-                                    <p class="mt-4 text-sm/relaxed">...</p>
-                                    <p class="mt-4 text-sm/relaxed">...</p>
-                                    <p class="mt-4 text-sm/relaxed">...</p>
-                                    <p class="mt-4 text-sm/relaxed">...</p>
-                                </div>
+                                    <p class="mt-4 text-sm/relaxed">rg_rod13 </p>
+                                    <p class="mt-4 text-sm/relaxed">r_rg_cg11 </p>
+                                    <p class="mt-4 text-sm/relaxed">r_ro_cg12: [u_operador_id] </p>
+                                    <p class="mt-4 text-sm/relaxed">t_num_tickets: [t_boleta_id, c_status_boleta_id]</p>
+                                    <p class="mt-4 text-sm/relaxed">t_descuentos: [t_boleta_id, u_operador_id, c_status, c_status_operacion_id]</p>
+                                    <p class="mt-4 text-sm/relaxed">t_control_interno_cancelado: [t_boleta_id] </p>
+                                    <p class="mt-4 text-sm/relaxed">t_boleta_cancelado: [t_boleta_id, u_operador_id, c_status_empenio_id, c_tipo_operacion_id, u_pignorante_id, c_tipo_producto_id].</p>
 
-                                <svg class="size-6 shrink-0 self-center stroke-[#FF2D20]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75"/></svg>
-                            </a>
-
-                            <div class="flex items-start gap-4 rounded-lg bg-white p-6 shadow-[0px_14px_34px_0px_rgba(0,0,0,0.08)] ring-1 ring-white/[0.05] transition duration-300 hover:text-black/70 hover:ring-black/20 focus:outline-none focus-visible:ring-[#FF2D20] lg:pb-10 dark:bg-zinc-900 dark:ring-zinc-800 dark:hover:text-white/70 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#FF2D20]">
-                                <div class="flex size-12 shrink-0 items-center justify-center rounded-full bg-[#FF2D20]/10 sm:size-16">
-                                    ⛔
-                                </div>
-
-                                <div class="pt-3 sm:pt-5">
-                                    <h2 class="text-xl font-semibold text-black dark:text-white">Vibrant Ecosystem</h2>
-
-                                    <p class="mt-4 text-sm/relaxed">and more.</p>
-                                    <p class="mt-4 text-sm/relaxed">and more.</p>
-                                    <p class="mt-4 text-sm/relaxed">and more.</p>
                                 </div>
                             </div>
                         </div>

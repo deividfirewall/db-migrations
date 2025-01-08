@@ -63,8 +63,7 @@ class CatalogsController extends Controller
                         ,'avance'=>'0'],
         ];
 
-        //falta: c_fecha_subasta, c_intereses, c_status_usuario, c_sucursal
-        //  c_fecha_subasta, no es un catalogo, es una tabla operativa
+        //falta: c_intereses, c_status_usuario, c_sucursal
         //  c_tipo_prestamo_sucursal, no es un catalogo, es una tabla operativa
         //  c_intereses, esta en desuso
         //  c_status_usuario, no fue utilizado
