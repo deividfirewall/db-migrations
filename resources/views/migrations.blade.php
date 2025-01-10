@@ -54,9 +54,9 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($allTables as $table)
+                                            @foreach ($allTables as $key => $table)
                                                 <tr class="text-xs">
-                                                    <td>{{ $table['id'] }}</td>
+                                                    <td>{{ $key }}</td>
                                                     <td>{{ $table['origen'] }}</td>
                                                     <td>{{ number_format($table['reg_o'])  }}</td>
 
@@ -64,7 +64,7 @@
                                                         @if( $table['reg_o'] === $table['reg_d'] )
                                                             <span class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">100%</span>
                                                         @else
-                                                            <form action="{{ route('migrations.update',$table['id']) }}" method="POST">
+                                                            <form action="{{ route('migrations.update',$key) }}" method="POST">
                                                                 @csrf
                                                                 @method('PATCH')
                                                                 <button type="submit" class="bg-blue-400 text-white px-1 rounded-md hover:bg-red-400">{{ $table['avance'] }}%</button>

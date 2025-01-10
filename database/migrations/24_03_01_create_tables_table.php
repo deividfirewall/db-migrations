@@ -11,14 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('compared_catalogs', function (Blueprint $table) {
+        Schema::create('tables', function (Blueprint $table) {
             $table->id();
-            $table->string('catalog', 55);
-            $table->integer('catalog_id');
-            $table->string('diference', 255);
-            $table->integer('register_sucur_id')->nullable();
-            $table->integer('register_siemp_id')->nullable();
-            $table->string('fixed', 55);
+            $table->string('tabla_origen');
+            $table->integer(('num_registros_origen'));
+            $table->string('tabla_destino');
+            $table->integer(('num_registros_destino'));
+            $table->integer('avance');
             $table->timestamps();
         });
     }
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('compared_catalogs');
+        Schema::dropIfExists('tables');
     }
 };

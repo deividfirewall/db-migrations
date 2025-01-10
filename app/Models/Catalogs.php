@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ComparedCatalogs extends Model
+class Catalogs extends Model
 {
     protected $fillable = [
         'catalog',

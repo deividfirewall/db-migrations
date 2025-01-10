@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ComparedCatalogs;
+use App\Models\Catalogs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class CatalogsController extends Controller
 {
     public $allCatalogs;
-    public $comparedCatalogs;
+    public $Catalogs;
 
     public function __construct()
     {
-        $this->comparedCatalogs = ComparedCatalogs::all();
+        $this->Catalogs = Catalogs::all();
 
         $this->allCatalogs = [
             10 =>['origen'=>'c_estados', 'reg_o'=>DB::connection('sucursal')->table('c_estados')->count()
@@ -75,11 +75,11 @@ class CatalogsController extends Controller
         $databaseName = DB::connection('sucursal')->getDatabaseName();
 
         $allCatalogs = $this->allCatalogs;
-        $comparedCatalogs = $this->comparedCatalogs;
+        $Catalogs = $this->Catalogs;
 
         return view('catalogs', compact(
             'allCatalogs',
-            'comparedCatalogs',
+            'Catalogs',
             'databaseName'
         ));
     }
@@ -116,7 +116,7 @@ class CatalogsController extends Controller
 
         $reg_mayor = ($num_reg_SUCURSAL > $num_reg_SIEMP) ? $num_reg_SUCURSAL : $num_reg_SIEMP;
         
-        ComparedCatalogs::where('catalog_id', 10)->delete();
+        Catalogs::where('catalog_id', 10)->delete();
 
         for ($i = 0; $i < $reg_mayor; $i++)
         {
@@ -142,7 +142,7 @@ class CatalogsController extends Controller
 
             if($cat_SUCURSAL[$i]->clave != $cat_SIEMP[$i]->clave)
             {
-                ComparedCatalogs::create([
+                Catalogs::create([
                     'catalog' => 'cat_loc_estados',
                     'catalog_id' => '10',
                     'diference' => $cat_SUCURSAL[$i]->clave.'}≠{'.$cat_SIEMP[$i]->clave,
@@ -156,7 +156,7 @@ class CatalogsController extends Controller
         if($count_diferences == 0)
         {
             
-            ComparedCatalogs::create([
+            Catalogs::create([
                 'catalog' => 'cat_loc_estados',
                 'catalog_id' => '10',
                 'diference' => 'Ninguna',
@@ -179,7 +179,7 @@ class CatalogsController extends Controller
 
         $reg_mayor = ($num_reg_SUCURSAL > $num_reg_SIEMP) ? $num_reg_SUCURSAL : $num_reg_SIEMP;
 
-        ComparedCatalogs::where('catalog_id', 11)->delete();
+        Catalogs::where('catalog_id', 11)->delete();
 
         for ($i = 0; $i < $reg_mayor; $i++)
         {
@@ -207,7 +207,7 @@ class CatalogsController extends Controller
 
             if($cat_SUCURSAL[$i]->clave != $cat_SIEMP[$i]->clave)
             {
-                ComparedCatalogs::create([
+                Catalogs::create([
                     'catalog' => 'cat_loc_municipios',
                     'catalog_id' => '11',
                     'diference' => $cat_SUCURSAL[$i]->clave.' ≠ '.$cat_SIEMP[$i]->clave,
@@ -219,7 +219,7 @@ class CatalogsController extends Controller
             }
             if($cat_SUCURSAL[$i]->c_estados_id != $cat_SIEMP[$i]->cat_loc_estado_id)
             {
-                ComparedCatalogs::create([
+                Catalogs::create([
                     'catalog' => 'cat_loc_municipios',
                     'catalog_id' => '11',
                     'diference' => $cat_SUCURSAL[$i]->c_estados_id.' ≠ '.$cat_SIEMP[$i]->cat_loc_estado_id,
@@ -231,7 +231,7 @@ class CatalogsController extends Controller
             }
             if($cat_SUCURSAL[$i]->sigla != $cat_SIEMP[$i]->sigla)
             {
-                ComparedCatalogs::create([
+                Catalogs::create([
                     'catalog' => 'cat_loc_municipios',
                     'catalog_id' => '11',
                     'diference' => $cat_SUCURSAL[$i]->sigla.' ≠ '.$cat_SIEMP[$i]->sigla,
@@ -245,7 +245,7 @@ class CatalogsController extends Controller
 
         if($count_diferences == 0)
         {
-            ComparedCatalogs::create([
+            Catalogs::create([
                 'catalog' => 'cat_loc_municipios',
                 'catalog_id' => '11',
                 'diference' => 'Ninguna',
@@ -269,7 +269,7 @@ class CatalogsController extends Controller
 
         $reg_mayor = ($num_reg_SUCURSAL > $num_reg_SIEMP) ? $num_reg_SUCURSAL : $num_reg_SIEMP;
 
-        ComparedCatalogs::where('catalog_id', 13)->delete();
+        Catalogs::where('catalog_id', 13)->delete();
 
         for ($i = 0; $i < $reg_mayor; $i++)
         {
@@ -303,7 +303,7 @@ class CatalogsController extends Controller
 
             if($cat_SUCURSAL[$i]->precio_gramo != $cat_SIEMP[$i]->precio_gramo)
             {
-                ComparedCatalogs::create([
+                Catalogs::create([
                     'catalog' => 'cat_metal_precios',
                     'catalog_id' => '13',
                     'diference' => $cat_SUCURSAL[$i]->precio_gramo.' ≠ '.$cat_SIEMP[$i]->precio_gramo,
@@ -317,7 +317,7 @@ class CatalogsController extends Controller
 
         if($count_diferences == 0)
         {
-            ComparedCatalogs::create([
+            Catalogs::create([
                 'catalog' => 'cat_metal_precios',
                 'catalog_id' => '13',
                 'diference' => 'Ninguna',
@@ -339,7 +339,7 @@ class CatalogsController extends Controller
 
         $reg_mayor = ($num_reg_SUCURSAL > $num_reg_SIEMP) ? $num_reg_SUCURSAL : $num_reg_SIEMP;
 
-        ComparedCatalogs::where('catalog_id', 14)->delete();
+        Catalogs::where('catalog_id', 14)->delete();
 
         for ($i = 0; $i < $reg_mayor; $i++)
         {
@@ -375,7 +375,7 @@ class CatalogsController extends Controller
 
             if($cat_SUCURSAL[$i]->ref != $cat_SIEMP[$i]->ref)
             {
-                ComparedCatalogs::create([
+                Catalogs::create([
                     'catalog' => 'cat_metal_cotizas',
                     'catalog_id' => '14',
                     'diference' => $cat_SUCURSAL[$i]->ref.' ≠ '.$cat_SIEMP[$i]->ref,
@@ -388,7 +388,7 @@ class CatalogsController extends Controller
         }
         if($count_diferences == 0)
         {
-            ComparedCatalogs::create([
+            Catalogs::create([
                 'catalog' => 'cat_metal_cotizas',
                 'catalog_id' => '14',
                 'diference' => 'Ninguna',
@@ -410,7 +410,7 @@ class CatalogsController extends Controller
 
         $reg_mayor = ($num_reg_SUCURSAL > $num_reg_SIEMP) ? $num_reg_SUCURSAL : $num_reg_SIEMP;
 
-        ComparedCatalogs::where('catalog_id', 15)->delete();
+        Catalogs::where('catalog_id', 15)->delete();
             
         for ($i = 0; $i < $reg_mayor; $i++)
         {
@@ -432,7 +432,7 @@ class CatalogsController extends Controller
 
             if($cat_SUCURSAL[$i]->tipo != $cat_SIEMP[$i]->tipo)
             {
-                ComparedCatalogs::create([
+                Catalogs::create([
                     'catalog' => 'cat_product_tipos',
                     'catalog_id' => '15',
                     'diference' => $cat_SUCURSAL[$i]->tipo.' ≠ '.$cat_SIEMP[$i]->tipo,
@@ -445,7 +445,7 @@ class CatalogsController extends Controller
         }
         if($count_diferences == 0)
         {
-            ComparedCatalogs::create([
+            Catalogs::create([
                 'catalog' => 'cat_product_tipos',
                 'catalog_id' => '15',
                 'diference' => 'Ninguna',
@@ -467,7 +467,7 @@ class CatalogsController extends Controller
 
         $reg_mayor = ($num_reg_SUCURSAL > $num_reg_SIEMP) ? $num_reg_SUCURSAL : $num_reg_SIEMP;
 
-        ComparedCatalogs::where('catalog_id', 16)->delete();
+        Catalogs::where('catalog_id', 16)->delete();
 
         for ($i = 0; $i < $reg_mayor; $i++)
         {
@@ -490,7 +490,7 @@ class CatalogsController extends Controller
             }
             if($cat_SUCURSAL[$i]->nombre != $cat_SIEMP[$i]->producto)
             {
-                ComparedCatalogs::create([
+                Catalogs::create([
                     'catalog' => 'cat_productos',
                     'catalog_id' => '16',
                     'diference' => $cat_SUCURSAL[$i]->nombre.' ≠ '.$cat_SIEMP[$i]->producto,
@@ -502,7 +502,7 @@ class CatalogsController extends Controller
             }
             if($cat_SUCURSAL[$i]->c_tipo_producto_id != $cat_SIEMP[$i]->cat_product_tipo_id)
             {
-                ComparedCatalogs::create([
+                Catalogs::create([
                     'catalog' => 'cat_productos',
                     'catalog_id' => '16',
                     'diference' => $cat_SUCURSAL[$i]->c_tipo_producto_id.' ≠ '.$cat_SIEMP[$i]->cat_product_tipo_id,
@@ -515,7 +515,7 @@ class CatalogsController extends Controller
         }
         if($count_diferences == 0)
         {
-            ComparedCatalogs::create([
+            Catalogs::create([
                 'catalog' => 'cat_productos',
                 'catalog_id' => '16',
                 'diference' => 'Ninguna',
@@ -537,7 +537,7 @@ class CatalogsController extends Controller
 
         $reg_mayor = ($num_reg_SUCURSAL > $num_reg_SIEMP) ? $num_reg_SUCURSAL : $num_reg_SIEMP;
 
-        ComparedCatalogs::where('catalog_id', 17)->delete();
+        Catalogs::where('catalog_id', 17)->delete();
 
 
         foreach($cat_SUCURSAL as $registroSUC)
@@ -546,7 +546,7 @@ class CatalogsController extends Controller
 
             if($registroSIEMP == null)
             {
-                ComparedCatalogs::create([
+                Catalogs::create([
                     'catalog' => 'cat_product_subs',
                     'catalog_id' => '17',
                     'diference' => 'Registro no encontrado en SIEMP',
@@ -558,7 +558,7 @@ class CatalogsController extends Controller
             }else{
                 if($registroSUC->subproducto != $registroSIEMP->subproducto)
                 {
-                    ComparedCatalogs::create([
+                    Catalogs::create([
                         'catalog' => 'cat_product_subs',
                         'catalog_id' => '17',
                         'diference' => $registroSUC->subproducto.' ≠ '.$registroSIEMP->subproducto,
@@ -570,7 +570,7 @@ class CatalogsController extends Controller
                 }
                 if($registroSUC->c_producto_id != $registroSIEMP->cat_producto_id)
                 {
-                    ComparedCatalogs::create([
+                    Catalogs::create([
                         'catalog' => 'cat_product_subs',
                         'catalog_id' => '17',
                         'diference' => $registroSUC->c_producto_id.' ≠ '.$registroSIEMP->cat_producto_id,
@@ -585,7 +585,7 @@ class CatalogsController extends Controller
 
         if($count_diferences == 0)
         {
-            ComparedCatalogs::create([
+            Catalogs::create([
                 'catalog' => 'cat_product_subs',
                 'catalog_id' => '17',
                 'diference' => 'Ninguna',
@@ -607,7 +607,7 @@ class CatalogsController extends Controller
 
         $reg_mayor = ($num_reg_SUCURSAL > $num_reg_SIEMP) ? $num_reg_SUCURSAL : $num_reg_SIEMP;
 
-        ComparedCatalogs::where('catalog_id', 18)->delete();
+        Catalogs::where('catalog_id', 18)->delete();
 
 
         foreach($cat_SUCURSAL as $registroSUC)
@@ -616,7 +616,7 @@ class CatalogsController extends Controller
 
             if($registroSIEMP == null)
             {
-                ComparedCatalogs::create([
+                Catalogs::create([
                     'catalog' => 'cat_product_cotizas',
                     'catalog_id' => '18',
                     'diference' => 'Registro '.$registroSUC->id.' no encontrado en BASE SIEMP',
@@ -628,7 +628,7 @@ class CatalogsController extends Controller
             }else{
                 if($registroSUC->precio_minimo != $registroSIEMP->precio_min)
                 {
-                    ComparedCatalogs::create([
+                    Catalogs::create([
                         'catalog' => 'cat_product_cotizas',
                         'catalog_id' => '18',
                         'diference' => $registroSUC->precio_minimo.' ≠ '.$registroSIEMP->precio_min,
@@ -640,7 +640,7 @@ class CatalogsController extends Controller
                 }            
                 if($registroSUC->precio_maximo != $registroSIEMP->precio_max)
                 {
-                    ComparedCatalogs::create([
+                    Catalogs::create([
                         'catalog' => 'cat_product_cotizas',
                         'catalog_id' => '18',
                         'diference' => $registroSUC->precio_maximo.' ≠ '.$registroSIEMP->precio_max,
@@ -652,7 +652,7 @@ class CatalogsController extends Controller
                 }
                 if($registroSUC->c_sub_productos_id != $registroSIEMP->cat_product_sub_id)
                 {
-                    ComparedCatalogs::create([
+                    Catalogs::create([
                         'catalog' => 'cat_product_cotizas',
                         'catalog_id' => '18',
                         'diference' => $registroSUC->c_sub_productos_id.' ≠ '.$registroSIEMP->cat_product_sub_id,
@@ -667,7 +667,7 @@ class CatalogsController extends Controller
         
         if($count_diferences == 0)
         {
-            ComparedCatalogs::create([
+            Catalogs::create([
                 'catalog' => 'cat_product_cotizas',
                 'catalog_id' => '18',
                 'diference' => 'Ninguna',

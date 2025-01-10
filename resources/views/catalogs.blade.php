@@ -131,14 +131,14 @@
                                 <table>
                                     <thead>
                                         <tr class="text-xs">
-                                            <th class="p-2">#Registro</th>
+                                            <th class="p-2">Registro #</th>
                                             <th class="p-2">Catalogo</th>
                                             <th class="p-2">Diferencia</th>
                                             <th class="p-2">Columna</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ( $comparedCatalogs as $register)
+                                        @foreach ( $Catalogs as $register)
                                             <tr class="text-xs">
                                                 <th>{{ $register->register_sucur_id }}</th>
                                                 <td>{{ $register->catalog }}</td>

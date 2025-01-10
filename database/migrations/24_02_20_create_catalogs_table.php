@@ -11,15 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('t_suspencion_dias', function (Blueprint $table) {
+        Schema::create('catalogs', function (Blueprint $table) {
             $table->id();
-            $table->date('fecha_transaccion');
-            $table->date('fecha_cobro');
-            $table->dateTime('fecha_registro');
-            $table->unsignedBigInteger('u_operador_id');
-            $table->unsignedBigInteger('c_sucursal_id');
+            $table->string('catalog', 55);
+            $table->integer('catalog_id');
+            $table->string('diference', 255);
+            $table->integer('register_sucur_id')->nullable();
+            $table->integer('register_siemp_id')->nullable();
+            $table->string('fixed', 55);
             $table->timestamps();
-            
         });
     }
 
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('t_suspencion_dias');
+        Schema::dropIfExists('catalogs');
     }
 };

@@ -2,29 +2,29 @@
 
 namespace App\Console\Commands;
 
+use App\Http\Controllers\MigrationController;
+use App\Models\Tables;
 use Illuminate\Console\Command;
 
 class MigrationsCommand extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'app:migrations-command';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
+    protected $signature = 'migrations:tables';
     protected $description = 'Command description';
 
-    /**
-     * Execute the console command.
-     */
+    
     public function handle()
     {
-        //
+        $migration = new MigrationController();
+
+        $this->info('Task initiated at: ' . now() . '!');
+
+        foreach(Tables::all() as $table){
+            if($table->avance < 100){
+                $this->info('Migrando tabla ('.$table->id.'): ' . $table->tabla_origen . ' -> ' . $table->tabla_destino. ', avance: ' . $table->avance);  
+                $migration->update($table->id);        
+                break;
+            }
+        }
     }
 }
