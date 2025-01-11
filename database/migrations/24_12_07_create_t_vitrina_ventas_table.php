@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('t_vitrina_ventas', function (Blueprint $table) {
             $table->id();
             $table->date('fecha_venta');
-            $table->decimal('capital', 8, 2);
+            $table->decimal('capital', 9, 2);
             $table->decimal('intNormal', 8, 2);
             $table->decimal('intVencido', 8, 2);
             $table->decimal('intAvaluo', 8, 2);

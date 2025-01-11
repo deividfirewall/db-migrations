@@ -16,8 +16,8 @@ return new class extends Migration
             $table->date('fecha_transaccion');
             $table->date('fecha_cobro');
             $table->dateTime('fecha_registro');
-            $table->unsignedBigInteger('u_operador_id');
-            $table->unsignedBigInteger('c_sucursal_id');
+            $table->foreignId('user_id')->constrained();
+            $table->foreignId('adm_sede_id')->constrained();
             $table->timestamps();
             
         });

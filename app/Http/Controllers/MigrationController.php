@@ -7,10 +7,6 @@ use App\Models\Tables;
 use App\Models\TBoleta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Log;
-
-use function Illuminate\Log\log;
 
 class MigrationController extends Controller
 {
@@ -19,91 +15,32 @@ class MigrationController extends Controller
     public function __construct()
     {
         $this->allTables = [
-            1  => ['origen' =>'u_operadores',   'reg_o'=> 0 // DB::connection('sucursal')->table('u_operadores')->count()
-                      ,'destino'=>'users',          'reg_d'=> 0 // DB::table('users')->count()
-                      ,'avance'=>'0'],
-            2  => ['origen' =>'u_pignotarios',  'reg_o'=> 0 // DB::connection('sucursal')->table('u_pignotarios')->count()
-                      ,'destino'=>'pignorantes',    'reg_d'=> 0 // DB::table('pignorantes')->count()
-                      ,'avance'=>'0'],
-            3  => ['origen'  =>'t_boleta', 'reg_o'=> 0 // DB::connection('sucursal')->table('t_boleta')->count()
-                      ,'destino' =>'t_boletas','reg_d'=> 0 // DB::table('t_boletas')->count()
-                      ,'avance'=>'0'],
-            4  => ['origen' =>'t_boleta_pagos', 'reg_o'=> 0 // DB::connection('sucursal')->table('t_boleta_pagos')->count()
-                      ,'destino'=>'t_boleta_pagos', 'reg_d'=> 0 // DB::table('t_boleta_pagos')->count()
-                      ,'avance'=>'0'],
-            5  => ['origen' =>'t_empenios', 'reg_o'=> 0 // DB::connection('sucursal')->table('t_empenios')->count()
-                      ,'destino'=>'t_empenios', 'reg_d'=> 0 // DB::table('t_empenios')->count()
-                      ,'avance'=>'0'],
-            6  => ['origen' =>'t_empenios_boleta_relacion', 'reg_o'=> 0 // DB::connection('sucursal')->table('t_empenios_boleta_relacion')->count()
-                      ,'destino'=>'t_emp_bol_relations',        'reg_d'=> 0 // DB::table('t_emp_bol_relations')->count()
-                      ,'avance'=>'0'],
-            7  => ['origen' =>'t_empenios_metal',           'reg_o'=> 0 // DB::connection('sucursal')->table('t_empenios_metal')->count()
-                      ,'destino'=>'t_empenio_metals',           'reg_d'=> 0 // DB::table('t_empenio_metals')->count()
-                      ,'avance'=>'0'],
-            8  => ['origen' =>'t_empenios_productos',       'reg_o'=> 0 // DB::connection('sucursal')->table('t_empenios_productos')->count()
-                      ,'destino'=>'t_empenio_products',         'reg_d'=> 0 // DB::table('t_empenio_products')->count()
-                      ,'avance'=>'0'],
-            9  => ['origen' =>'t_control_interno',          'reg_o'=> 0 // DB::connection('sucursal')->table('t_control_interno')->count()
-                      ,'destino'=>'t_ctrl_internos',            'reg_d'=> 0 // DB::table('t_ctrl_internos')->count()
-                      ,'avance'=>'0'],
-            10  => ['origen' =>'t_caja_monto_operador',  'reg_o'=> 0 // DB::connection('sucursal')->table('t_caja_monto_operador')->count()
-                      ,'destino'=>'t_cajas',                'reg_d'=> 0 // DB::table('t_cajas')->count()
-                      ,'avance'=>'0'],
-            11 => ['origen' =>'h_t_boleta', 'reg_o'=> 0 // DB::connection('sucursal')->table('h_t_boleta')->count()
-                      ,'destino'=>'h_boletas',  'reg_d'=> 0 // DB::table('h_boletas')->count()
-                      ,'avance'=>'0'],
-            12 => ['origen' =>'u_pignotarios_solidarios',   'reg_o' => 0 //DB::connection('sucursal')->table('u_pignotarios_solidarios')->distinct()
-                                                                        // ->select('u_pignotarios_solidarios.pignorante_solidario','t_boleta.u_pignorante_id')
-                                                                        // ->join('t_boleta','t_boleta.id','=','u_pignotarios_solidarios.t_boleta_id')
-                                                                        // ->get()->count()
-                      ,'destino'=>'pignorante_solidarios',      'reg_d'=> 0 //DB::table('pignorante_solidarios')->count()
-                      ,'avance'=>'0'],
-            13 =>['origen' =>'u_pignotarios_solidarios',   'reg_o'=> 0 //DB::connection('sucursal')->table('u_pignotarios_solidarios')
-                                                                    //    ->select('t_boleta.u_pignorante_id','u_pignotarios_solidarios.pignorante_solidario')
-                                                                    //    ->join('t_boleta','t_boleta.id','=','u_pignotarios_solidarios.t_boleta_id')
-                                                                    //    ->count()
-                      ,'destino'=>'pignorante_solidarios',      'reg_d'=> 0 // DB::table('t_boletas')->whereNotNull('pignorante_solidario_id')->count()
-                      ,'avance'=>'0'],
-
-            14 => ['origen' =>'t_solicitudes_dias_gracia',  'reg_o'=> 0 // DB::connection('sucursal')->table('t_solicitudes_dias_gracia')->count()
-                      ,'destino'=>'t_sol_dias_gracias',         'reg_d'=> 0 // DB::table('t_sol_dias_gracias')->count()
-                      ,'avance'=>'0'],
-            15 => ['origen' =>'t_solicitudes_almoneda', 'reg_o'=> 0 // DB::connection('sucursal')->table('t_solicitudes_almoneda')->count()
-                      ,'destino'=>'t_sol_almonedas',        'reg_d'=> 0 // DB::table('t_sol_almonedas')->count()
-                      ,'avance'=>'0'],
-            16 => ['origen' =>'t_solicitudes_subasta',  'reg_o'=> 0 // DB::connection('sucursal')->table('t_solicitudes_subasta')->count()
-                      ,'destino'=>'t_sol_subastas',         'reg_d'=> 0 // DB::table('t_sol_subastas')->count()
-                      ,'avance'=>'0'],
-            17 => ['origen' =>'t_subasta',              'reg_o'=> 0 // DB::connection('sucursal')->table('t_subasta')->count()
-                      ,'destino'=>'t_subastas',             'reg_d'=> 0 // DB::table('t_subastas')->count()
-                      ,'avance'=>'0'],
-            18 => ['origen' =>'c_fecha_subasta',     'reg_o'=> 0 // DB::connection('sucursal')->table('c_fecha_subasta')->count()
-                      ,'destino'=>'t_subasta_fechas',    'reg_d'=> 0 // DB::table('t_subasta_fechas')->count()
-                      ,'avance'=>'0'],    
-            19 => ['origen' =>'t_comprador',       'reg_o'=> 0 // DB::connection('sucursal')->table('t_comprador')->count()
-                      ,'destino'=>'t_compradors',      'reg_d'=> 0 // DB::table('t_compradors')->count()
-                      ,'avance'=>'0'],
-            20 => ['origen' =>'t_retasas',    'reg_o'=> 0 // DB::connection('sucursal')->table('t_retasas')->count()
-                    ,'destino'=>'t_retasas',      'reg_d'=> 0 // DB::table('t_retasas')->count()
-                    ,'avance'=>'0'],
-            21 => ['origen' =>'t_reposicion',     'reg_o'=> 0 // DB::connection('sucursal')->table('t_reposicion')->count()
-                    ,'destino'=>'t_reposicions',      'reg_d'=> 0 // DB::table('t_reposicions')->count()
-                    ,'avance'=>'0'],            
-            22 => ['origen' =>'t_concentrados',    'reg_o'=> 0 // DB::connection('sucursal')->table('t_concentrados')->count()
-                    ,'destino'=>'t_concentrados',      'reg_d'=> 0 // DB::table('t_concentrados')->count()
-                    ,'avance'=>'0'], 
-            23 => ['origen' =>'t_venta_vitrina',     'reg_o'=> 0 // DB::connection('sucursal')->table('t_venta_vitrina')->count()
-                    ,'destino'=>'t_vitrina_ventas',      'reg_d'=> 0 // DB::table('t_vitrina_ventas')->count()
-                    ,'avance'=>'0'],
-            24 => ['origen' =>'t_compra_vitrina',     'reg_o'=> 0 // DB::connection('sucursal')->table('t_compra_vitrina')->count()
-                    ,'destino'=>'t_vitrina_compras',      'reg_d'=> 0 // DB::table('t_vitrina_compras')->count()
-                    ,'avance'=>'0'],
-            25 => ['origen' =>'t_demasias_pagadas',  'reg_o'=> 0 // DB::connection('sucursal')->table('t_demasias_pagadas')->count()
-                    ,'destino'=>'t_demasias_pagadas',    'reg_d'=> 0 // DB::table('t_demasias_pagadas')->count()
-                    ,'avance'=>'0'],
-            26 => ['origen' =>'t_suspencion_dias',  'reg_o'=> 0 // DB::connection('sucursal')->table('t_suspencion_dias')->count()
-                    ,'destino'=>'t_suspencion_dias',    'reg_d'=> 0 // DB::table('t_suspencion_dias')->count()
-                    ,'avance'=>'0'],            
+            1  => ['origen' =>'u_operadores',              'reg_o'=> 0,'destino'=>'users'                ,'reg_d'=> 0   ,'avance'=>'0'],
+            2  => ['origen' =>'u_pignotarios',             'reg_o'=> 0,'destino'=>'pignorantes'          ,'reg_d'=> 0   ,'avance'=>'0'],
+            3  => ['origen' =>'t_boleta',                  'reg_o'=> 0,'destino' =>'t_boletas'           ,'reg_d'=> 0   ,'avance'=>'0'],
+            4  => ['origen' =>'t_boleta_pagos',            'reg_o'=> 0,'destino'=>'t_boleta_pagos'       ,'reg_d'=> 0   ,'avance'=>'0'],
+            5  => ['origen' =>'t_empenios',                'reg_o'=> 0,'destino'=>'t_empenios'           ,'reg_d'=> 0   ,'avance'=>'0'],
+            6  => ['origen' =>'t_empenios_boleta_relacion','reg_o'=> 0,'destino'=>'t_emp_bol_relations'  ,'reg_d'=> 0   ,'avance'=>'0'],
+            7  => ['origen' =>'t_empenios_metal',          'reg_o'=> 0,'destino'=>'t_empenio_metals'     ,'reg_d'=> 0   ,'avance'=>'0'],
+            8  => ['origen' =>'t_empenios_productos',      'reg_o'=> 0,'destino'=>'t_empenio_products'   ,'reg_d'=> 0   ,'avance'=>'0'],
+            9  => ['origen' =>'t_control_interno',         'reg_o'=> 0,'destino'=>'t_ctrl_internos'      ,'reg_d'=> 0   ,'avance'=>'0'],
+            10 => ['origen' =>'t_caja_monto_operador',     'reg_o'=> 0,'destino'=>'t_cajas'              ,'reg_d'=> 0   ,'avance'=>'0'],
+            11 => ['origen' =>'h_t_boleta',                'reg_o'=> 0,'destino'=>'h_boletas'            ,'reg_d'=> 0   ,'avance'=>'0'],
+            12 => ['origen' =>'u_pignotarios_solidarios',  'reg_o'=> 0,'destino'=>'pignorante_solidarios','reg_d'=> 0   ,'avance'=>'0'],
+            13 => ['origen' =>'u_pignotarios_solidarios',  'reg_o'=> 0,'destino'=>'pignorante_solidarios','reg_d'=> 0   ,'avance'=>'0'],
+            14 => ['origen' =>'t_solicitudes_dias_gracia', 'reg_o'=> 0,'destino'=>'t_sol_dias_gracias'   ,'reg_d'=> 0   ,'avance'=>'0'],
+            15 => ['origen' =>'t_solicitudes_almoneda',    'reg_o'=> 0,'destino'=>'t_sol_almonedas'      ,'reg_d'=> 0   ,'avance'=>'0'],
+            16 => ['origen' =>'t_solicitudes_subasta',     'reg_o'=> 0,'destino'=>'t_sol_subastas'       ,'reg_d'=> 0   ,'avance'=>'0'],
+            17 => ['origen' =>'t_subasta',                 'reg_o'=> 0,'destino'=>'t_subastas'           ,'reg_d'=> 0   ,'avance'=>'0'],
+            18 => ['origen' =>'c_fecha_subasta',           'reg_o'=> 0,'destino'=>'t_subasta_fechas'     ,'reg_d'=> 0   ,'avance'=>'0'],    
+            19 => ['origen' =>'t_comprador',               'reg_o'=> 0,'destino'=>'t_compradors'         ,'reg_d'=> 0   ,'avance'=>'0'],
+            20 => ['origen' =>'t_retasas',                 'reg_o'=> 0,'destino'=>'t_retasas'            ,'reg_d'=> 0   ,'avance'=>'0'],
+            21 => ['origen' =>'t_reposicion',              'reg_o'=> 0,'destino'=>'t_reposicions'        ,'reg_d'=> 0   ,'avance'=>'0'],            
+            22 => ['origen' =>'t_concentrados',            'reg_o'=> 0,'destino'=>'t_concentrados'       ,'reg_d'=> 0   ,'avance'=>'0'], 
+            23 => ['origen' =>'t_venta_vitrina',           'reg_o'=> 0,'destino'=>'t_vitrina_ventas'     ,'reg_d'=> 0   ,'avance'=>'0'],
+            24 => ['origen' =>'t_compra_vitrina',          'reg_o'=> 0,'destino'=>'t_vitrina_compras'    ,'reg_d'=> 0   ,'avance'=>'0'],
+            25 => ['origen' =>'t_demasias_pagadas',        'reg_o'=> 0,'destino'=>'t_demasias_pagadas'   ,'reg_d'=> 0   ,'avance'=>'0'],
+            26 => ['origen' =>'t_suspencion_dias',         'reg_o'=> 0,'destino'=>'t_suspencion_dias'    ,'reg_d'=> 0   ,'avance'=>'0'],            
         ];
 
 
@@ -124,13 +61,16 @@ class MigrationController extends Controller
         */
 
         $tables_ctrl = Tables::all();
+        
         foreach ($this->allTables as $key => $table) {
 
-            $table_ctrl = $tables_ctrl->where('tabla_origen', $table['origen'])->first();
+            $table_ctrl = $tables_ctrl->where('id', $key)->first();
+        
             if($table_ctrl){
                 $this->allTables[$key]['reg_o'] = $table_ctrl->num_registros_origen;
                 $this->allTables[$key]['reg_d'] = $table_ctrl->num_registros_destino;
                 $this->allTables[$key]['avance'] = $table_ctrl->avance;
+                
             }else{
                 if($key == 12){
                     $num_registros_origen = DB::connection('sucursal')->table('u_pignotarios_solidarios')->distinct()
@@ -139,13 +79,13 @@ class MigrationController extends Controller
                     ->get()->count();
                 }elseif($key == 13){
                     $num_registros_origen = DB::connection('sucursal')->table('u_pignotarios_solidarios')
-                       ->select('t_boleta.u_pignorante_id','u_pignotarios_solidarios.pignorante_solidario')
-                       ->join('t_boleta','t_boleta.id','=','u_pignotarios_solidarios.t_boleta_id')
-                       ->count();
+                       ->join('t_boleta','t_boleta.id','u_pignotarios_solidarios.t_boleta_id')
+                       ->count();                       
                 }else{
                     $num_registros_origen = DB::connection('sucursal')->table($table['origen'])->count();
                 }
                 Tables::create([
+                    'id' => $key,
                     'tabla_origen' => $table['origen'],
                     'num_registros_origen' => $num_registros_origen,
                     'tabla_destino' => $table['destino'],
@@ -157,8 +97,7 @@ class MigrationController extends Controller
             $this->allTables[$key]['avance'] = $table['reg_d'] > 0 ? number_format(($table['reg_d']/$table['reg_o'])*100, 1) : '0';
         }
     }
-    public function index()
-    {
+    public function index(){
         $databaseName = DB::connection('sucursal')->getDatabaseName();
 
         $allTables = $this->allTables;
@@ -293,13 +232,15 @@ class MigrationController extends Controller
             UPDATE t_reposicion SET pignotario = REPLACE(pignotario, 'ÃƒÂ‘', 'Ñ'); 
         */
 
-        /* t_boleta
+        /* t_boleta y   h_boleta
             
             >>> boleta con datos en null
                 DELETE FROM t_boleta WHERE t_boleta.id = 10474068               
-            >>> boleta con comision_avaluo numero muy largo
+            >>> boleta con comision_avaluo numero muy largo (10604876)
                 UPDATE t_boleta SET comision_avaluo = '1095.81' WHERE t_boleta.id = 10604876;       
+            >>> boleta con comision_avaluo numero muy largo (1771886, 1786792)
                 UPDATE h_t_boleta SET comision_avaluo = '1095.81' WHERE h_t_boleta.id_interno = 1771886; 
+                UPDATE h_t_boleta SET comision_avaluo = '1095.81' WHERE h_t_boleta.id_interno = 1786792; 
 
             >>> Borramos 6356 registros de t_boleta_pagos que no existe relacion de 654 boletas en la tabla t_boleta 
                 SELECT DISTINCT t_boleta_pagos.t_boleta_id 
@@ -406,6 +347,7 @@ class MigrationController extends Controller
             UPDATE `t_comprador` SET `curp` = null WHERE curp = ''; 
 
             id repetido = 3806(se conserva) <--- 3894(eliminamos)
+            DELETE FROM t_comprador WHERE `t_comprador`.`id` = 3894;
             UPDATE t_compra_vitrina SET t_comprador_id = 3806 WHERE t_comprador_id = 3894; 
          
         */
@@ -439,6 +381,11 @@ class MigrationController extends Controller
             DELETE FROM t_compra_vitrina WHERE `t_compra_vitrina`.`id` = 25380;
 
         */
+        /* OTRAS ANOMALIAS
+            >>> los pignorantes de t_boleta y t_empenios no coinciden (PORQUE???)
+            SELECT * FROM `t_empenios_boleta_relacion` INNER JOIN t_boleta ON t_boleta.id = t_empenios_boleta_relacion.t_boleta_id INNER JOIN t_empenios ON t_empenios.id = t_empenios_boleta_relacion.t_empenios_id WHERE t_boleta.u_pignorante_id <> t_empenios.u_pignorante_id; 
+         * 
+        */
         /*  TERMINADA LA MIGRACION
             bash-4.4# mysql -u root -p
             mysql> exit
@@ -460,8 +407,7 @@ class MigrationController extends Controller
             # desde el explorador de windows lo comprimimos 
         */
     }
-    public function update($migration)
-    {
+    public function update($migration){
 
         switch ($migration){
             case 1:  $this->migraUsers(1);              break;
@@ -496,8 +442,7 @@ class MigrationController extends Controller
         
         return to_route('migrations.index');
     }
-    private function migraUsers($table_selected)
-    {
+    private function migraUsers($table_selected){
         $status = '';
         $mesage = '';
 
@@ -584,8 +529,7 @@ class MigrationController extends Controller
 
         return redirect('migrations.index')->with($status, $mesage);
     }
-    private function migraPignorantes($table_selected)
-    {
+    private function migraPignorantes($table_selected){
         $oTable = $this->allTables[$table_selected]['origen'];
         $dTable = $this->allTables[$table_selected]['destino'];
 
@@ -662,7 +606,7 @@ class MigrationController extends Controller
             DB::rollback();
             $status = 'error'; 
             $mesage = $e->getMessage();
-            dd( $regsel,$mesage, $oRegistros);
+            dd( $regsel,$mesage);
         }
 
         $num_registros_origen = $this->allTables[$table_selected]['reg_o'];
@@ -675,8 +619,7 @@ class MigrationController extends Controller
 
         return redirect('migrations.index')->with($status, $mesage);
     }
-    private function migraTBoleta($table_selected)
-    {
+    private function migraTBoleta($table_selected){
         $oTable = $this->allTables[$table_selected]['origen'];
         $dTable = $this->allTables[$table_selected]['destino'];
 
@@ -730,7 +673,7 @@ class MigrationController extends Controller
             DB::rollback();
             $status = 'error'; 
             $mesage = $e->getMessage();
-            dd( $regsel,$mesage, $oRegistros);
+            dd( $regsel,$mesage);
         }
 
         $num_registros_origen = $this->allTables[$table_selected]['reg_o'];
@@ -744,8 +687,7 @@ class MigrationController extends Controller
         return redirect('migrations.index')->with($status, $mesage);
         
     }
-    private function migraTBoletaPagos($table_selected)
-    {
+    private function migraTBoletaPagos($table_selected){
         $oTable = $this->allTables[$table_selected]['origen'];
         $dTable = $this->allTables[$table_selected]['destino'];
 
@@ -799,8 +741,7 @@ class MigrationController extends Controller
 
         return redirect('migrations.index')->with($status, $mesage);
     }
-    private function migraTEmpenios($table_selected)
-    {
+    private function migraTEmpenios($table_selected){
         $oTable = $this->allTables[$table_selected]['origen'];
         $dTable = $this->allTables[$table_selected]['destino'];
 
@@ -844,7 +785,7 @@ class MigrationController extends Controller
                 DB::rollback();
                 $status = 'error'; 
                 $mesage = $e->getMessage();
-                dd( $regsel,$mesage, $oRegistros);
+                dd( $regsel,$mesage);
             }
             
 
@@ -858,8 +799,7 @@ class MigrationController extends Controller
 
         return redirect('migrations.index')->with($status, $mesage);
     }
-    private function migraTEmpBolRelation($table_selected)
-    {
+    private function migraTEmpBolRelation($table_selected){
         $oTable = $this->allTables[$table_selected]['origen'];
         $dTable = $this->allTables[$table_selected]['destino'];
 
@@ -896,7 +836,7 @@ class MigrationController extends Controller
             DB::rollback();
             $status = 'error'; 
             $mesage = $e->getMessage();
-            dd( $regsel,$mesage, $oRegistros);
+            dd( $regsel,$mesage);
         }
 
         $num_registros_origen = $this->allTables[$table_selected]['reg_o'];
@@ -909,8 +849,7 @@ class MigrationController extends Controller
 
         return redirect('migrations.index')->with($status, $mesage);
     }
-    private function migraTEmpMetal($table_selected)
-    {
+    private function migraTEmpMetal($table_selected){
         $oTable = $this->allTables[$table_selected]['origen'];
         $dTable = $this->allTables[$table_selected]['destino'];
 
@@ -950,7 +889,7 @@ class MigrationController extends Controller
             DB::rollback();
             $status = 'error'; 
             $mesage = $e->getMessage();
-            dd( $regsel,$mesage, $oRegistros);
+            dd( $regsel,$mesage);
         }
 
         $num_registros_origen = $this->allTables[$table_selected]['reg_o'];
@@ -963,8 +902,7 @@ class MigrationController extends Controller
 
         return redirect('migrations.index')->with($status, $mesage);
     }
-    private function migraTEmpProducts($table_selected)
-    {
+    private function migraTEmpProducts($table_selected){
         $oTable = $this->allTables[$table_selected]['origen'];
         $dTable = $this->allTables[$table_selected]['destino'];
 
@@ -1004,7 +942,7 @@ class MigrationController extends Controller
             DB::rollback();
             $status = 'error'; 
             $mesage = $e->getMessage();
-            dd( $regsel,$mesage, $oRegistros);
+            dd( $regsel,$mesage);
         }
 
         $num_registros_origen = $this->allTables[$table_selected]['reg_o'];
@@ -1017,8 +955,7 @@ class MigrationController extends Controller
 
         return redirect('migrations.index')->with($status, $mesage);
     }
-    private function migraTCtrlInterno($table_selected)
-    {
+    private function migraTCtrlInterno($table_selected){
         $oTable = $this->allTables[$table_selected]['origen'];
         $dTable = $this->allTables[$table_selected]['destino'];
 
@@ -1058,7 +995,7 @@ class MigrationController extends Controller
             DB::rollback();
             $status = 'error'; 
             $mesage = $e->getMessage();
-            dd( $regsel,$mesage, $oRegistros);
+            dd( $regsel,$mesage);
         }
 
         $num_registros_origen = $this->allTables[$table_selected]['reg_o'];
@@ -1071,8 +1008,7 @@ class MigrationController extends Controller
 
         return redirect('migrations.index')->with($status, $mesage);
     }
-    private function migraTCajas($table_selected)
-    {
+    private function migraTCajas($table_selected){
         $oTable = $this->allTables[$table_selected]['origen'];
         $dTable = $this->allTables[$table_selected]['destino'];
 
@@ -1122,7 +1058,7 @@ class MigrationController extends Controller
             DB::rollback();
             $status = 'error'; 
             $mesage = $e->getMessage();
-            dd( $regsel,$mesage, $oRegistros);
+            dd( $regsel,$mesage);
         }
 
         $num_registros_origen = $this->allTables[$table_selected]['reg_o'];
@@ -1135,8 +1071,7 @@ class MigrationController extends Controller
 
         return redirect('migrations.index')->with($status, $mesage);
     }
-    private function migraHBoleta($table_selected)
-    {
+    private function migraHBoleta($table_selected){
         $oTable = $this->allTables[$table_selected]['origen'];
         $dTable = $this->allTables[$table_selected]['destino'];
 
@@ -1191,7 +1126,7 @@ class MigrationController extends Controller
             DB::rollback();
             $status = 'error'; 
             $mesage = $e->getMessage();
-            dd( $regsel,$mesage, $oRegistros);
+            dd( $regsel,$mesage);
         }
 
         $num_registros_origen = $this->allTables[$table_selected]['reg_o'];
@@ -1204,8 +1139,7 @@ class MigrationController extends Controller
 
         return redirect('migrations.index')->with($status, $mesage);
     }
-    private function migraPig_Solidarios($table_selected)
-    {
+    private function migraPig_Solidarios($table_selected){
         
         $regsel = [];
         $status = 'success';
@@ -1330,13 +1264,17 @@ class MigrationController extends Controller
         }
 
         $num_registros_origen = $this->allTables[$table_selected]['reg_o'];
-        $num_registros_destino = DB::table($this->allTables[$table_selected]['destino'])->count();
+        if($table_selected == 12){
+            $num_registros_destino = DB::table($this->allTables[$table_selected]['destino'])->count();
+            
+        }else{
+            $num_registros_destino = DB::table('t_boletas')->whereNotNull('pignorante_solidario_id')->count();
+        }
         $avance = $num_registros_destino / $num_registros_origen * 100;
         Tables::where('id', $table_selected)->update([
             'num_registros_destino' => $num_registros_destino,
             'avance' => $avance
         ]);
-
         return redirect('migrations.index')->with($status, $mesage);
     }
     private function migraTSolDiasGracias($table_selected){
@@ -1380,7 +1318,7 @@ class MigrationController extends Controller
             DB::rollback();
             $status = 'error'; 
             $mesage = $e->getMessage();
-            dd( $regsel,$mesage, $oRegistros);
+            dd( $regsel,$mesage);
         }
 
         $num_registros_origen = $this->allTables[$table_selected]['reg_o'];
@@ -1437,7 +1375,7 @@ class MigrationController extends Controller
             DB::rollback();
             $status = 'error'; 
             $mesage = $e->getMessage();
-            dd( $regsel,$mesage, $oRegistros);
+            dd( $regsel,$mesage);
         }
 
         $num_registros_origen = $this->allTables[$table_selected]['reg_o'];
@@ -1491,7 +1429,7 @@ class MigrationController extends Controller
             DB::rollback();
             $status = 'error'; 
             $mesage = $e->getMessage();
-            dd( $regsel,$mesage, $oRegistros);
+            dd( $regsel,$mesage);
         }
 
         $num_registros_origen = $this->allTables[$table_selected]['reg_o'];
@@ -1544,7 +1482,7 @@ class MigrationController extends Controller
             DB::rollback();
             $status = 'error'; 
             $mesage = $e->getMessage();
-            dd($regsel,$mesage, $oRegistros);
+            dd($regsel,$mesage);
         }
 
         $num_registros_origen = $this->allTables[$table_selected]['reg_o'];
@@ -1605,7 +1543,7 @@ class MigrationController extends Controller
             DB::rollback();
             $status = 'error'; 
             $mesage = $e->getMessage();
-            dd($regsel,$mesage, $oRegistros);
+            dd($regsel,$mesage);
         }
 
         $num_registros_origen = $this->allTables[$table_selected]['reg_o'];
@@ -1658,7 +1596,7 @@ class MigrationController extends Controller
             DB::rollback();
             $status = 'error'; 
             $mesage = $e->getMessage();
-            dd($regsel,$mesage, $oRegistros);
+            dd($regsel,$mesage);
         }
 
         $num_registros_origen = $this->allTables[$table_selected]['reg_o'];
@@ -1709,7 +1647,7 @@ class MigrationController extends Controller
             DB::rollback();
             $status = 'error'; 
             $mesage = $e->getMessage();
-            dd($regsel,$mesage, $oRegistros);
+            dd($regsel,$mesage);
         }
 
         $num_registros_origen = $this->allTables[$table_selected]['reg_o'];
@@ -1773,7 +1711,7 @@ class MigrationController extends Controller
             DB::rollback();
             $status = 'error'; 
             $mesage = $e->getMessage();
-            dd($regsel,$mesage, $oRegistros);
+            dd($regsel,$mesage);
         }
  
 
@@ -1839,7 +1777,7 @@ class MigrationController extends Controller
             DB::rollback();
             $status = 'error'; 
             $mesage = $e->getMessage();
-            dd($regsel,$mesage, $oRegistros);
+            dd($regsel,$mesage);
         }
 
         $num_registros_origen = $this->allTables[$table_selected]['reg_o'];
@@ -1897,7 +1835,7 @@ class MigrationController extends Controller
             DB::rollback();
             $status = 'error'; 
             $mesage = $e->getMessage();
-            dd($regsel,$mesage, $oRegistros);
+            dd($regsel,$mesage);
         }
 
         $num_registros_origen = $this->allTables[$table_selected]['reg_o'];
@@ -1971,7 +1909,7 @@ class MigrationController extends Controller
             DB::rollback();
             $status = 'error'; 
             $mesage = $e->getMessage();
-            dd($regsel,$mesage, $oRegistros);
+            dd($regsel,$mesage);
         }
 
         $num_registros_origen = $this->allTables[$table_selected]['reg_o'];
@@ -2028,7 +1966,7 @@ class MigrationController extends Controller
             DB::rollback();
             $status = 'error'; 
             $mesage = $e->getMessage();
-            dd($regsel,$mesage, $oRegistros);
+            dd($regsel,$mesage);
         }
 
         $num_registros_origen = $this->allTables[$table_selected]['reg_o'];
@@ -2048,9 +1986,9 @@ class MigrationController extends Controller
         $lastRecord = DB::table($dTable)->orderBy('id', 'desc')->first();
 
         if(!$lastRecord){
-            $oRegistros = DB::connection('sucursal')->table($oTable)->orderBy('id','asc')->limit(100)->get();
+            $oRegistros = DB::connection('sucursal')->table($oTable)->orderBy('id','asc')->limit(1000)->get();
         }else{
-            $oRegistros = DB::connection('sucursal')->table($oTable)->where('id', '>', $lastRecord->id)->orderBy('id','asc')->limit(100)->get();
+            $oRegistros = DB::connection('sucursal')->table($oTable)->where('id', '>', $lastRecord->id)->orderBy('id','asc')->limit(1000)->get();
         }
         $regsel = [];
         $status = 'success';
@@ -2066,8 +2004,8 @@ class MigrationController extends Controller
                     'fecha_transaccion' => $registro->fecha_transaccion,
                     'fecha_cobro'       => $registro->fecha_cobro,
                     'fecha_registro'    => $registro->fecha_registro,
-                    'u_operador_id'     => $registro->u_operadores_id,
-                    'c_sucursal_id'     => $registro->sucursales_id, //// se debe de poner la sucursal pues es una tabla central
+                    'user_id'           => $registro->u_operadores_id,
+                    'adm_sede_id'       => $registro->c_sucursal_id, //// se debe de poner la sucursal pues es una tabla central
 
                 ];
                 DB::table($dTable)->insert($regsel);
@@ -2083,7 +2021,7 @@ class MigrationController extends Controller
             DB::rollback();
             $status = 'error'; 
             $mesage = $e->getMessage();
-            dd($regsel,$mesage, $oRegistros);
+            dd($regsel,$mesage);
         }
 
         $num_registros_origen = $this->allTables[$table_selected]['reg_o'];

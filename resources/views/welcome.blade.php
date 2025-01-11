@@ -45,30 +45,41 @@
                                             <tr class="text-xs">
                                                 <th class="p-1">ID</th>
                                                 <th class="p-1">Origen</th>
-                                                <th class="p-1">#reg</th>
                                                 <th class="p-1">DUMP</th>
                                                 <th class="p-1">Destino</th>
-                                                <th class="p-1">#reg</th>
+                                                <th class="p-1">Tamaño</th>
                                                 <th class="p-1">DOWNLOAD</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($allTables as $table)
+                                            @php
+                                                $peso_total = 0;
+                                            @endphp
+                                            @foreach ($allTables as $key => $table)
                                                 <tr class="text-xs">
-                                                    <td>{{ $table['id'] }}</td>
+                                                    <td>{{ $key }}</td>
                                                     <td>{{ $table['origen'] }}</td>
-                                                    <td>{{ $table['reg_o'] }}</td>
                                                     <td>
-                                                        @if( $table['reg_o'] === $table['reg_d'] )
+                                                        @if( $table['avance'] == 100 )
                                                             <a href="{{ route('backup.table', $table['destino']) }}" class="bg-green-500 p-1 rounded-md hover:bg-red-400">
-                                                                -⚙-
+                                                                🔋 100 % 🗜
                                                             </a>
                                                         @else    
-                                                            <span class="bg-red-300 me-2 p-1 py-0.5 rounded dark:bg-red-900">..🕜..</span>
+                                                            <span class="bg-red-300 me-2 p-1 py-0.5 rounded dark:bg-red-900">🕜 {{ $table['avance'] }} %</span>
                                                         @endif
                                                     </td>
                                                     <td>{{ $table['destino'] }}</td>
-                                                    <td>{{ $table['reg_d'] }}</td>
+                                                    <td>@php
+                                                            $file_size = round($table['file_size'] / 1024, 1);
+                                                            $KB_MB = 'KB';
+                                                            if($file_size > 1024){
+                                                                $file_size = round($file_size / 1024, 1);
+                                                                $KB_MB = ' MB';
+                                                            }
+                                                        @endphp
+                                                        
+                                                         {{ $file_size }} {{ $KB_MB }}
+                                                    </td>
                                                     <td>
                                                         @if( $table['descarga'] === 1 )
                                                             <a href="{{ route('backup.download',$table['destino']) }}" class="bg-blue-400 p-1 rounded-md hover:bg-red-400">👉💾</a>
@@ -77,14 +88,19 @@
                                                         @endif
                                                     </td>
                                                 </tr>
+                                                @php
+                                                    $peso_total += round($table['file_size'] / 1024 /1024, 1);
+                                                @endphp
                                             @endforeach
                                         </tbody>
                                         <tfoot>
-                                            <tr> <td colspan="5">Total de registros: </td> </tr>
-                                            <tr> <td colspan="5">- - - - - - - - - - </td> </tr>
+                                            <tr> 
+                                                <td colspan="4">Tamaño Total de respaldos: </td> 
+                                                <td colspan="2"> {{ $peso_total }} MB</td> 
+                                            </tr>
                                         </tfoot>
                                     </table>
-                                    <div class="absolute -bottom-16 -left-16 h-36 w-[calc(100%+8rem)] bg-gradient-to-b from-transparent via-white to-red-300 dark:via-zinc-900 dark:to-zinc-900"></div>
+                                    {{-- <div class="absolute -bottom-16 -left-16 h-36 w-[calc(100%+8rem)] bg-gradient-to-b from-transparent via-white to-red-300 dark:via-zinc-900 dark:to-zinc-900"></div> --}}
                                 </div>
                             </div>
 
@@ -94,7 +110,7 @@
                                 </div>
 
                                 <div class="pt-3 sm:pt-5">
-                                    <h2 class="text-xl font-semibold text-black dark:text-white">RESPALDOS</h2>
+                                    <h2 class="text-xl font-semibold text-black dark:text-white">BACKUPS</h2>
 
                                     <div style="color: blue; padding: 10px;" > base de datos origen: {{ $databaseName }} </div>
                                     <div style="color: green; padding: 10px;" > base de datos destino: siemp </div>
@@ -108,17 +124,23 @@
                                     🛑
                                 </div>
 
-                                @if ($message = Session::get('success'))
-                                    <div class="alert alert-success text-center">
+                                
+                                @if ($message = Session::get('success'))            {{-- forma 1 de accesder a la session --}}
+                                <div class="alert alert-success text-center">
+                                    <div style="color: green; border: 1px solid green; padding: 10px;">
                                         <h2>{{ $message }}</h2>
+
                                     </div>
-                                @elseif ($message = Session::get('error'))
+                                </div>                                
+                                @elseif (session('error'))              {{-- forma 2 de acceder a la session --}}
                                     <div class="alert alert-warning text-center">
-                                        <h2>{{ $message }}</h2>
+                                        <div style="color: red; border: 1px solid red; padding: 10px;">
+                                            <h2>{{ session('error') }}</h2>                                            
+                                        </div>
                                     </div>
                                 @else
                                     <div class="alert alert-danger text-center">
-                                    <h2 class="text-xl font-semibold text-black dark:text-white">STATUS</h2>
+                                        <h2 class="text-xl font-semibold text-black dark:text-white">STATUS</h2>
                                     </div>
                                 @endif
                                 
@@ -130,27 +152,15 @@
                                 </div>
 
                                 <div class="pt-3 sm:pt-5">
-                                    <h2 class="text-xl font-semibold text-black dark:text-white">RESUMEN</h2>
-
-                                    @if(session('success'))
-                                        <div style="color: green; border: 1px solid green; padding: 10px;">
-                                            {{ session('success') }}
-                                        </div>
-                                    @endif
-                                    <p>  -  </p>
-                                    @if(session('error'))
-                                        <div style="color: red; border: 1px solid red; padding: 10px;">
-                                            {{ session('error') }}
-                                        </div>
-                                    @endif
-
-                                    <p class="mt-4 text-sm/relaxed">-                                    </p>
-                                    <p class="mt-4 text-sm/relaxed">-                                    </p>
-                                    <p class="mt-4 text-sm/relaxed">-                                    </p>
-                                    <p class="mt-4 text-sm/relaxed">-                                    </p>
-                                    <p class="mt-4 text-sm/relaxed">-                                    </p>
-                                    <p class="mt-4 text-sm/relaxed">-                                    </p>
-                                    <p class="mt-4 text-sm/relaxed">-                                    </p>
+                                    <h2 class="text-xl font-semibold text-black dark:text-white">DOWNLOADS</h2>
+                                    <a href="#" class="mt-4 text-sm/relaxed text-blue-700 underline">Respaldo grupo 1 </a>
+                                    <p class="mb-4 text-sm/relaxed"> - users, pignorantes, pignorante_solidarios, t_compradores, </p>
+                                    <a href="#" class="mt-4 text-sm/relaxed text-blue-700 underline">Respaldo grupo 2 </a>
+                                    <p class="mb-4 text-sm/relaxed"> - 1:t_boletas, 2:t_empenios, 3:t_empenio_metals, 4:t_empenio_products, 5:t_emp_bol_relations, 6:t_reposicions, 7:t_concentrados </p>
+                                    <a href="#" class="mt-4 text-sm/relaxed text-blue-700 underline">Respaldo grupo 3                                    </a>
+                                    <p class="mb-4 text-sm/relaxed"> - t_sol_dias_gracias, t_sol_almonedas, t_sol_subastas, t_subastas, t_subasta_fechas, t_retasas, t_vitrina_ventas, t_vitrina_compras, t_demasias_pagadas, t_suspencion_dias  </p>
+                                    <p class="mb-4 text-sm/relaxed text-blue-700 underline">Archivos unicos</p>
+                                    <p class="mb-4 text-sm/relaxed"> - t_boleta_pagos, h_boletas, </p>
                                 </div>
                             </div>
                         </div>
