@@ -69,8 +69,66 @@ class WelcomeController extends Controller
     public function index()
     {
         $databaseName = DB::connection('sucursal')->getDatabaseName();
+        
+        $grupo1_file = storage_path('app/public/bkp_grupo1.zip');
+        $grupo2_file = storage_path('app/public/bkp_grupo2.zip');
+        $grupo3_file = storage_path('app/public/bkp_grupo3.zip');
+
+        $backup1 = ($this->allTables[1]['avance'] == 100 && $this->allTables[2]['avance'] == 100 && 
+                    $this->allTables[12]['avance'] == 100 && $this->allTables[19]['avance'] == 100) ? 1 : 0;
+        if (file_exists($grupo1_file)) {
+            $file_size = round(filesize($grupo1_file)/1024,1);
+            if($file_size > 1024)
+                $file_size = round($file_size/1024,1).' MB';
+            else
+                $file_size = $file_size.' KB';
+            $grupo1 = ['file' => 'bkp_grupo1.zip', 'file_size' => $file_size, 'backup' => $backup1, 'descarga' => 1];
+        }else{
+            $grupo1 = ['file' => '', 'file_size' => 0, 'backup' => $backup1, 'descarga' => 0];
+        }
+
+
+        $backup2 = ($this->allTables[3]['avance'] == 100 && $this->allTables[5]['avance'] == 100 && 
+                    $this->allTables[7]['avance'] == 100 && $this->allTables[8]['avance'] == 100 &&
+                    $this->allTables[6]['avance'] == 100 && $this->allTables[21]['avance'] == 100 && 
+                    $this->allTables[22]['avance'] == 100) ? 1 : 0;
+        if (file_exists($grupo2_file)) {
+            $file_size = round(filesize($grupo2_file)/1024,1);
+            if($file_size > 1024)
+                $file_size = round($file_size/1024,1).' MB';
+            else
+                $file_size = $file_size.' KB';
+            $grupo2 = ['file' => 'bkp_grupo2.zip', 'file_size' => $file_size, 'backup' => $backup2, 'descarga' => 1];
+        }else{
+            $grupo2 = ['file' => '', 'file_size' => 0, 'backup' => $backup2, 'descarga' => 0];
+        }
+
+
+        $backup3 = ($this->allTables[4]['avance'] == 100 && $this->allTables[10]['avance'] == 100 &&
+                    $this->allTables[9]['avance'] == 100 && $this->allTables[11]['avance'] == 100 &&
+                    $this->allTables[14]['avance'] == 100 && $this->allTables[15]['avance'] == 100 &&
+                    $this->allTables[16]['avance'] == 100 && $this->allTables[17]['avance'] == 100 &&
+                    $this->allTables[18]['avance'] == 100 && $this->allTables[20]['avance'] == 100 &&
+                    $this->allTables[23]['avance'] == 100 && $this->allTables[24]['avance'] == 100 &&
+                    $this->allTables[25]['avance'] == 100 && $this->allTables[26]['avance'] == 100) ? 1 : 0;
+        if (file_exists($grupo3_file)) {
+            $file_size = round(filesize($grupo3_file)/1024,1);
+            if($file_size > 1024)
+                $file_size = round($file_size/1024,1).' MB';
+            else
+                $file_size = $file_size.' KB';
+            $grupo3 = ['file' => 'bkp_grupo3.zip', 'file_size' => $file_size, 'backup' => $backup3, 'descarga' => 1];
+        }else{
+            $grupo3 = ['file' => '', 'file_size' => 0, 'backup' => $backup3, 'descarga' => 0];
+        }
+
+        $grupos = [
+            1 => $grupo1,
+            2 => $grupo2,
+            3 => $grupo3,
+        ];
 
         $allTables = $this->allTables;
-        return view('welcome', compact('databaseName', 'allTables'));
+        return view('welcome', compact('databaseName', 'allTables', 'grupos'));
     }
 }

@@ -299,8 +299,8 @@ class ProductosSeeder extends Seeder
             [50, 'DS ELITE', 187, NULL, NULL],
             [51, 'DSI', 187, NULL, NULL],
             [52, 'DS 3D', 187, NULL, NULL],
-            // [53, 'TEATRO EN CASA', 193, NULL, NULL],             //CAT_PRODUCTO: NO EXISTE EL ID 191
-            // [54, 'DVD', 193, NULL, NULL],                        //CAT_PRODUCTO: NO EXISTE EL ID 191
+            //[53, 'TEATRO EN CASA', 191, NULL, NULL],             //CAT_PRODUCTO: NO EXISTE EL ID 191
+            //[54, 'DVD', 191, NULL, NULL],                        //CAT_PRODUCTO: NO EXISTE EL ID 191
             [55, 'BLUERAY', 194, NULL, NULL],
             [56, 'CAÃ‘ON', 195, NULL, NULL],
             [57, 'DVD PORTATIL', 196, NULL, NULL],

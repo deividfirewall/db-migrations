@@ -26,6 +26,7 @@ return new class extends Migration
             $table->decimal('comisionVenta',8,2)->default(0.0);
             $table->decimal('demasia',8,2)->default(0.0);
             $table->integer('numReg')->default(0);
+            $table->foreignId('adm_sede_id');
             $table->timestamps();
         });
     }

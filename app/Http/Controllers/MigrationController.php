@@ -94,7 +94,7 @@ class MigrationController extends Controller
                 ]);
             }
 
-            $this->allTables[$key]['avance'] = $table['reg_d'] > 0 ? number_format(($table['reg_d']/$table['reg_o'])*100, 1) : '0';
+            //$this->allTables[$key]['avance'] = $table['reg_d'] > 0 ? number_format(($table['reg_d']/$table['reg_o'])*100, 1) : '0';
         }
     }
     public function index(){
@@ -138,20 +138,26 @@ class MigrationController extends Controller
         */
     
         /* u_pignotarios: Antes de migrar, se debera de ejecutar lo siguiente en la base de datos origen
+            SELECT * FROM `u_pignotarios` WHERE nombre LIKE "%ƒ%";          SON MAS DE 404 REGISTROS
             UPDATE u_pignotarios SET nombre = TRIM(nombre);
             UPDATE u_pignotarios SET nombre = REPLACE(nombre, '  ', ' ');
-            UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'ÃƒÂƒÃ‚', 'ƒ'); 
-            UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'ÂƒÃƒÂ‚', 'ƒ'); 
-            UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'Â‘', 'ƒ');
-            UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'Ã‘', 'ƒ'); 
+            UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'ÃƒÂƒÃ‚', 'ª'); 
+            UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'ÂƒÃƒÂ‚', 'ª'); 
+            UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'Ãƒ', 'ª'); 
+            UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'Â‘', 'ª');
+            UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'Ã‘', 'ª');
+            UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'Ã‚', 'ª'); 
 
-            UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'ƒƒ', 'ƒ'); 
-            UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'ƒ', 'Ñ'); 
+            UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'ªª', 'º'); 
+            UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'º', 'Ñ'); 
             UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'Ñ‘', 'Ñ'); 
 
 
-            UPDATE u_pignotarios SET direccion = REPLACE(direccion, 'Â‘', 'Ñ'); 
-            UPDATE u_pignotarios SET direccion = REPLACE(direccion, 'ÃƒÂ‘', 'Ñ'); 
+            SELECT * FROM `u_pignotarios` WHERE direccion LIKE "%ƒ%"; 
+            UPDATE u_pignotarios SET direccion = REPLACE(direccion, 'ÃƒÂ‘', 'ª'); ÂƒÃ‚
+            UPDATE u_pignotarios SET direccion = REPLACE(direccion, 'Â‘', 'ª'); 
+            UPDATE u_pignotarios SET direccion = REPLACE(direccion, 'Ã‘', 'ª'); 
+
 
             
             VSCRES51120420M500  ::: REPETIDO (13735 --> 21291)   
@@ -185,51 +191,57 @@ class MigrationController extends Controller
 
         */
         /* u_pignotarios_solidarios
-            >>> convertimos todo a mayusculas, quitamos espacions dobles y eliminamos espacion en blanco al inicio y al final de los nombres
-            🔃  UPDATE u_pignotarios_solidarios SET pignorante_solidario = UPPER(pignorante_solidario); 
-            🔃  UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, '  ', ' '); 
-            🔃  UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'NADIE', ''); 
-            🔃  UPDATE u_pignotarios_solidarios SET pignorante_solidario = TRIM(pignorante_solidario); 
+            🔃 actualizamos todo a mayusculas, quitamos espacions dobles y eliminamos espacion en blanco al inicio y al final de los nombres
+              UPDATE u_pignotarios_solidarios SET pignorante_solidario = UPPER(pignorante_solidario); 
+              UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, '  ', ' '); 
+              UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'NADIE', ''); 
+              UPDATE u_pignotarios_solidarios SET pignorante_solidario = TRIM(pignorante_solidario); 
 
             >>> Revisamos los registros de pignorante_solidarios sean nombres invalidos, para ser eliminados
-            SELECT pignorante_solidario, COUNT(t_boleta_id) FROM u_pignotarios_solidarios WHERE LENGTH(pignorante_solidario) < 9 GROUP BY pignorante_solidario; 
-            ❌  DELETE FROM u_pignotarios_solidarios WHERE LENGTH(pignorante_solidario) < 9 
-            SELECT DISTINCT pignorante_solidario FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '% DEJA%'; 
-            ❌  DELETE FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '% DEJA%' AND LENGTH(pignorante_solidario) < 18
-            SELECT DISTINCT pignorante_solidario FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '% MIS%' AND LENGTH(pignorante_solidario) < 16; 
-            ❌  DELETE FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '% MIS%' AND LENGTH(pignorante_solidario) < 16;
-            SELECT DISTINCT pignorante_solidario FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%EL M%' AND LENGTH(pignorante_solidario) < 12 
-            ❌  DELETE FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%EL M%' AND LENGTH(pignorante_solidario) < 12;  
-            SELECT DISTINCT pignorante_solidario FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%ELLA%' AND LENGTH(pignorante_solidario) < 15;
-            ❌  DELETE FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%ELLA%' AND LENGTH(pignorante_solidario) < 15;   
-            SELECT DISTINCT pignorante_solidario FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '% MIXSMO %'; 
-            ❌  DELETE FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%MIXSMO%';  
-            SELECT DISTINCT pignorante_solidario FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '% MISMO%'; 
-            ❌  DELETE FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '% MISMO%'; 
-            SELECT DISTINCT pignorante_solidario FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '% SOLA %' AND LENGTH(pignorante_solidario) < 12; 
-            ❌  DELETE FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%SOLA%' AND LENGTH(pignorante_solidario) < 12; 
+            ❌  SELECT pignorante_solidario, COUNT(t_boleta_id) FROM u_pignotarios_solidarios WHERE LENGTH(pignorante_solidario) < 9 GROUP BY pignorante_solidario; 
+            DELETE FROM u_pignotarios_solidarios WHERE LENGTH(pignorante_solidario) < 9 
+            ❌  SELECT DISTINCT pignorante_solidario FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '% DEJA%'; 
+            DELETE FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '% DEJA%' AND LENGTH(pignorante_solidario) < 18
+            ❌  SELECT DISTINCT pignorante_solidario FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '% MIS%' AND LENGTH(pignorante_solidario) < 16; 
+            DELETE FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '% MIS%' AND LENGTH(pignorante_solidario) < 16;
+            ❌  SELECT DISTINCT pignorante_solidario FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%EL M%' AND LENGTH(pignorante_solidario) < 12 
+            DELETE FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%EL M%' AND LENGTH(pignorante_solidario) < 12;  
+            ❌  SELECT DISTINCT pignorante_solidario FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%ELLA%' AND LENGTH(pignorante_solidario) < 15;
+            DELETE FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%ELLA%' AND LENGTH(pignorante_solidario) < 15;   
+            ❌  SELECT DISTINCT pignorante_solidario FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '% MIXSMO %'; 
+            DELETE FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%MIXSMO%';  
+            ❌  SELECT DISTINCT pignorante_solidario FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '% MISMO%'; 
+            DELETE FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '% MISMO%'; 
+            ❌  SELECT DISTINCT pignorante_solidario FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '% SOLA %' AND LENGTH(pignorante_solidario) < 12; 
+            DELETE FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%SOLA%' AND LENGTH(pignorante_solidario) < 12; 
             
 
-            SELECT * FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%Ã%';
-            🔃  UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'Ã', 'ƒ');
-                UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'Â', 'ƒ');
-                UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, '±', 'ƒ');
-                UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, '†', 'ƒ');
-                UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'Æ', 'ƒ');
-                UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'ƒ‚', 'ƒ');
-                UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'ƒ‘', 'ƒ');
-                UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'ƒ’', 'ƒ');
-                UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'ƒƒ', 'ƒ'); 
-            SELECT * FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%ƒ%';
-            🔃  UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'ƒ', 'Ñ'); 
+            SELECT * FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%Ã%';           
+             ÃƒÂƒªƒÂ
+            ‚ÂƒÃƒÂ‚Ã‚ÂƒÃƒÂƒÃ‘
+            ‚Â‚ÃƒÂ‚Ã‚ÂƒÃƒÂƒÃ‘
+            ‚ÂƒÃƒÂ‚Ã‚Â‚ÃƒÂƒÃ‘
+            ‚Â‚ÃƒÂ‚Ã‚ÂƒÃƒÂƒÃ‘
+            ‚ÂƒÃƒÂ‚Ã‚ÂƒÃƒÂƒÃ‘
+            ‚Â‚ÃƒÂ‚Ã‚Â‚ÃƒÂƒÃ‘
+            ‚ÂƒÃƒÂ‚Ã‚Â‚ÃƒÂƒÃ‘
+            ‚Â‚ÃƒÂ‚Ã‚Â‘
+            🔃  UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'Ã‘ƒÂ‘', 'ª');
+                UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'Â', 'ª');
+                UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, '±', 'ª');
+                UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, '†', 'ª');
+                UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'Æ', 'ª');
+                UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'ª‚', 'ª');
+                UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'ª‘', 'ª');
+                UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'ª’', 'ª');
+                UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'ªª', 'º'); 
+            SELECT * FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%º%';
+            🔃  UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'º', 'Ñ'); 
             
         */
         
         /* t_reposicion
-            ~~En tabla t_reposicion el pignorante no esta referenciado, SE ALMACENA EL nombre completo
-            ~~ Habria que referenciarlo mediante el idBoleta
-            SELECT * FROM t_reposicion WHERE pignotario LIKE '%ƒ%'; 
-            UPDATE t_reposicion SET pignotario = REPLACE(pignotario, 'ÃƒÂ‘', 'Ñ'); 
+            ~~En tabla t_reposicion el pignorante ya esta referenciado, SE ALMACENA EL ID
         */
 
         /* t_boleta y   h_boleta
@@ -257,6 +269,24 @@ class MigrationController extends Controller
         */
 
         /* t_empenios_boleta_relacion, t_empenios, t_empenios_metal, t_empenios_productos
+
+
+            >>> t_empenios :: se corrigue un error donde 4 registros de t_empenios no tiene un pignorante_id
+            🔃  UPDATE t_empenios SET u_pignorante_id = 1933 WHERE u_pignorante_id = 27441 AND id IN (144879, 152894,152893,193264); 
+            >>> Se corrigue un error donde el contenido de un productos no se guardo
+            🔃  UPDATE t_empenios_productos SET contenido = '1' WHERE t_empenios_productos.id = 236634;
+
+
+            >>> con esta consulta se encuentra el empeño repetido
+            SELECT t_empenios.id, COUNT(t_empenios_boleta_relacion.t_empenios_id ) as connteo FROM t_empenios_boleta_relacion LEFT JOIN t_empenios ON t_empenios_boleta_relacion.t_empenios_id = t_empenios.id GROUP BY t_empenios.id ORDER by COUNT(t_empenios_boleta_relacion.t_empenios_id ) DESC; 
+            >>> se encontro que el t_empenio_id:236634 se repite en las boletas: (10571943, 10575026), 
+            >>> pero a la boleta 10575026 le corresponde el id: 236635 de acuerdo a la numeracion de empeño-boleta-relacion 
+            >>> Sin embargo la boleta con el numero #10571943 no coincide los montos con el empeño 236634, por lo que se tiene que investigar a fondo que empeño es el correcto
+            SELECT * FROM t_empenios_boleta_relacion LEFT JOIN t_empenios ON t_empenios_boleta_relacion.t_empenios_id = t_empenios.id WHERE t_empenios.id = 236634; 
+            🔃  Con esta actualizacion se evita que se elimine por no tener realacion, pero los empeños siguen invertiddos
+            UPDATE `t_empenios_boleta_relacion` SET `t_empenios_id` = '236635' WHERE `t_empenios_boleta_relacion`.`id` = 236634; 
+            UPDATE `t_empenios_boleta_relacion` SET `t_empenios_id` = '236634' WHERE `t_empenios_boleta_relacion`.`id` = 236635; 
+        
             >>> t_empenios_boleta_relacion :: verificamos las t_boleta_id que no existen en la tabla t_boletas ~824 boletas
             SELECT DISTINCT t_empenios_boleta_relacion.t_boleta_id, t_empenios.id 
             FROM t_empenios_boleta_relacion 
@@ -295,16 +325,6 @@ class MigrationController extends Controller
                 LEFT JOIN t_empenios_boleta_relacion ON t_empenios_boleta_relacion.t_empenios_id = t_empenios_productos.t_empenios_id
                 WHERE t_empenios_boleta_relacion.id IS NULL;
 
-            >>> t_empenios :: se corrigue un error donde 4 registros de t_empenios no tiene un pignorante_id
-            🔃  UPDATE t_empenios SET u_pignorante_id = 1933 WHERE u_pignorante_id = 27441 AND id IN (144879, 152894,152893,193264); 
-            >>> Se corrigue un error donde el contenido de un productos no se guardo
-            🔃  UPDATE t_empenios_productos SET contenido = '1' WHERE t_empenios_productos.id = 236634;
-
-            >>> con esta consulta se encuentra el empeño repetido
-            SELECT t_empenios.id, COUNT(t_empenios_boleta_relacion.t_empenios_id ) as connteo FROM t_empenios_boleta_relacion LEFT JOIN t_empenios ON t_empenios_boleta_relacion.t_empenios_id = t_empenios.id GROUP BY t_empenios.id ORDER by COUNT(t_empenios_boleta_relacion.t_empenios_id ) DESC; 
-            >>> se encontro que el id:236634 se repite 2 veces, cuando a uno de ellos le corresponde el id: 236635  (boletas: 10571943, 10575026)
-            SELECT * FROM t_empenios_boleta_relacion LEFT JOIN t_empenios ON t_empenios_boleta_relacion.t_empenios_id = t_empenios.id WHERE t_empenios.id = 236634; 
-
         */
 
         /* t_control_interno
@@ -329,10 +349,10 @@ class MigrationController extends Controller
 
         /* t_subasta y c_fecha_subasta
         
-            DELETE FROM t_subasta WHERE `t_subasta`.`id` = 13739
+            DELETE FROM t_subasta WHERE `t_subasta`.`id` = 13739;
 
             //Se elimina el registro 407 porque tiene una fecha erronea
-            DELETE FROM c_fecha_subasta WHERE id = 407
+            DELETE FROM c_fecha_subasta WHERE id = 407;
             // el comprador del registro 6 no tiene nombre
             UPDATE `t_comprador` SET `nombre` = 'xxxx' WHERE `t_comprador`.`id` = 6;
         */
@@ -381,7 +401,11 @@ class MigrationController extends Controller
             DELETE FROM t_compra_vitrina WHERE `t_compra_vitrina`.`id` = 25380;
 
         */
-        /* OTRAS ANOMALIAS
+        /* t_suspencion_dias
+            >>> t_suspencion_dias :: se corrigue un error donde el id del operador no existe (862) y se cambia por 126
+            UPDATE `t_suspencion_dias` SET `u_operadores_id` = 126 WHERE u_operadores_id = 862; 
+         */
+        /* OTRAS ANOMALIAS 
             >>> los pignorantes de t_boleta y t_empenios no coinciden (PORQUE???)
             SELECT * FROM `t_empenios_boleta_relacion` INNER JOIN t_boleta ON t_boleta.id = t_empenios_boleta_relacion.t_boleta_id INNER JOIN t_empenios ON t_empenios.id = t_empenios_boleta_relacion.t_empenios_id WHERE t_boleta.u_pignorante_id <> t_empenios.u_pignorante_id; 
          * 
@@ -489,15 +513,15 @@ class MigrationController extends Controller
                         'name'              => $registro->nombre,
                         'email'             => $registro->rfc.'@'.$registro->usuario,
                         'username'          => $registro->usuario,
-                        'genero'            => $registro->genero,
+                        'genero'            => $registro->genero == 2 ? 0 : 1,
                         // 'isSuper'           => $registro->isSuper,
                         // 'isAdmin'           => $registro->isAdmin,
                         'sede_id'           => $registro->c_sucursal_id,
                         'tenant_id'         => $databaseName,
                         // 'tema'              => $registro->tema,
-                        'fecha_baja'        => $registro->fecha_fin_periodo,
+                        'fecha_baja'        => $registro->fecha_fin_periodo == '2100-01-01' ? null : $registro->fecha_fin_periodo,
                         'password'          => $registro->password,
-                        // 'email_verified_at' => $registro->email_verified_at,
+                        'created_at'        => $registro->fecha_ini_periodo,
                     ];
                     DB::table($dTable)->insert($regsel);
                 }
@@ -1529,6 +1553,7 @@ class MigrationController extends Controller
                     'comisionVenta'         => $registro->comisionVenta,
                     'demasia'               => $registro->demasia,
                     'numReg'                => $registro->numReg,
+                    'adm_sede_id'           => $registro->c_sucursal_id,
                 ];
                 DB::table($dTable)->insert($regsel);
                 $counter++;

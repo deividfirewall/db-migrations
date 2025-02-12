@@ -18,10 +18,23 @@ class BackupTableCommand extends Command
     public function handle()
     {
         $table = $this->argument('table');
-        //$timestamp = now()->format('Y_m_d_H_i');
-        $sqlFileName = "bkp_{$table}.sql"; //"{$table}_bkp_{$timestamp}.sql";
-        $zipFileName = "bkp_{$table}.zip"; //"{$table}_bkp_{$timestamp}.zip";
-        
+
+        if (strlen($table) > 25) {
+            if (strpos($table, 'pignorantes') !== false) {
+                $sqlFileName = "bkp_grupo1.sql"; 
+                $zipFileName = "bkp_grupo1.zip";
+            }else if (strpos($table, 't_boletas') !== false) {
+                $sqlFileName = "bkp_grupo2.sql";
+                $zipFileName = "bkp_grupo2.zip";                
+            }else if (strpos($table, 't_subastas') !== false) {
+                $sqlFileName = "bkp_grupo3.sql";
+                $zipFileName = "bkp_grupo3.zip";
+            }    
+        }else{
+            //$timestamp = now()->format('Y_m_d_H_i');
+            $sqlFileName = "bkp_{$table}.sql"; //"{$table}_bkp_{$timestamp}.sql";
+            $zipFileName = "bkp_{$table}.zip"; //"{$table}_bkp_{$timestamp}.zip";
+        }
         // Paths
         $sqlFilePath = storage_path("app/public/{$sqlFileName}");
         $zipFilePath = storage_path("app/public/{$zipFileName}");
@@ -29,10 +42,12 @@ class BackupTableCommand extends Command
         // Prepare the `mysqldump` command
         $dbHost = env('DB_HOST', 'mysql');
         $dbPort = env('DB_PORT', '3306');
-        $dbName = env('DB_DATABASE', 'siemp');
         $dbUser = env('DB_USERNAME', 'root');
+        $dbName = env('DB_DATABASE', 'siemp');
         
         $command = "mysqldump -h {$dbHost} -P {$dbPort} -u {$dbUser} {$dbName} {$table} > {$sqlFilePath}";
+
+        $this->info("Respaldo realizado: {$command}");
 
         // Execute the command
         exec($command, $output, $returnVar);

@@ -82,6 +82,23 @@ class CatalogsController extends Controller
             'Catalogs',
             'databaseName'
         ));
+
+
+        /*
+            SELECT * FROM `c_municipios` WHERE nombre LIKE "%Ã©%";  equivale a la é
+            
+            
+            UPDATE `c_municipios` SET nombre = REPLACE(nombre, 'Ã¡', 'á');  equivale a la á
+            UPDATE `c_municipios` SET nombre = REPLACE(nombre, 'Ã©', 'é');  equivale a la é
+            UPDATE `c_municipios` SET nombre = REPLACE(nombre, 'Ã³', 'ó');  equivale a la ó
+            UPDATE `c_municipios` SET nombre = REPLACE(nombre, 'Ãº', 'ú');  equivale a la ú
+            UPDATE `c_municipios` SET nombre = REPLACE(nombre, 'Ã±', 'ñ');  equivale a la ñ
+            UPDATE `c_municipios` SET nombre = REPLACE(nombre, 'Ã', 'í');  equivale a la í
+
+            UPDATE `cat_loc_municipios` SET `sigla` = 'ACÑ' WHERE `cat_loc_municipios`.`id` = 34; 
+
+         */
+
     }
 
     public function update($catalogoId)
@@ -677,7 +694,238 @@ class CatalogsController extends Controller
             ]);
         }
     }
-    private function compareTiposPrestamo($cat_id){}
-    private function compareTiposPrestamoSucursal($cat_id){}
+    private function compareTiposPrestamo($cat_id){
+        $count_diferences = 0;
+
+        $cat_SUCURSAL = DB::connection('sucursal')->table($this->allCatalogs[$cat_id]['origen'])->get();
+        $num_reg_SUCURSAL = count($cat_SUCURSAL);
+
+        $cat_SIEMP = DB::table($this->allCatalogs[$cat_id]['destino'])->get();
+        $num_reg_SIEMP = count($cat_SIEMP);
+
+        $reg_mayor = ($num_reg_SUCURSAL > $num_reg_SIEMP) ? $num_reg_SUCURSAL : $num_reg_SIEMP;
+
+        Catalogs::where('catalog_id', 19)->delete();
+
+        foreach($cat_SUCURSAL as $registroSUC)
+        {
+            $registroSIEMP = $cat_SIEMP->where('id', $registroSUC->clave)->first();
+
+            if($registroSIEMP == null)
+            {
+                Catalogs::create([
+                    'catalog' => 'cat_prestamo_tipos',
+                    'catalog_id' => '19',
+                    'diference' => 'Registro '.$registroSUC->clave.' no encontrado en BASE SIEMP',
+                    'register_sucur_id' => $registroSUC->clave,
+                    'register_siemp_id' => null,
+                    'fixed' => 'id'
+                ]);
+                $count_diferences++;
+            }else{
+                if($registroSUC->ref != $registroSIEMP->ref)
+                {
+                    Catalogs::create([
+                        'catalog' => 'cat_prestamo_tipos',
+                        'catalog_id' => '19',
+                        'diference' => $registroSUC->ref.' ≠ '.$registroSIEMP->ref,
+                        'register_sucur_id' => $registroSUC->clave,
+                        'register_siemp_id' => $registroSIEMP->id,
+                        'fixed' => 'ref'
+                    ]);
+                    $count_diferences++;
+                }
+                if($registroSUC->nombre != $registroSIEMP->nombre)
+                {
+                    Catalogs::create([
+                        'catalog' => 'cat_prestamo_tipos',
+                        'catalog_id' => '19',
+                        'diference' => $registroSUC->nombre.' ≠ '.$registroSIEMP->nombre,
+                        'register_sucur_id' => $registroSUC->clave,
+                        'register_siemp_id' => $registroSIEMP->id,
+                        'fixed' => 'nombre'
+                    ]);
+                    $count_diferences++;
+                }
+                if($registroSUC->c_tipo_producto != $registroSIEMP->tipo_empenio)
+                {
+                    Catalogs::create([
+                        'catalog' => 'cat_prestamo_tipos',
+                        'catalog_id' => '19',
+                        'diference' => $registroSUC->c_tipo_producto.' ≠ '.$registroSIEMP->tipo_empenio,
+                        'register_sucur_id' => $registroSUC->clave,
+                        'register_siemp_id' => $registroSIEMP->id,
+                        'fixed' => 'c_tipo_producto'
+                    ]);
+                    $count_diferences++;
+                }
+                if($registroSUC->interes_semanal != $registroSIEMP->interes_semanal)
+                {
+                    Catalogs::create([
+                        'catalog' => 'cat_prestamo_tipos',
+                        'catalog_id' => '19',
+                        'diference' => $registroSUC->interes_semanal.' ≠ '.$registroSIEMP->interes_semanal,
+                        'register_sucur_id' => $registroSUC->clave,
+                        'register_siemp_id' => $registroSIEMP->id,
+                        'fixed' => 'interes_semanal'
+                    ]);
+                    $count_diferences++;
+                }
+                if($registroSUC->plazos != $registroSIEMP->plazos)
+                {
+                    Catalogs::create([
+                        'catalog' => 'cat_prestamo_tipos',
+                        'catalog_id' => '19',
+                        'diference' => $registroSUC->plazos.' ≠ '.$registroSIEMP->plazos,
+                        'register_sucur_id' => $registroSUC->clave,
+                        'register_siemp_id' => $registroSIEMP->id,
+                        'fixed' => 'plazos'
+                    ]);
+                    $count_diferences++;
+                }
+                if($registroSUC->dias_plazos != $registroSIEMP->dias_plazos)
+                {
+                    Catalogs::create([
+                        'catalog' => 'cat_prestamo_tipos',
+                        'catalog_id' => '19',
+                        'diference' => $registroSUC->dias_plazos.' ≠ '.$registroSIEMP->dias_plazos,
+                        'register_sucur_id' => $registroSUC->clave,
+                        'register_siemp_id' => $registroSIEMP->id,
+                        'fixed' => 'dias_plazos'
+                    ]);
+                    $count_diferences++;
+                }
+                if($registroSUC->dias_gracia != $registroSIEMP->dias_gracia)
+                {
+                    Catalogs::create([
+                        'catalog' => 'cat_prestamo_tipos',
+                        'catalog_id' => '19',
+                        'diference' => $registroSUC->dias_gracia.' ≠ '.$registroSIEMP->dias_gracia,
+                        'register_sucur_id' => $registroSUC->clave,
+                        'register_siemp_id' => $registroSIEMP->id,
+                        'fixed' => 'dias_gracia'
+                    ]);
+                    $count_diferences++;
+                }
+                if($registroSUC->porcentaje_min != $registroSIEMP->porcentaje_min)
+                {
+                    Catalogs::create([
+                        'catalog' => 'cat_prestamo_tipos',
+                        'catalog_id' => '19',
+                        'diference' => $registroSUC->porcentaje_min.' ≠ '.$registroSIEMP->porcentaje_min,
+                        'register_sucur_id' => $registroSUC->clave,
+                        'register_siemp_id' => $registroSIEMP->id,
+                        'fixed' => 'porcentaje_min'
+                    ]);
+                    $count_diferences++;
+                }
+                if($registroSUC->porcentaje_max != $registroSIEMP->porcentaje_max)
+                {
+                    Catalogs::create([
+                        'catalog' => 'cat_prestamo_tipos',
+                        'catalog_id' => '19',
+                        'diference' => $registroSUC->porcentaje_max.' ≠ '.$registroSIEMP->porcentaje_max,
+                        'register_sucur_id' => $registroSUC->clave,
+                        'register_siemp_id' => $registroSIEMP->id,
+                        'fixed' => 'porcentaje_max'
+                    ]);
+                    $count_diferences++;
+                }
+                if($registroSUC->resguardo != $registroSIEMP->resguardo)
+                {
+                    Catalogs::create([
+                        'catalog' => 'cat_prestamo_tipos',
+                        'catalog_id' => '19',
+                        'diference' => $registroSUC->resguardo.' ≠ '.$registroSIEMP->resguardo,
+                        'register_sucur_id' => $registroSUC->clave,
+                        'register_siemp_id' => $registroSIEMP->id,
+                        'fixed' => 'resguardo'
+                    ]);
+                    $count_diferences++;
+                }
+            }
+        }
+       
+        if($count_diferences == 0)
+        {
+            Catalogs::create([
+                'catalog' => 'cat_prestamo_tipos',
+                'catalog_id' => '19',
+                'diference' => 'Ninguna',
+                'register_sucur_id' => null,
+                'register_siemp_id' => null,
+                'fixed' => 'SINCRONIZADO'
+            ]);
+        }
+    }
+    private function compareTiposPrestamoSucursal($cat_id){
+        $count_diferences = 0;
+
+        $cat_SUCURSAL = DB::connection('sucursal')->table($this->allCatalogs[$cat_id]['origen'])->get();
+        $num_reg_SUCURSAL = count($cat_SUCURSAL);
+
+        $cat_SIEMP = DB::table($this->allCatalogs[$cat_id]['destino'])->get();
+        $num_reg_SIEMP = count($cat_SIEMP);
+
+        $reg_mayor = ($num_reg_SUCURSAL > $num_reg_SIEMP) ? $num_reg_SUCURSAL : $num_reg_SIEMP;
+
+        Catalogs::where('catalog_id', 20)->delete();
+
+        foreach($cat_SUCURSAL as $registroSUC)
+        {
+            $registroSIEMP = $cat_SIEMP->where('id', $registroSUC->id)->first();
+
+            if($registroSIEMP == null)
+            {
+                Catalogs::create([
+                    'catalog' => 'c_tipo_prestamo_sucursal',
+                    'catalog_id' => '20',
+                    'diference' => 'Registro '.$registroSUC->id.' no encontrado en BASE SIEMP',
+                    'register_sucur_id' => $registroSUC->id,
+                    'register_siemp_id' => null,
+                    'fixed' => 'id'
+                ]);
+                $count_diferences++;
+            }else{
+                if($registroSUC->c_tipo_prestamo != $registroSIEMP->cat_prestamo_tipo_id)
+                {
+                    Catalogs::create([
+                        'catalog' => 'c_tipo_prestamo_sucursal',
+                        'catalog_id' => '20',
+                        'diference' => $registroSUC->c_tipo_prestamo.' ≠ '.$registroSIEMP->cat_prestamo_tipo_id,
+                        'register_sucur_id' => $registroSUC->id,
+                        'register_siemp_id' => $registroSIEMP->id,
+                        'fixed' => 'cat_prestamo_tipo_id'
+                    ]);
+                    $count_diferences++;
+                }
+                if($registroSUC->c_sucursal_id != $registroSIEMP->adm_sede_id)
+                {
+                    Catalogs::create([
+                        'catalog' => 'c_tipo_prestamo_sucursal',
+                        'catalog_id' => '20',
+                        'diference' => $registroSUC->c_sucursal_id.' ≠ '.$registroSIEMP->adm_sede_id,
+                        'register_sucur_id' => $registroSUC->id,
+                        'register_siemp_id' => $registroSIEMP->id,
+                        'fixed' => 'adm_sede_id'
+                    ]);
+                    $count_diferences++;
+                }
+            }
+        }
+
+        if($count_diferences == 0)
+        {
+            Catalogs::create([
+                'catalog' => 'c_tipo_prestamo_sucursal',
+                'catalog_id' => '20',
+                'diference' => 'Ninguna',
+                'register_sucur_id' => null,
+                'register_siemp_id' => null,
+                'fixed' => 'SINCRONIZADO'
+            ]);
+        }
+
+    }
     private function compareStatusEmpenio($cat_id){}
 }

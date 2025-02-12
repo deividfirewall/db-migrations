@@ -62,7 +62,7 @@ services:
         networks:
             - sail
         ports:
-            - 3001:80
+            - 8002:80
 networks:
     sail:
         driver: bridge
