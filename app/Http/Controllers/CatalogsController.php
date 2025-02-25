@@ -87,7 +87,6 @@ class CatalogsController extends Controller
         /*
             SELECT * FROM `c_municipios` WHERE nombre LIKE "%Ã©%";  equivale a la é
             
-            
             UPDATE `c_municipios` SET nombre = REPLACE(nombre, 'Ã¡', 'á');  equivale a la á
             UPDATE `c_municipios` SET nombre = REPLACE(nombre, 'Ã©', 'é');  equivale a la é
             UPDATE `c_municipios` SET nombre = REPLACE(nombre, 'Ã³', 'ó');  equivale a la ó
@@ -95,8 +94,11 @@ class CatalogsController extends Controller
             UPDATE `c_municipios` SET nombre = REPLACE(nombre, 'Ã±', 'ñ');  equivale a la ñ
             UPDATE `c_municipios` SET nombre = REPLACE(nombre, 'Ã', 'í');  equivale a la í
 
-            UPDATE `cat_loc_municipios` SET `sigla` = 'ACÑ' WHERE `cat_loc_municipios`.`id` = 34; 
-
+            UPDATE `c_municipios` SET `sigla` = 'ACÑ' WHERE id = 34; 
+         */
+        /**
+          UPDATE `cat_metal_precios` SET `precio_gramo_venta` = '1760',  `precio_gramo` = '1760'  WHERE `cat_metal_precios`.`id` = 1; 
+          UPDATE `cat_metal_precios` SET `precio_gramo_venta` = '26.43', `precio_gramo` = '26.43' WHERE `cat_metal_precios`.`id` = 2;
          */
 
     }

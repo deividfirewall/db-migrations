@@ -20,7 +20,6 @@ class MetalesSeeder extends Seeder
         
         DB::table('cat_metal_tipos')->insert($cat_metal_tipos);
         
-
         $cat_metal_precios = [
             [
                 'id' => 1,
@@ -45,7 +44,6 @@ class MetalesSeeder extends Seeder
         ];
         DB::table('cat_metal_precios')->insert($cat_metal_precios);
        
-
         $cat_metal_cotizas = [
             ['id' => 1,  'ref' => '10E',   'nombre' => 'ORO 10K',    'kilates' => 10,    'eq_oro' => 0.4167, 'por_vc' => 12.36,  'por_cv' => 60,   'por_aval' => 19.09, 'cat_metal_tipo_id' => 1 ],
             ['id' => 4,  'ref' => '14E',   'nombre' => 'ORO 14K',    'kilates' => 14,    'eq_oro' => 0.5833, 'por_vc' => 12.361, 'por_cv' => 60,   'por_aval' => 19.11, 'cat_metal_tipo_id' => 1 ],

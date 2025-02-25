@@ -8,5 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class CatStatusEmpenio extends Model
 {
     use HasFactory;
+    
+    public $timestamps = false;
+
     protected $fillable = ['status_empenio'];
 }

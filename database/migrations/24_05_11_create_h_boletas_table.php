@@ -13,14 +13,14 @@ return new class extends Migration
     {
         Schema::create('h_boletas', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('t_boleta_id')->unsigned();
+            $table->foreignId('t_boleta_id')->constrained();
             $table->decimal('prestamo', 10, 2)->default(0);
             $table->decimal('avaluo', 10, 2);
             //$table->decimal('interes', 10, 2)->default(0);          //no hay datos en la tabla
             $table->decimal('recargo', 10, 2)->default(0);
             $table->decimal('abono', 10, 2)->default(0);
             $table->dateTime('fecha_movimiento');
-            $table->dateTime('fecha_vencimiento');
+            $table->date('fecha_vencimiento');
             $table->Integer('cat_status_empenio_id');
             $table->Integer('cat_operacion_tipo_id');
             $table->Integer('pignorante_id');

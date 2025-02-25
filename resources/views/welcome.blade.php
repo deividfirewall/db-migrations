@@ -174,7 +174,7 @@
                                     @if( $grupos[3]['backup'] === 1 )
                                         <a href="{{ route('backup.table','t_sol_dias_gracias t_sol_almonedas t_sol_subastas t_subastas t_subasta_fechas t_retasas t_vitrina_ventas t_vitrina_compras t_demasias_pagadas t_suspencion_dias') }}" class="mt-4 text-sm/relaxed text-blue-700 underline">Dump </a>,
                                         @if( $grupos[3]['descarga'] === 1 )
-                                            <a href="{{ route('backup.download','grupo3') }}" class="mt-4 text-sm/relaxed text-blue-700 underline">Download </a>
+                                            <a href="{{ route('backup.download','grupo3') }}" class="mt-4 text-sm/relaxed text-blue-700 underline">Download {{$grupos[3]['file_size']}} </a>
                                         @endif
                                     @endif
                                     <p class="mb-4 text-sm/relaxed"> 1:t_sol_dias_gracias, 2:t_sol_almonedas, 3:t_sol_subastas, 4:t_subastas, 5:t_subasta_fechas, 6:t_retasas, 7:t_vitrina_ventas, 8:t_vitrina_compras, 9:t_demasias_pagadas, 10:t_suspencion_dias  </p>

@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('operacion',32);
             $table->string('tema', 100)->nullable();
-            $table->timestamps();
         });
     }
 

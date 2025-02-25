@@ -18,6 +18,7 @@ class BackupTableCommand extends Command
     public function handle()
     {
         $table = $this->argument('table');
+        set_time_limit(45);
 
         if (strlen($table) > 25) {
             if (strpos($table, 'pignorantes') !== false) {

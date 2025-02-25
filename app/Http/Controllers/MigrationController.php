@@ -55,7 +55,7 @@ class MigrationController extends Controller
             
             
             t_bloqueadas        SOLO HAY 46 BOLETAS antigua:10460349 del 2019-12-06, reciente:10555424 DEL 2020-02-28
-            t_boletas_pagos_mal_no_venta    >>> ultimo uso en 2018
+            t_boletas_pagos_mal_no_venta    >>> 127 boletas, ultimo uso en 2018
             t_boleta_migracion              >>> ultimo uso en 2014
             u_directores                    >>> ahora se utiliza la tabla users
         */
@@ -144,20 +144,23 @@ class MigrationController extends Controller
             UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'ÃƒÂƒÃ‚', 'ª'); 
             UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'ÂƒÃƒÂ‚', 'ª'); 
             UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'Ãƒ', 'ª'); 
-            UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'Â‘', 'ª');
-            UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'Ã‘', 'ª');
             UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'Ã‚', 'ª'); 
-
-            UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'ªª', 'º'); 
+            UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'Ã‘', 'ª');
+            UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'Â‘', 'ª');
+            UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'Ñ‘', 'ª'); 
+            UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'N‘', 'ª'); 
+            
+            UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'ªª', 'º');             
             UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'º', 'Ñ'); 
-            UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'Ñ‘', 'Ñ'); 
 
 
-            SELECT * FROM `u_pignotarios` WHERE direccion LIKE "%ƒ%"; 
-            UPDATE u_pignotarios SET direccion = REPLACE(direccion, 'ÃƒÂ‘', 'ª'); ÂƒÃ‚
+            SELECT * FROM `u_pignotarios` WHERE direccion LIKE "%‘%"; 
+            UPDATE u_pignotarios SET direccion = REPLACE(direccion, 'ÃƒÂƒÃ‚', 'ª');
+            UPDATE u_pignotarios SET direccion = REPLACE(direccion, 'ÃƒÂ‘', 'ª'); 
             UPDATE u_pignotarios SET direccion = REPLACE(direccion, 'Â‘', 'ª'); 
             UPDATE u_pignotarios SET direccion = REPLACE(direccion, 'Ã‘', 'ª'); 
-
+            UPDATE u_pignotarios SET direccion = REPLACE(direccion, 'ªª', 'ª'); 
+            UPDATE u_pignotarios SET direccion = REPLACE(direccion, 'ª', 'Ñ'); 
 
             
             VSCRES51120420M500  ::: REPETIDO (13735 --> 21291)   
@@ -216,22 +219,25 @@ class MigrationController extends Controller
             DELETE FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%SOLA%' AND LENGTH(pignorante_solidario) < 12; 
             
 
-            SELECT * FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%Ã%';           
-             ÃƒÂƒªƒÂ
-            ‚ÂƒÃƒÂ‚Ã‚ÂƒÃƒÂƒÃ‘
-            ‚Â‚ÃƒÂ‚Ã‚ÂƒÃƒÂƒÃ‘
-            ‚ÂƒÃƒÂ‚Ã‚Â‚ÃƒÂƒÃ‘
-            ‚Â‚ÃƒÂ‚Ã‚ÂƒÃƒÂƒÃ‘
-            ‚ÂƒÃƒÂ‚Ã‚ÂƒÃƒÂƒÃ‘
-            ‚Â‚ÃƒÂ‚Ã‚Â‚ÃƒÂƒÃ‘
-            ‚ÂƒÃƒÂ‚Ã‚Â‚ÃƒÂƒÃ‘
-            ‚Â‚ÃƒÂ‚Ã‚Â‘
+            * 873 pignorantes solidarios con el nombre con caracteres invalidos
+            SELECT * FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%‘%';           
+            ÂƒÃƒÂƒÃ‚
+            ÂƒÃƒÂ,
+            ÃƒÂ‚
+            Ã‚            
+            Â‚
+
+            Ãƒª’ -> fallo
+            ªƒªª’ªªª’  -> fallo
+
             🔃  UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'Ã‘ƒÂ‘', 'ª');
-                UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'Â', 'ª');
+                UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'ƒÂ‘', 'ª');
                 UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, '±', 'ª');
                 UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, '†', 'ª');
                 UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'Æ', 'ª');
                 UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'ª‚', 'ª');
+            SELECT * FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%ª%';           
+
                 UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'ª‘', 'ª');
                 UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'ª’', 'ª');
                 UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'ªª', 'º'); 
@@ -244,7 +250,7 @@ class MigrationController extends Controller
             ~~En tabla t_reposicion el pignorante ya esta referenciado, SE ALMACENA EL ID
         */
 
-        /* t_boleta y   h_boleta
+        /* t_boleta, h_boleta y t_boleta_pagos
             
             >>> boleta con datos en null
                 DELETE FROM t_boleta WHERE t_boleta.id = 10474068               
@@ -264,7 +270,8 @@ class MigrationController extends Controller
                 LEFT JOIN t_boleta ON t_boleta_pagos.t_boleta_id = t_boleta.id 
                 WHERE t_boleta.id IS null; 
             
-            UPDATE h_t_boleta SET comision_avaluo = '109.581' WHERE h_t_boleta.id_interno = 1772075; 
+            
+            UPDATE h_t_boleta SET comision_avaluo = '109.581' WHERE comision_avaluo > 109581000; 
 
         */
 
@@ -287,7 +294,7 @@ class MigrationController extends Controller
             UPDATE `t_empenios_boleta_relacion` SET `t_empenios_id` = '236635' WHERE `t_empenios_boleta_relacion`.`id` = 236634; 
             UPDATE `t_empenios_boleta_relacion` SET `t_empenios_id` = '236634' WHERE `t_empenios_boleta_relacion`.`id` = 236635; 
         
-            >>> t_empenios_boleta_relacion :: verificamos las t_boleta_id que no existen en la tabla t_boletas ~824 boletas
+            >>> t_empenios_boleta_relacion :: verificamos las t_boleta_id que no existen en la tabla t_boletas (~825 registros)
             SELECT DISTINCT t_empenios_boleta_relacion.t_boleta_id, t_empenios.id 
             FROM t_empenios_boleta_relacion 
             LEFT JOIN t_boleta ON t_empenios_boleta_relacion.t_boleta_id = t_boleta.id 
@@ -299,7 +306,7 @@ class MigrationController extends Controller
                 LEFT JOIN t_empenios ON t_empenios_boleta_relacion.t_empenios_id = t_empenios.id 
                 WHERE t_boleta.id IS NULL; 
             
-            >>> t_empenios :: borramos los empeños que no tienen relacion t_empenios_boleta_relacion ~824 empeños
+            >>> t_empenios :: borramos los empeños que no tienen relacion t_empenios_boleta_relacion (~824 registros)
             SELECT t_empenios.*
             FROM    t_empenios
             LEFT JOIN t_empenios_boleta_relacion ON t_empenios_boleta_relacion.t_empenios_id = t_empenios.id
@@ -309,7 +316,7 @@ class MigrationController extends Controller
                LEFT JOIN t_empenios_boleta_relacion ON t_empenios_boleta_relacion.t_empenios_id = t_empenios.id
                WHERE t_empenios_boleta_relacion.id IS NULL;
 
-            >>> t_empenios_metal :: borramos los empeños que no tienen relacion t_empenios_boleta_relacion ~673 empeños de metal
+            >>> t_empenios_metal :: borramos los empeños que no tienen relacion t_empenios_boleta_relacion (~673 registros)
             SELECT t_empenios_metal.* FROM t_empenios_metal 
               LEFT JOIN t_empenios ON t_empenios.id = t_empenios_metal.t_empenios_id WHERE t_empenios.id IS NULL;
             SELECT t_empenios_metal.* FROM    t_empenios_metal
@@ -319,7 +326,7 @@ class MigrationController extends Controller
                 FROM    t_empenios_metal
                 LEFT JOIN t_empenios_boleta_relacion ON t_empenios_boleta_relacion.t_empenios_id = t_empenios_metal.t_empenios_id
                 WHERE t_empenios_boleta_relacion.id IS NULL;
-            >>> t_empenios_productos :: borramos los empeños que no tienen relacion t_empenios_boleta_relacion ~114 empeños de productos
+            >>> t_empenios_productos :: borramos los empeños que no tienen relacion t_empenios_boleta_relacion (~114 registros)
              ❌ DELETE t_empenios_productos.*
                 FROM    t_empenios_productos
                 LEFT JOIN t_empenios_boleta_relacion ON t_empenios_boleta_relacion.t_empenios_id = t_empenios_productos.t_empenios_id
@@ -381,7 +388,7 @@ class MigrationController extends Controller
             SELECT * FROM `t_concentrados` WHERE id_gerente = 0; 
 
             // todo da cero, mejor eliminamos
-            DELETE FROM t_concentrados WHERE `t_concentrados`.`id` = 24885
+            DELETE FROM t_concentrados WHERE `t_concentrados`.`id` = 24885;
 
             SELECT * FROM `t_concentrados` WHERE id > 25120 LIMIT 10; 
             UPDATE `t_concentrados` SET `id_gerente` = '121' WHERE `t_concentrados`.`id` = 25123;  
@@ -560,9 +567,9 @@ class MigrationController extends Controller
         $lastRecord = DB::table($dTable)->orderBy('id', 'desc')->first();
 
         if(!$lastRecord){
-            $oRegistros = DB::connection('sucursal')->table($oTable)->limit(10000)->get();
+            $oRegistros = DB::connection('sucursal')->table($oTable)->limit(25000)->get();
         }else{
-            $oRegistros = DB::connection('sucursal')->table($oTable)->where('id', '>', $lastRecord->id)->limit(10000)->get();
+            $oRegistros = DB::connection('sucursal')->table($oTable)->where('id', '>', $lastRecord->id)->limit(25000)->get();
         }
         $regsel = [];
         $status = 'success';
@@ -650,9 +657,9 @@ class MigrationController extends Controller
         $lastRecord = DB::table($dTable)->orderBy('id', 'desc')->first();
 
         if(!$lastRecord){
-            $oRegistros = DB::connection('sucursal')->table($oTable)->limit(25000)->get();
+            $oRegistros = DB::connection('sucursal')->table($oTable)->limit(50000)->get();
         }else{
-            $oRegistros = DB::connection('sucursal')->table($oTable)->where('id', '>', $lastRecord->id)->limit(25000)->get();
+            $oRegistros = DB::connection('sucursal')->table($oTable)->where('id', '>', $lastRecord->id)->limit(50000)->get();
         }
         $regsel = [];
         $status = 'success';
@@ -1192,8 +1199,6 @@ class MigrationController extends Controller
             ->get();
 
         }
-
-        
 
         // El resultado real de $listaPigSolidarios en de 31,829 registros,
         // pero al realizar el pluck los registros bajan a 30,092, que equivalen a 1,737 registros menos; 
@@ -1767,9 +1772,9 @@ class MigrationController extends Controller
         $lastRecord = DB::table($dTable)->orderBy('id', 'desc')->first();
 
         if(!$lastRecord){
-            $oRegistros = DB::connection('sucursal')->table($oTable)->orderBy('id','asc')->limit(10000)->get();
+            $oRegistros = DB::connection('sucursal')->table($oTable)->orderBy('id','asc')->limit(50000)->get();
         }else{
-            $oRegistros = DB::connection('sucursal')->table($oTable)->where('id', '>', $lastRecord->id)->orderBy('id','asc')->limit(10000)->get();
+            $oRegistros = DB::connection('sucursal')->table($oTable)->where('id', '>', $lastRecord->id)->orderBy('id','asc')->limit(50000)->get();
         }
         $regsel = [];
         $status = 'success';
@@ -1880,9 +1885,9 @@ class MigrationController extends Controller
         $lastRecord = DB::table($dTable)->orderBy('id', 'desc')->first();
 
         if(!$lastRecord){
-            $oRegistros = DB::connection('sucursal')->table($oTable)->orderBy('id','asc')->limit(10000)->get();
+            $oRegistros = DB::connection('sucursal')->table($oTable)->orderBy('id','asc')->limit(50000)->get();
         }else{
-            $oRegistros = DB::connection('sucursal')->table($oTable)->where('id', '>', $lastRecord->id)->orderBy('id','asc')->limit(10000)->get();
+            $oRegistros = DB::connection('sucursal')->table($oTable)->where('id', '>', $lastRecord->id)->orderBy('id','asc')->limit(50000)->get();
         }
         $regsel = [];
         $status = 'success';
@@ -1954,9 +1959,9 @@ class MigrationController extends Controller
         $lastRecord = DB::table($dTable)->orderBy('id', 'desc')->first();
 
         if(!$lastRecord){
-            $oRegistros = DB::connection('sucursal')->table($oTable)->orderBy('id','asc')->limit(1000)->get();
+            $oRegistros = DB::connection('sucursal')->table($oTable)->orderBy('id','asc')->limit(5000)->get();
         }else{
-            $oRegistros = DB::connection('sucursal')->table($oTable)->where('id', '>', $lastRecord->id)->orderBy('id','asc')->limit(1000)->get();
+            $oRegistros = DB::connection('sucursal')->table($oTable)->where('id', '>', $lastRecord->id)->orderBy('id','asc')->limit(5000)->get();
         }
         $regsel = [];
         $status = 'success';
