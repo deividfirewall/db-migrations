@@ -15,32 +15,39 @@ class MigrationController extends Controller
     public function __construct()
     {
         $this->allTables = [
-            1  => ['origen' =>'u_operadores',              'reg_o'=> 0,'destino'=>'users'                ,'reg_d'=> 0   ,'avance'=>'0'],
-            2  => ['origen' =>'u_pignotarios',             'reg_o'=> 0,'destino'=>'pignorantes'          ,'reg_d'=> 0   ,'avance'=>'0'],
-            3  => ['origen' =>'t_boleta',                  'reg_o'=> 0,'destino' =>'t_boletas'           ,'reg_d'=> 0   ,'avance'=>'0'],
-            4  => ['origen' =>'t_boleta_pagos',            'reg_o'=> 0,'destino'=>'t_boleta_pagos'       ,'reg_d'=> 0   ,'avance'=>'0'],
-            5  => ['origen' =>'t_empenios',                'reg_o'=> 0,'destino'=>'t_empenios'           ,'reg_d'=> 0   ,'avance'=>'0'],
-            6  => ['origen' =>'t_empenios_boleta_relacion','reg_o'=> 0,'destino'=>'t_emp_bol_relations'  ,'reg_d'=> 0   ,'avance'=>'0'],
-            7  => ['origen' =>'t_empenios_metal',          'reg_o'=> 0,'destino'=>'t_empenio_metals'     ,'reg_d'=> 0   ,'avance'=>'0'],
-            8  => ['origen' =>'t_empenios_productos',      'reg_o'=> 0,'destino'=>'t_empenio_products'   ,'reg_d'=> 0   ,'avance'=>'0'],
-            9  => ['origen' =>'t_control_interno',         'reg_o'=> 0,'destino'=>'t_ctrl_internos'      ,'reg_d'=> 0   ,'avance'=>'0'],
-            10 => ['origen' =>'t_caja_monto_operador',     'reg_o'=> 0,'destino'=>'t_cajas'              ,'reg_d'=> 0   ,'avance'=>'0'],
-            11 => ['origen' =>'h_t_boleta',                'reg_o'=> 0,'destino'=>'h_boletas'            ,'reg_d'=> 0   ,'avance'=>'0'],
-            12 => ['origen' =>'u_pignotarios_solidarios',  'reg_o'=> 0,'destino'=>'pignorante_solidarios','reg_d'=> 0   ,'avance'=>'0'],
-            13 => ['origen' =>'u_pignotarios_solidarios',  'reg_o'=> 0,'destino'=>'pignorante_solidarios','reg_d'=> 0   ,'avance'=>'0'],
-            14 => ['origen' =>'t_solicitudes_dias_gracia', 'reg_o'=> 0,'destino'=>'t_sol_dias_gracias'   ,'reg_d'=> 0   ,'avance'=>'0'],
-            15 => ['origen' =>'t_solicitudes_almoneda',    'reg_o'=> 0,'destino'=>'t_sol_almonedas'      ,'reg_d'=> 0   ,'avance'=>'0'],
-            16 => ['origen' =>'t_solicitudes_subasta',     'reg_o'=> 0,'destino'=>'t_sol_subastas'       ,'reg_d'=> 0   ,'avance'=>'0'],
-            17 => ['origen' =>'t_subasta',                 'reg_o'=> 0,'destino'=>'t_subastas'           ,'reg_d'=> 0   ,'avance'=>'0'],
-            18 => ['origen' =>'c_fecha_subasta',           'reg_o'=> 0,'destino'=>'t_subasta_fechas'     ,'reg_d'=> 0   ,'avance'=>'0'],    
-            19 => ['origen' =>'t_comprador',               'reg_o'=> 0,'destino'=>'t_compradors'         ,'reg_d'=> 0   ,'avance'=>'0'],
-            20 => ['origen' =>'t_retasas',                 'reg_o'=> 0,'destino'=>'t_retasas'            ,'reg_d'=> 0   ,'avance'=>'0'],
-            21 => ['origen' =>'t_reposicion',              'reg_o'=> 0,'destino'=>'t_reposicions'        ,'reg_d'=> 0   ,'avance'=>'0'],            
-            22 => ['origen' =>'t_concentrados',            'reg_o'=> 0,'destino'=>'t_concentrados'       ,'reg_d'=> 0   ,'avance'=>'0'], 
-            23 => ['origen' =>'t_venta_vitrina',           'reg_o'=> 0,'destino'=>'t_vitrina_ventas'     ,'reg_d'=> 0   ,'avance'=>'0'],
-            24 => ['origen' =>'t_compra_vitrina',          'reg_o'=> 0,'destino'=>'t_vitrina_compras'    ,'reg_d'=> 0   ,'avance'=>'0'],
-            25 => ['origen' =>'t_demasias_pagadas',        'reg_o'=> 0,'destino'=>'t_demasias_pagadas'   ,'reg_d'=> 0   ,'avance'=>'0'],
-            26 => ['origen' =>'t_suspencion_dias',         'reg_o'=> 0,'destino'=>'t_suspencion_dias'    ,'reg_d'=> 0   ,'avance'=>'0'],            
+            1  => ['origen' =>'u_operadores',               'reg_o'=> 0,'destino'=>'users'                ,'reg_d'=> 0   ,'avance'=>'0'],
+            2  => ['origen' =>'u_pignotarios',              'reg_o'=> 0,'destino'=>'pignorantes'          ,'reg_d'=> 0   ,'avance'=>'0'],
+            3  => ['origen' =>'t_boleta',                   'reg_o'=> 0,'destino' =>'t_boletas'           ,'reg_d'=> 0   ,'avance'=>'0'],
+            4  => ['origen' =>'t_boleta_pagos',             'reg_o'=> 0,'destino'=>'t_boleta_pagos'       ,'reg_d'=> 0   ,'avance'=>'0'],
+            5  => ['origen' =>'t_empenios',                 'reg_o'=> 0,'destino'=>'t_empenios'           ,'reg_d'=> 0   ,'avance'=>'0'],
+            6  => ['origen' =>'t_empenios_boleta_relacion', 'reg_o'=> 0,'destino'=>'t_emp_bol_relations'  ,'reg_d'=> 0   ,'avance'=>'0'],
+            7  => ['origen' =>'t_empenios_metal',           'reg_o'=> 0,'destino'=>'t_empenio_metals'     ,'reg_d'=> 0   ,'avance'=>'0'],
+            8  => ['origen' =>'t_empenios_productos',       'reg_o'=> 0,'destino'=>'t_empenio_products'   ,'reg_d'=> 0   ,'avance'=>'0'],
+            9  => ['origen' =>'t_control_interno',          'reg_o'=> 0,'destino'=>'t_ctrl_internos'      ,'reg_d'=> 0   ,'avance'=>'0'],
+            10 => ['origen' =>'t_caja_monto_operador',      'reg_o'=> 0,'destino'=>'t_cajas'              ,'reg_d'=> 0   ,'avance'=>'0'],
+            11 => ['origen' =>'h_t_boleta',                 'reg_o'=> 0,'destino'=>'h_boletas'            ,'reg_d'=> 0   ,'avance'=>'0'],
+            12 => ['origen' =>'u_pignotarios_solidarios',   'reg_o'=> 0,'destino'=>'pignorante_solidarios','reg_d'=> 0   ,'avance'=>'0'],
+            13 => ['origen' =>'u_pignotarios_solidarios',   'reg_o'=> 0,'destino'=>'pignorante_solidarios','reg_d'=> 0   ,'avance'=>'0'],
+            14 => ['origen' =>'t_solicitudes_dias_gracia',  'reg_o'=> 0,'destino'=>'t_sol_dias_gracias'   ,'reg_d'=> 0   ,'avance'=>'0'],
+            15 => ['origen' =>'t_solicitudes_almoneda',     'reg_o'=> 0,'destino'=>'t_sol_almonedas'      ,'reg_d'=> 0   ,'avance'=>'0'],
+            16 => ['origen' =>'t_solicitudes_subasta',      'reg_o'=> 0,'destino'=>'t_sol_subastas'       ,'reg_d'=> 0   ,'avance'=>'0'],
+            17 => ['origen' =>'t_subasta',                  'reg_o'=> 0,'destino'=>'t_subastas'           ,'reg_d'=> 0   ,'avance'=>'0'],
+            18 => ['origen' =>'c_fecha_subasta',            'reg_o'=> 0,'destino'=>'t_subasta_fechas'     ,'reg_d'=> 0   ,'avance'=>'0'],    
+            19 => ['origen' =>'t_comprador',                'reg_o'=> 0,'destino'=>'t_compradors'         ,'reg_d'=> 0   ,'avance'=>'0'],
+            20 => ['origen' =>'t_retasas',                  'reg_o'=> 0,'destino'=>'t_retasas'            ,'reg_d'=> 0   ,'avance'=>'0'],
+            21 => ['origen' =>'t_reposicion',               'reg_o'=> 0,'destino'=>'t_reposicions'        ,'reg_d'=> 0   ,'avance'=>'0'],            
+            22 => ['origen' =>'t_concentrados',             'reg_o'=> 0,'destino'=>'t_concentrados'       ,'reg_d'=> 0   ,'avance'=>'0'], 
+            23 => ['origen' =>'t_venta_vitrina',            'reg_o'=> 0,'destino'=>'t_vitrina_ventas'     ,'reg_d'=> 0   ,'avance'=>'0'],
+            24 => ['origen' =>'t_compra_vitrina',           'reg_o'=> 0,'destino'=>'t_vitrina_compras'    ,'reg_d'=> 0   ,'avance'=>'0'],
+            25 => ['origen' =>'t_demasias_pagadas',         'reg_o'=> 0,'destino'=>'t_demasias_pagadas'   ,'reg_d'=> 0   ,'avance'=>'0'],
+            26 => ['origen' =>'t_suspencion_dias',          'reg_o'=> 0,'destino'=>'t_suspencion_dias'    ,'reg_d'=> 0   ,'avance'=>'0'],
+            27 => ['origen' =>'t_descuentos',               'reg_o'=> 0,'destino'=>'t_descuentos'         ,'reg_d'=> 0   ,'avance'=>'0'],
+            // 28 => ['origen' =>'t_num_tickets',              'reg_o'=> 0,'destino'=>'t_num_tickets'        ,'reg_d'=> 0   ,'avance'=>'0'],
+            // 29 => ['origen' =>'t_boleta_cancelado',         'reg_o'=> 0,'destino'=>'t_boleta_cancels'     ,'reg_d'=> 0   ,'avance'=>'0'],
+            // 30 => ['origen' =>'t_control_interno_cancelado','reg_o'=> 0,'destino'=>'t_ctrl_int_cancels'   ,'reg_d'=> 0   ,'avance'=>'0'],  
+            // 31 => ['origen' =>'rg_rod13',                   'reg_o'=> 0,'destino'=>'rpt01_diarios'        ,'reg_d'=> 0   ,'avance'=>'0'],          
+            // 32 => ['origen' =>'r_rg_cg11',                  'reg_o'=> 0,'destino'=>'rpt02_grales'         ,'reg_d'=> 0   ,'avance'=>'0'],
+            // 33 => ['origen' =>'r_ro_cg12',                  'reg_o'=> 0,'destino'=>'rpt03_diario'         ,'reg_d'=> 0   ,'avance'=>'0'],
         ];
 
 
@@ -138,12 +145,12 @@ class MigrationController extends Controller
         */
     
         /* u_pignotarios: Antes de migrar, se debera de ejecutar lo siguiente en la base de datos origen
-            SELECT * FROM `u_pignotarios` WHERE nombre LIKE "%ƒ%";          SON MAS DE 404 REGISTROS
+            SELECT * FROM `u_pignotarios` WHERE nombre LIKE "%‘%";          SON 409 REGISTROS
             UPDATE u_pignotarios SET nombre = TRIM(nombre);
             UPDATE u_pignotarios SET nombre = REPLACE(nombre, '  ', ' ');
             UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'ÃƒÂƒÃ‚', 'ª'); 
             UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'ÂƒÃƒÂ‚', 'ª'); 
-            UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'Ãƒ', 'ª'); 
+            UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'ÃƒÂ‚', 'ª'); 
             UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'Ã‚', 'ª'); 
             UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'Ã‘', 'ª');
             UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'Â‘', 'ª');
@@ -154,9 +161,10 @@ class MigrationController extends Controller
             UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'º', 'Ñ'); 
 
 
-            SELECT * FROM `u_pignotarios` WHERE direccion LIKE "%‘%"; 
+            SELECT * FROM `u_pignotarios` WHERE direccion LIKE "%‘%";           SON 404 REGISTROS
             UPDATE u_pignotarios SET direccion = REPLACE(direccion, 'ÃƒÂƒÃ‚', 'ª');
-            UPDATE u_pignotarios SET direccion = REPLACE(direccion, 'ÃƒÂ‘', 'ª'); 
+            UPDATE u_pignotarios SET direccion = REPLACE(direccion, 'ÃƒÂ‘', 'ª');
+            UPDATE u_pignotarios SET direccion = REPLACE(direccion, 'Ã‚', 'ª'); 
             UPDATE u_pignotarios SET direccion = REPLACE(direccion, 'Â‘', 'ª'); 
             UPDATE u_pignotarios SET direccion = REPLACE(direccion, 'Ã‘', 'ª'); 
             UPDATE u_pignotarios SET direccion = REPLACE(direccion, 'ªª', 'ª'); 
@@ -202,9 +210,9 @@ class MigrationController extends Controller
 
             >>> Revisamos los registros de pignorante_solidarios sean nombres invalidos, para ser eliminados
             ❌  SELECT pignorante_solidario, COUNT(t_boleta_id) FROM u_pignotarios_solidarios WHERE LENGTH(pignorante_solidario) < 9 GROUP BY pignorante_solidario; 
-            DELETE FROM u_pignotarios_solidarios WHERE LENGTH(pignorante_solidario) < 9 
+            DELETE FROM u_pignotarios_solidarios WHERE LENGTH(pignorante_solidario) < 9 ;
             ❌  SELECT DISTINCT pignorante_solidario FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '% DEJA%'; 
-            DELETE FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '% DEJA%' AND LENGTH(pignorante_solidario) < 18
+            DELETE FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '% DEJA%' AND LENGTH(pignorante_solidario) < 18;
             ❌  SELECT DISTINCT pignorante_solidario FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '% MIS%' AND LENGTH(pignorante_solidario) < 16; 
             DELETE FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '% MIS%' AND LENGTH(pignorante_solidario) < 16;
             ❌  SELECT DISTINCT pignorante_solidario FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%EL M%' AND LENGTH(pignorante_solidario) < 12 
@@ -220,18 +228,24 @@ class MigrationController extends Controller
             
 
             * 873 pignorantes solidarios con el nombre con caracteres invalidos
-            SELECT * FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%‘%';           
-            ÂƒÃƒÂƒÃ‚
-            ÂƒÃƒÂ,
+            SELECT * FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%‘%';        
+            
+            UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'ÂƒÃƒÂƒÃ‚', 'ª');
+            UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'ÃƒÂƒÃ‚', 'ª');
+            ÂƒÃƒÂ‚
             ÃƒÂ‚
             Ã‚            
             Â‚
-
-            Ãƒª’ -> fallo
-            ªƒªª’ªªª’  -> fallo
-
-            🔃  UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'Ã‘ƒÂ‘', 'ª');
-                UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'ƒÂ‘', 'ª');
+            ÃƒÂ‘
+            Ã‘
+            Â‘
+            
+            Ãƒª’ªª’  -> fallo
+            Âƒª      -> fallo
+            Ãª       -> fallo
+            Âª
+            ªÂ     -> fallo
+            🔃  
                 UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, '±', 'ª');
                 UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, '†', 'ª');
                 UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'Æ', 'ª');
@@ -270,9 +284,7 @@ class MigrationController extends Controller
                 LEFT JOIN t_boleta ON t_boleta_pagos.t_boleta_id = t_boleta.id 
                 WHERE t_boleta.id IS null; 
             
-            
             UPDATE h_t_boleta SET comision_avaluo = '109.581' WHERE comision_avaluo > 109581000; 
-
         */
 
         /* t_empenios_boleta_relacion, t_empenios, t_empenios_metal, t_empenios_productos
@@ -353,7 +365,6 @@ class MigrationController extends Controller
              🔃 UPDATE t_caja_monto_operador SET caja = 1000000.00 WHERE caja > 99999999;
         */
 
-
         /* t_subasta y c_fecha_subasta
         
             DELETE FROM t_subasta WHERE `t_subasta`.`id` = 13739;
@@ -411,7 +422,13 @@ class MigrationController extends Controller
         /* t_suspencion_dias
             >>> t_suspencion_dias :: se corrigue un error donde el id del operador no existe (862) y se cambia por 126
             UPDATE `t_suspencion_dias` SET `u_operadores_id` = 126 WHERE u_operadores_id = 862; 
-         */
+        */
+        /* t_num_tickes
+            SELECT * FROM t_num_tickes LEFT JOIN t_boletas ON t_num_tickes.t_boleta_id = t_boletas.id WHERE t_boletas.id IS null; 
+            2081 y 158375 no tienen t_boleta_id
+            DELETE FROM t_num_tickes WHERE `t_num_tickes`.`id` = 2081;
+            DELETE FROM t_num_tickes WHERE `t_num_tickes`.`id` = 158375;
+        */
         /* OTRAS ANOMALIAS 
             >>> los pignorantes de t_boleta y t_empenios no coinciden (PORQUE???)
             SELECT * FROM `t_empenios_boleta_relacion` INNER JOIN t_boleta ON t_boleta.id = t_empenios_boleta_relacion.t_boleta_id INNER JOIN t_empenios ON t_empenios.id = t_empenios_boleta_relacion.t_empenios_id WHERE t_boleta.u_pignorante_id <> t_empenios.u_pignorante_id; 
@@ -467,8 +484,14 @@ class MigrationController extends Controller
             case 24: $this->migraTVitrinaCompras(24);   break;
             case 25: $this->migraTDemasiasPagadas(25);  break;
             case 26: $this->migraTSuspencionDias(26);   break;
-
-            default:    return to_route('migrations.index')->with('error', 'no existe tabla seleccionada');
+            case 27: $this->migraTDescuentos(32);       break;
+            case 28: $this->migraTTickets(33);          break;
+            case 29: $this->migraTBoletaCancels(30);    break;
+            case 30: $this->migraTCtrlIntCancels(31);   break;
+            case 31: $this->migraRpt01Diario(27);       break;
+            case 32: $this->migraRpt02Diario(28);       break;
+            case 33: $this->migraRpt03Diario(29);       break;
+            default: return to_route('migrations.index')->with('error', 'no existe tabla seleccionada');
         }
         
         return to_route('migrations.index');
@@ -2064,4 +2087,27 @@ class MigrationController extends Controller
 
         return redirect('migrations.index')->with($status, $mesage);
     }
+    private function migraRpt01Diario($table_selected){
+
+    }
+    private function migraRpt02Diario($table_selected){
+
+    }
+    private function migraRpt03Diario($table_selected){
+
+    }
+    private function migraTBoletaCancels($table_selected){
+
+    }
+    private function migraTCtrlIntCancels($table_selected){
+
+    }
+    private function migraTDescuentos($table_selected){
+
+    }
+    private function migraTTickets($table_selected){
+
+    }
+
+
 }

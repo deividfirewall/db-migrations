@@ -13,10 +13,8 @@ return new class extends Migration
     {
         Schema::create('cat_loc_estados', function (Blueprint $table) {
             $table->id();
-            $table->integer('clave');
             $table->string('estado',45);
             $table->string('abrev',16);
-            $table->timestamps();
         });
     }
 

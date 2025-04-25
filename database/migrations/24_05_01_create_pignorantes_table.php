@@ -22,6 +22,7 @@ return new class extends Migration
             $table->integer('cp');
             $table->integer('estado_id');
             $table->integer('municipio_id');
+            $table->string('colonia')->nullable();
             $table->string('direccion')->nullable();
             $table->string('identidad_frente')->nullable();
             $table->string('identidad_reverso')->nullable();

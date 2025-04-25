@@ -17,7 +17,6 @@ return new class extends Migration
             $table->mediumInteger('clave');
             $table->string('municipio',50);
             $table->string('sigla',4);
-            $table->timestamps();
         });
     }
 
