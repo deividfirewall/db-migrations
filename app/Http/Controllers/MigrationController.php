@@ -66,6 +66,7 @@ class MigrationController extends Controller
             t_boleta_migracion              >>> ultimo uso en 2014
             u_directores                    >>> ahora se utiliza la tabla users
         */
+        $databaseName = DB::connection('sucursal')->getDatabaseName();
 
         $tables_ctrl = Tables::all();
         
@@ -79,6 +80,8 @@ class MigrationController extends Controller
                 $this->allTables[$key]['avance'] = $table_ctrl->avance;
                 
             }else{
+                $this->PreventIntegrityConstraintViolation($table['origen'], $databaseName);
+
                 if($key == 12){
                     $num_registros_origen = DB::connection('sucursal')->table('u_pignotarios_solidarios')->distinct()
                     ->select('u_pignotarios_solidarios.pignorante_solidario','t_boleta.u_pignorante_id')
@@ -103,6 +106,118 @@ class MigrationController extends Controller
 
             //$this->allTables[$key]['avance'] = $table['reg_d'] > 0 ? number_format(($table['reg_d']/$table['reg_o'])*100, 1) : '0';
         }
+    }
+    public function PreventIntegrityConstraintViolation($table, $databaseName){
+
+        switch ($databaseName) {
+            case 'siemp_ixcotel':
+                DB::update("UPDATE `t_suspencion_dias`SET `u_operadores_id` = 5 WHERE 1");
+                break;
+            case 'siemp_xoxo26':
+                DB::update("UPDATE `t_suspencion_dias`SET `u_operadores_id` = 5 WHERE 1");
+                break;
+            default:
+                break;
+        }
+
+
+        switch ($table) {
+            case 't_boleta_pagos':
+                $TBoletaPagos = DB::connection('sucursal')->select(
+                    'SELECT DISTINCT t_boleta_pagos.t_boleta_id 
+                     FROM t_boleta_pagos 
+                     LEFT JOIN t_boleta ON t_boleta_pagos.t_boleta_id = t_boleta.id 
+                     WHERE t_boleta.id IS null;'
+                );
+                
+                if($TBoletaPagos){
+                    $affected = DB::connection('sucursal')->update(
+                        'DELETE t_boleta_pagos 
+                         FROM t_boleta_pagos 
+                         LEFT JOIN t_boleta ON t_boleta_pagos.t_boleta_id = t_boleta.id 
+                         WHERE t_boleta.id IS null;'
+                    );
+                }
+                break;
+            case 't_empenios':
+                $TEmpeños = DB::connection('sucursal')->select(
+                   'SELECT t_empenios.*
+                    FROM    t_empenios
+                    LEFT JOIN t_empenios_boleta_relacion ON t_empenios_boleta_relacion.t_empenios_id = t_empenios.id
+                    WHERE t_empenios_boleta_relacion.id IS NULL;'
+                );
+                if($TEmpeños){
+                    $affected = DB::connection('sucursal')->update(
+                       'DELETE t_empenios 
+                        FROM t_empenios 
+                        LEFT JOIN t_empenios_boleta_relacion ON t_empenios_boleta_relacion.t_empenios_id = t_empenios.id
+                        WHERE t_empenios_boleta_relacion.id IS NULL;'
+                    );
+                }
+                break;
+            case 't_empenios_boleta_relacion':
+                $TEmpeños = DB::connection('sucursal')->select(
+                    'SELECT DISTINCT t_empenios_boleta_relacion.t_boleta_id, t_empenios.id 
+                     FROM t_empenios_boleta_relacion 
+                     LEFT JOIN t_boleta ON t_empenios_boleta_relacion.t_boleta_id = t_boleta.id 
+                     LEFT JOIN t_empenios ON t_empenios_boleta_relacion.t_empenios_id = t_empenios.id 
+                     WHERE t_boleta.id IS NULL;'
+                );
+                if($TEmpeños){
+                    $affected = DB::connection('sucursal')->update(
+                        'DELETE t_empenios_boleta_relacion 
+                        FROM t_empenios_boleta_relacion 
+                        LEFT JOIN t_boleta ON t_empenios_boleta_relacion.t_boleta_id = t_boleta.id 
+                        LEFT JOIN t_empenios ON t_empenios_boleta_relacion.t_empenios_id = t_empenios.id 
+                        WHERE t_boleta.id IS NULL;'
+                    );
+                }
+                break;
+            case 't_empenios_metal':
+                $TEmpeños = DB::connection('sucursal')->select(
+                   'SELECT t_empenios_metal.* 
+                    FROM t_empenios_metal
+                    LEFT JOIN t_empenios_boleta_relacion ON t_empenios_boleta_relacion.t_empenios_id = t_empenios_metal.t_empenios_id
+                    WHERE t_empenios_boleta_relacion.id IS NULL;'
+                );
+                if($TEmpeños){
+                    $affected = DB::connection('sucursal')->update(
+                       'DELETE t_empenios_metal
+                        FROM    t_empenios_metal
+                        LEFT JOIN t_empenios_boleta_relacion ON t_empenios_boleta_relacion.t_empenios_id = t_empenios_metal.t_empenios_id
+                        WHERE t_empenios_boleta_relacion.id IS NULL;'
+                    );
+                }
+                break;
+            case 't_empenios_productos':
+                $TEmpeños = DB::connection('sucursal')->select(
+                    'SELECT t_empenios_productos.* 
+                     FROM t_empenios_productos
+                     LEFT JOIN t_empenios_boleta_relacion ON t_empenios_boleta_relacion.t_empenios_id = t_empenios_productos.t_empenios_id
+                     WHERE t_empenios_boleta_relacion.id IS NULL;'
+                );
+                if($TEmpeños){
+                    $affected = DB::connection('sucursal')->update(
+                        'DELETE t_empenios_productos
+                         FROM    t_empenios_productos
+                         LEFT JOIN t_empenios_boleta_relacion ON t_empenios_boleta_relacion.t_empenios_id = t_empenios_productos.t_empenios_id
+                         WHERE t_empenios_boleta_relacion.id IS NULL;'
+                    );
+                }
+                break;
+            case 't_comprador':
+                DB::connection('sucursal')->update("UPDATE `t_comprador` SET `rfc` = null WHERE rfc = 'xxx';");
+                DB::connection('sucursal')->update("UPDATE `t_comprador` SET `rfc` = null WHERE rfc = '';");
+                DB::connection('sucursal')->update("UPDATE `t_comprador` SET `ife` = null WHERE ife = 'xxx';");
+                DB::connection('sucursal')->update("UPDATE `t_comprador` SET `ife` = null WHERE ife = '';");
+                DB::connection('sucursal')->update("UPDATE `t_comprador` SET `curp` = null WHERE curp = 'xxx';");
+                DB::connection('sucursal')->update("UPDATE `t_comprador` SET `curp` = null WHERE curp = '';");
+                break;
+            default:
+                break;
+        }
+
+       
     }
     public function index(){
         $databaseName = DB::connection('sucursal')->getDatabaseName();
@@ -295,7 +410,6 @@ class MigrationController extends Controller
             >>> Se corrigue un error donde el contenido de un productos no se guardo
             🔃  UPDATE t_empenios_productos SET contenido = '1' WHERE t_empenios_productos.id = 236634;
 
-
             >>> con esta consulta se encuentra el empeño repetido
             SELECT t_empenios.id, COUNT(t_empenios_boleta_relacion.t_empenios_id ) as connteo FROM t_empenios_boleta_relacion LEFT JOIN t_empenios ON t_empenios_boleta_relacion.t_empenios_id = t_empenios.id GROUP BY t_empenios.id ORDER by COUNT(t_empenios_boleta_relacion.t_empenios_id ) DESC; 
             >>> se encontro que el t_empenio_id:236634 se repite en las boletas: (10571943, 10575026), 
@@ -307,33 +421,33 @@ class MigrationController extends Controller
             UPDATE `t_empenios_boleta_relacion` SET `t_empenios_id` = '236634' WHERE `t_empenios_boleta_relacion`.`id` = 236635; 
         
             >>> t_empenios_boleta_relacion :: verificamos las t_boleta_id que no existen en la tabla t_boletas (~825 registros)
-            SELECT DISTINCT t_empenios_boleta_relacion.t_boleta_id, t_empenios.id 
-            FROM t_empenios_boleta_relacion 
-            LEFT JOIN t_boleta ON t_empenios_boleta_relacion.t_boleta_id = t_boleta.id 
-            LEFT JOIN t_empenios ON t_empenios_boleta_relacion.t_empenios_id = t_empenios.id 
-            WHERE t_boleta.id IS NULL;
-            ❌ DELETE t_empenios_boleta_relacion 
-                FROM t_empenios_boleta_relacion 
-                LEFT JOIN t_boleta ON t_empenios_boleta_relacion.t_boleta_id = t_boleta.id 
-                LEFT JOIN t_empenios ON t_empenios_boleta_relacion.t_empenios_id = t_empenios.id 
-                WHERE t_boleta.id IS NULL; 
+             📌 SELECT DISTINCT t_empenios_boleta_relacion.t_boleta_id, t_empenios.id 
+                    FROM t_empenios_boleta_relacion 
+                    LEFT JOIN t_boleta ON t_empenios_boleta_relacion.t_boleta_id = t_boleta.id 
+                    LEFT JOIN t_empenios ON t_empenios_boleta_relacion.t_empenios_id = t_empenios.id 
+                    WHERE t_boleta.id IS NULL;
+             ❌ DELETE t_empenios_boleta_relacion 
+                    FROM t_empenios_boleta_relacion 
+                    LEFT JOIN t_boleta ON t_empenios_boleta_relacion.t_boleta_id = t_boleta.id 
+                    LEFT JOIN t_empenios ON t_empenios_boleta_relacion.t_empenios_id = t_empenios.id 
+                    WHERE t_boleta.id IS NULL; 
             
             >>> t_empenios :: borramos los empeños que no tienen relacion t_empenios_boleta_relacion (~824 registros)
-            SELECT t_empenios.*
-            FROM    t_empenios
-            LEFT JOIN t_empenios_boleta_relacion ON t_empenios_boleta_relacion.t_empenios_id = t_empenios.id
-            WHERE t_empenios_boleta_relacion.id IS NULL;
-            ❌ DELETE t_empenios 
-               FROM t_empenios 
-               LEFT JOIN t_empenios_boleta_relacion ON t_empenios_boleta_relacion.t_empenios_id = t_empenios.id
-               WHERE t_empenios_boleta_relacion.id IS NULL;
+             📌 SELECT t_empenios.*
+                 FROM    t_empenios
+                 LEFT JOIN t_empenios_boleta_relacion ON t_empenios_boleta_relacion.t_empenios_id = t_empenios.id
+                 WHERE t_empenios_boleta_relacion.id IS NULL;
+             ❌ DELETE t_empenios 
+                 FROM t_empenios 
+                 LEFT JOIN t_empenios_boleta_relacion ON t_empenios_boleta_relacion.t_empenios_id = t_empenios.id
+                 WHERE t_empenios_boleta_relacion.id IS NULL;
 
             >>> t_empenios_metal :: borramos los empeños que no tienen relacion t_empenios_boleta_relacion (~673 registros)
-            SELECT t_empenios_metal.* FROM t_empenios_metal 
+             📌 SELECT t_empenios_metal.* FROM t_empenios_metal 
               LEFT JOIN t_empenios ON t_empenios.id = t_empenios_metal.t_empenios_id WHERE t_empenios.id IS NULL;
-            SELECT t_empenios_metal.* FROM    t_empenios_metal
-              LEFT JOIN t_empenios_boleta_relacion ON t_empenios_boleta_relacion.t_empenios_id = t_empenios_metal.t_empenios_id
-            WHERE t_empenios_boleta_relacion.id IS NULL;
+             📌 SELECT t_empenios_metal.* FROM t_empenios_metal
+                LEFT JOIN t_empenios_boleta_relacion ON t_empenios_boleta_relacion.t_empenios_id = t_empenios_metal.t_empenios_id
+                WHERE t_empenios_boleta_relacion.id IS NULL;
              ❌ DELETE t_empenios_metal
                 FROM    t_empenios_metal
                 LEFT JOIN t_empenios_boleta_relacion ON t_empenios_boleta_relacion.t_empenios_id = t_empenios_metal.t_empenios_id
@@ -532,7 +646,7 @@ class MigrationController extends Controller
             DB::beginTransaction();
             try{
                 foreach ($oRegistros as $registro) {
-                    $num_sucursal = $registro->c_sucursal_id*1000;
+                    $num_sucursal = $registro->c_sucursal_id * 1000;
                     if($registro->rfc == ''){
                         $registro->rfc = $num_sucursal + $registro->id;
                     }
@@ -782,7 +896,7 @@ class MigrationController extends Controller
             DB::rollback();
             $status = 'error'; 
             $mesage = $e->getMessage();
-            dd($regsel, $mesage, $oRegistros);
+            dd($regsel, $mesage);
         }
 
         $num_registros_origen = $this->allTables[$table_selected]['reg_o'];

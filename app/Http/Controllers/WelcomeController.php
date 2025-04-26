@@ -43,27 +43,18 @@ class WelcomeController extends Controller
 
         $tables_db = Tables::all();
       
-        foreach($this->allTables as $key => $table){
+        foreach($tables_db as $table)
+        {
+            if($table->id == 13 || $table->id == 27)
+                continue;
 
-            $filePath = storage_path('app/public/bkp_' . $table['destino'].'.zip');
-            
-            $tables_db = $tables_db->where('id', $key)->first();
-            
-
-            $this->allTables[$key]['avance'] = $tables_db->avance;
+            $filePath = storage_path('app/public/bkp_' . $this->allTables[$table->id]['destino'].'.zip');
+       
+            $this->allTables[$table->id]['avance'] = $table->avance;
             if (file_exists($filePath)) {
-                // $file_size = round(filesize($filePath)/1024,1);
-                // if($file_size > 1024)
-                //     $file_size = round($file_size/1024,1).' MB';
-                // else
-                //     $file_size = $file_size.' KB';
-
-                $this->allTables[$key]['file_size'] = filesize($filePath);
-
-                $this->allTables[$key]['descarga'] = 1;
-
+                $this->allTables[$table->id]['file_size'] = filesize($filePath);
+                $this->allTables[$table->id]['descarga'] = 1;
             } 
-
         }
     }
     public function index()

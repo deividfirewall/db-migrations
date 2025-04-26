@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('t_demasias_pagadas', function (Blueprint $table) {
             $table->id();
             $table->date('fecha');
-            $table->decimal('capital_insoluto', 8, 2);
+            $table->decimal('capital_insoluto', 9, 2);
             $table->decimal('int_comision', 8, 2);
-            $table->decimal('precio_venta', 8, 2);
+            $table->decimal('precio_venta', 9, 2);
             $table->decimal('demasia', 8, 2);
             $table->decimal('demasia_efectivo', 8, 2);
             $table->decimal('demasia_cheque', 8, 2);

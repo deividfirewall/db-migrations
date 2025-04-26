@@ -100,6 +100,72 @@ class CatalogsController extends Controller
           UPDATE `cat_metal_precios` SET `precio_gramo_venta` = '1760',  `precio_gramo` = '1760'  WHERE `cat_metal_precios`.`id` = 1; 
           UPDATE `cat_metal_precios` SET `precio_gramo_venta` = '26.43', `precio_gramo` = '26.43' WHERE `cat_metal_precios`.`id` = 2;
          */
+        /* mp_ixcotel*
+
+            INSERT INTO `c_tipo_producto`(`id`, `tipo`) 
+            VALUES 
+            (144, 'DISPOSITIVO ELECTRONICO' ), 
+            (145, 'EQUIPOS SEMI INDUSTRIALES' ), 
+            (146, 'EQUIPOS ELECTRICOS' ); 
+
+            DELETE FROM c_productos WHERE `c_productos`.`id` = 349
+            UPDATE `c_productos` SET `nombre` = 'CAÑADA' WHERE `c_productos`.`id` = 342; 
+            UPDATE `c_productos` SET `nombre` = 'MIXTECA TRIQUI' WHERE `c_productos`.`id` = 343; 
+            UPDATE `c_productos` SET `nombre` = 'BICICLETA' WHERE `c_productos`.`id` = 348; 
+            UPDATE `c_productos` SET `c_tipo_producto_id` = '136' WHERE `c_productos`.`id` = 351; 
+            UPDATE `c_productos` SET `nombre` = 'CONSOLA XBOX' WHERE `c_productos`.`id` = 372; 
+
+            UPDATE `cat_product_subs` SET `subproducto` = 'MONTAÑA ' WHERE `cat_product_subs`.`id` = 75; 
+            UPDATE `c_sub_productos` SET `c_producto_id` = 193 WHERE c_producto_id = 191; 
+            DELETE FROM c_sub_productos WHERE `c_sub_productos`.`id` = 210
+
+            CREATE TABLE c_sub_productos_backup AS SELECT * FROM c_sub_productos;
+            CREATE TABLE t_empenios_backup AS SELECT * FROM t_empenios;
+
+            UPDATE c_sub_productos SET id = id + 1 WHERE id <= 597 AND id >= 377 ORDER BY id DESC; 
+            UPDATE t_empenios SET c_sub_productos_id = c_sub_productos_id + 1 WHERE c_sub_productos_id >= 377; 
+            UPDATE `c_cotiza_producto` SET c_sub_productos_id = c_sub_productos_id + 1 WHERE `c_sub_productos_id` >= 377; 
+
+            UPDATE c_sub_productos SET id = id + 1 WHERE id <= 598 AND id >= 508 ORDER BY id DESC; 
+            UPDATE t_empenios SET c_sub_productos_id = c_sub_productos_id + 1 WHERE c_sub_productos_id >= 508; 
+            UPDATE `c_cotiza_producto` SET c_sub_productos_id = c_sub_productos_id + 1 WHERE `c_sub_productos_id` >= 508; 
+
+            INSERT INTO `c_sub_productos` (`id`, `subproducto`, `c_producto_id`) VALUES ('508', 'ROYAL PRESTIGE', '341');
+
+            UPDATE `c_sub_productos` SET `subproducto` = 'GENERADOR DE LUZ A GASOLINA DE 3500 WTS a 8500 WTS' WHERE `c_sub_productos`.`id` = 493; 
+
+            DELETE FROM c_sub_productos WHERE `c_sub_productos`.`id` = 585
+            DELETE FROM c_sub_productos WHERE `c_sub_productos`.`id` = 586
+            
+            UPDATE c_sub_productos SET id = id - 2 WHERE id >= 587 AND id <= 599; 
+            UPDATE t_empenios SET c_sub_productos_id = c_sub_productos_id - 2 WHERE c_sub_productos_id >= 587; 
+            UPDATE `c_cotiza_producto` SET c_sub_productos_id = c_sub_productos_id - 2 WHERE `c_sub_productos_id` >= 587; 
+            
+            Cambio temporal de id de subproductos
+            596 por 332
+            UPDATE `t_empenios` SET `c_sub_productos_id` = '332' WHERE `t_empenios`.`id` = 2626; 
+            UPDATE `t_empenios` SET `c_sub_productos_id` = '332' WHERE `t_empenios`.`id` = 2627; 
+            597 por 471
+
+            agregamos la sucursal al id de los operadores
+            UPDATE u_operadores SET id = id + 33000; 
+            UPDATE t_boleta SET u_operador_id = u_operador_id + 33000; 
+            UPDATE t_boleta_cancelado  SET    t_boleta_cancelado.u_operador_id = t_boleta_cancelado.u_operador_id + 33000;
+            UPDATE t_caja_monto_operador  SET    t_caja_monto_operador.u_operadores_id = t_caja_monto_operador.u_operadores_id + 33000;
+            UPDATE t_concentrados  SET    t_concentrados.id_operador = t_concentrados.id_operador + 33000;
+            UPDATE t_descuentos  SET    t_descuentos.id_operador = t_descuentos.id_operador + 33000;
+            UPDATE t_reposicion  SET    t_reposicion.id_usuario = t_reposicion.id_usuario + 33000;
+            UPDATE t_suspencion_dias  SET    t_suspencion_dias.u_operadores_id = t_suspencion_dias.u_operadores_id + 33000;
+            UPDATE r_ro_cg12  SET    r_ro_cg12.id_operador = r_ro_cg12.id_operador + 33000;
+
+
+
+         */
+
+         /* mp_xoxo26
+            DROP TABLE `temporal`, `t_boleta_migracion`, `t_control_interno_cancelado`, `t_migration_missing`, h_rp_subasta;
+            DROP TABLE `rg_dda07`, `rg_ddd04`, `rg_de02`, `rg_dra06`, `rg_drd03`;
+         */
 
     }
 
@@ -159,12 +225,12 @@ class CatalogsController extends Controller
                 ];
             }
 
-            if($cat_SUCURSAL[$i]->clave != $cat_SIEMP[$i]->clave)
+            if($cat_SUCURSAL[$i]->clave != $cat_SIEMP[$i]->id)
             {
                 Catalogs::create([
                     'catalog' => 'cat_loc_estados',
                     'catalog_id' => '10',
-                    'diference' => $cat_SUCURSAL[$i]->clave.'}≠{'.$cat_SIEMP[$i]->clave,
+                    'diference' => $cat_SUCURSAL[$i]->clave.'}≠{'.$cat_SIEMP[$i]->id,
                     'register_sucur_id' => $i,
                     'register_siemp_id' => $i,
                     'fixed' => 'clave'
@@ -488,50 +554,93 @@ class CatalogsController extends Controller
 
         Catalogs::where('catalog_id', 16)->delete();
 
-        for ($i = 0; $i < $reg_mayor; $i++)
+        foreach($cat_SIEMP as $registroSIEMP)
         {
-            if ($i > $num_reg_SUCURSAL-1)
-            {
-                $cat_SUCURSAL[$i] = (object) [
-                    'id' => '-1',
-                    'nombre' => '-',
-                    'c_tipo_producto_id' => '-',
-                ];
-            }
+            $registroSUC = $cat_SUCURSAL->where('id', $registroSIEMP->id)->first();
 
-            if ($i > $num_reg_SIEMP-1)
-            {
-                $cat_SIEMP[$i] = (object) [
-                    'id' => '-1',
-                    'producto' => '-',
-                    'cat_product_tipo_id' => '-',
-                ];
-            }
-            if($cat_SUCURSAL[$i]->nombre != $cat_SIEMP[$i]->producto)
+            if($registroSUC == null)
             {
                 Catalogs::create([
-                    'catalog' => 'cat_productos',
+                    'catalog' => 'c_productos',
                     'catalog_id' => '16',
-                    'diference' => $cat_SUCURSAL[$i]->nombre.' ≠ '.$cat_SIEMP[$i]->producto,
-                    'register_sucur_id' => $cat_SUCURSAL[$i]->id,
-                    'register_siemp_id' => $cat_SIEMP[$i]->id,
-                    'fixed' => 'producto'
+                    'diference' => 'Registro no encontrado en SUCURSAL',
+                    'register_sucur_id' => null,
+                    'register_siemp_id' => $registroSIEMP->id,
+                    'fixed' => 'id'
                 ]);
                 $count_diferences++;
-            }
-            if($cat_SUCURSAL[$i]->c_tipo_producto_id != $cat_SIEMP[$i]->cat_product_tipo_id)
-            {
-                Catalogs::create([
-                    'catalog' => 'cat_productos',
-                    'catalog_id' => '16',
-                    'diference' => $cat_SUCURSAL[$i]->c_tipo_producto_id.' ≠ '.$cat_SIEMP[$i]->cat_product_tipo_id,
-                    'register_sucur_id' => $cat_SUCURSAL[$i]->id,
-                    'register_siemp_id' => $cat_SIEMP[$i]->id,
-                    'fixed' => 'cat_product_tipo_id'
-                ]);
-                $count_diferences++;
+            }else{
+                if($registroSUC->nombre != $registroSIEMP->producto)
+                {
+                    Catalogs::create([
+                        'catalog' => 'c_productos',
+                        'catalog_id' => '16',
+                        'diference' => $registroSUC->nombre.' ≠ '.$registroSIEMP->producto,
+                        'register_sucur_id' => $registroSUC->id,
+                        'register_siemp_id' => $registroSIEMP->id,
+                        'fixed' => 'producto'
+                    ]);
+                    $count_diferences++;
+                }
+                if($registroSUC->c_tipo_producto_id != $registroSIEMP->cat_product_tipo_id)
+                {
+                    Catalogs::create([
+                        'catalog' => 'c_productos',
+                        'catalog_id' => '16',
+                        'diference' => $registroSUC->c_tipo_producto_id.' ≠ '.$registroSIEMP->cat_product_tipo_id,
+                        'register_sucur_id' => $registroSUC->id,
+                        'register_siemp_id' => $registroSIEMP->id,
+                        'fixed' => 'cat_product_tipo_id'
+                    ]);
+                    $count_diferences++;
+                }
             }
         }
+
+        foreach($cat_SUCURSAL as $registroSUC)
+        {
+            $registroSIEMP = $cat_SIEMP->where('id', $registroSUC->id)->first();
+
+            if($registroSIEMP == null)
+            {
+                Catalogs::create([
+                    'catalog' => 'cat_productos',
+                    'catalog_id' => '16',
+                    'diference' => 'Registro no encontrado en SIEMP',
+                    'register_sucur_id' => $registroSUC->id,
+                    'register_siemp_id' => null,
+                    'fixed' => 'id'
+                ]);
+                $count_diferences++;
+            }else{
+                if($registroSUC->nombre != $registroSIEMP->producto)
+                {
+                    Catalogs::create([
+                        'catalog' => 'cat_productos',
+                        'catalog_id' => '16',
+                        'diference' => $registroSUC->nombre.' ≠ '.$registroSIEMP->producto,
+                        'register_sucur_id' => $registroSUC->id,
+                        'register_siemp_id' => $registroSIEMP->id,
+                        'fixed' => 'producto'
+                    ]);
+                    $count_diferences++;
+                }
+                if($registroSUC->c_tipo_producto_id != $registroSIEMP->cat_product_tipo_id)
+                {
+                    Catalogs::create([
+                        'catalog' => 'cat_productos',
+                        'catalog_id' => '16',
+                        'diference' => $registroSUC->c_tipo_producto_id.' ≠ '.$registroSIEMP->cat_product_tipo_id,
+                        'register_sucur_id' => $registroSUC->id,
+                        'register_siemp_id' => $registroSIEMP->id,
+                        'fixed' => 'cat_product_tipo_id'
+                    ]);
+                    $count_diferences++;
+                }
+            }
+        }
+
+
         if($count_diferences == 0)
         {
             Catalogs::create([
