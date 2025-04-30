@@ -9,9 +9,12 @@ use Illuminate\Support\Facades\DB;
 class WelcomeController extends Controller
 {
     public $allTables = [];
+    public $databaseName = '';
 
     public function __construct()
     {
+        $this->databaseName = DB::connection('sucursal')->getDatabaseName();
+
         $this->allTables = [
 
             1 => ['origen'  => 'u_operadores',              'file_size'=> 0, 'destino' => 'users',                 'avance'=> 0, 'descarga'=> 0],
@@ -48,7 +51,7 @@ class WelcomeController extends Controller
             if($table->id == 13 || $table->id == 27)
                 continue;
 
-            $filePath = storage_path('app/public/bkp_' . $this->allTables[$table->id]['destino'].'.zip');
+            $filePath = storage_path('app/public/'.$this->databaseName.'/bkp_' . $this->allTables[$table->id]['destino'].'.zip');
        
             $this->allTables[$table->id]['avance'] = $table->avance;
             if (file_exists($filePath)) {
@@ -59,7 +62,6 @@ class WelcomeController extends Controller
     }
     public function index()
     {
-        $databaseName = DB::connection('sucursal')->getDatabaseName();
         
         $grupo1_file = storage_path('app/public/bkp_grupo1.zip');
         $grupo2_file = storage_path('app/public/bkp_grupo2.zip');
@@ -120,6 +122,8 @@ class WelcomeController extends Controller
         ];
 
         $allTables = $this->allTables;
+        $databaseName = $this->databaseName;
+
         return view('welcome', compact('databaseName', 'allTables', 'grupos'));
     }
 }
