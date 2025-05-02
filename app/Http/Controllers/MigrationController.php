@@ -982,6 +982,7 @@ class MigrationController extends Controller
                 ->orderBy('t_boleta.u_pignorante_id','asc')   
                 ->orderBy('u_pignotarios_solidarios.pignorante_solidario')   
                 ->get();
+
         }else{
             $oRegistros = DB::connection('sucursal')->table($oTable)->distinct()
             ->select('t_boleta.u_pignorante_id','u_pignotarios_solidarios.pignorante_solidario')
@@ -990,14 +991,12 @@ class MigrationController extends Controller
             ->orderBy('t_boleta.u_pignorante_id','asc')
             ->orderBy('u_pignotarios_solidarios.pignorante_solidario')   
             ->get();
-
         }
-
         // El resultado real de $listaPigSolidarios en de 31,829 registros,
         // pero al realizar el pluck los registros bajan a 30,092, que equivalen a 1,737 registros menos; 
         // debido a que la llave del pluck(pignorante_solidario) solo mantiene 1 nombre parecido
         // lo ideal es usar el metodo get() para obtener todos los registros
- 
+
         if($oRegistros->count()){
             DB::beginTransaction();
             try{
@@ -1018,7 +1017,7 @@ class MigrationController extends Controller
                 dd( $regsel,$mesage);
             }
         }else{
-           
+
             $lastTBoleta = DB::table('t_boletas')->whereNotNull('pignorante_solidario_id')->orderBy('pignorante_id', 'desc')->first();
 
             if(!$lastTBoleta)
@@ -1032,6 +1031,7 @@ class MigrationController extends Controller
                                  ->orderBy('pignorante_id','asc')
                                  ->get();
 
+        
             DB::beginTransaction();
             try{
                 $counter = 0;
@@ -1065,11 +1065,12 @@ class MigrationController extends Controller
                     //     Log::info('El pignorante solidario:'.$boletaSolidario->pignorante_solidario.' tiene dos pignorantes diferentes:', $pignoranteList);
                     // }
 
-                    PignoranteSolidario::where('id', $PSolidario->id)->update([
+                    PignoranteSolidario::where('id', $PSolidario->id)
+                        ->update([
                             'created_at' => $created_at,
                             'updated_at' => $updated_at,
                         ]);
-    
+
                     $counter++;
                     if ($counter % 100 == 0) {
                         DB::commit();
@@ -1857,27 +1858,13 @@ class MigrationController extends Controller
 
         return redirect('migrations.index')->with($status, $mesage);
     }
-    private function migraRpt01Diario($table_selected){
-
-    }
-    private function migraRpt02Diario($table_selected){
-
-    }
-    private function migraRpt03Diario($table_selected){
-
-    }
-    private function migraTBoletaCancels($table_selected){
-
-    }
-    private function migraTCtrlIntCancels($table_selected){
-
-    }
-    private function migraTDescuentos($table_selected){
-
-    }
-    private function migraTTickets($table_selected){
-
-    }
+    private function migraRpt01Diario($table_selected){    }
+    private function migraRpt02Diario($table_selected){    }
+    private function migraRpt03Diario($table_selected){    }
+    private function migraTBoletaCancels($table_selected){    }
+    private function migraTCtrlIntCancels($table_selected){     }
+    private function migraTDescuentos($table_selected){    }
+    private function migraTTickets($table_selected){    }
 
 
 }

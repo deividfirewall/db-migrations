@@ -12,7 +12,8 @@ Artisan::command('inspire', function () {
 
 
 Schedule::command(MigrationsCommand::class)
-        ->everyMinute()
+        // ->everyMinute()
+        ->everyFiveMinutes()
         // ->hourly()
         ->appendOutputTo('./storage/logs/migrations.log')
         ->after(function () {

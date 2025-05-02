@@ -1,18 +1,4 @@
-------------------------------------------------- u_operadores
--- Operadores que no estan en t_boleta
-    SELECT
-        u_operadores.id
-    FROM
-        u_operadores
-    LEFT JOIN t_boleta ON t_boleta.u_operador_id = u_operadores.id
-    WHERE t_boleta.u_operador_id IS null
-    ORDER BY u_operadores.id
-
-SELECT DISTINCT u_operadores.id, u_operadores.nombre, u_operadores.usuario FROM u_operadores INNER JOIN t_boleta ON t_boleta.u_operador_id = u_operadores.id ORDER BY u_operadores.id; 
-
-
-
-/*  ELIMINAMOS 29 TABLAS INNECESARIAS         
+-- ELIMINAMOS 29 TABLAS INNECESARIAS         
          DROP TABLE 
             c_cotiza_producto_08112015, 
             c_fecha_reporte, 
@@ -43,72 +29,96 @@ SELECT DISTINCT u_operadores.id, u_operadores.nombre, u_operadores.usuario FROM 
             t_empenios_metal_2014_12_12, 
             t_empenios_productos_2014_12_12, 
             t_migration_missing, 
-            t_subasta_copy;
-        */
+            t_subasta_copy,
+            u_directores;
+
+------------------------------------------------- u_operadores
+-- Operadores que no estan en t_boleta
+    SELECT        u_operadores.id    FROM        u_operadores
+    LEFT JOIN t_boleta ON t_boleta.u_operador_id = u_operadores.id
+    WHERE t_boleta.u_operador_id IS null
+    ORDER BY u_operadores.id
+
+SELECT DISTINCT u_operadores.id, u_operadores.nombre, u_operadores.usuario FROM u_operadores INNER JOIN t_boleta ON t_boleta.u_operador_id = u_operadores.id ORDER BY u_operadores.id; 
+
+
+    UPDATE u_operadores SET id = id + 150000
+    UPDATE t_boleta     SET     u_operador_id = u_operador_id + 150000
+    UPDATE h_t_boleta   SET   u_operador_id = u_operador_id + 150000 WHERE 
+    UPDATE t_boleta_cancelado  SET    u_operador_id = u_operador_id + 150000
+    UPDATE t_caja_monto_operador  SET    u_operadores_id = u_operadores_id + 150000
+    UPDATE t_suspencion_dias  SET    u_operadores_id = u_operadores_id + 150000
+    UPDATE t_concentrados  SET    id_operador = id_operador + 150000
+    UPDATE t_descuentos  SET    id_operador = id_operador + 150000
+    UPDATE r_ro_cg12    SET    id_operador = id_operador + 150000
+    UPDATE t_reposicion  SET    id_usuario = id_usuario + 150000
+
+
+
+SHOW PROCESSLIST;
+
+
+------------------------------------------------- u_pignotarios
+    SELECT * FROM `u_pignotarios` WHERE nombre LIKE "%‘%";          
+    UPDATE u_pignotarios SET nombre = TRIM(nombre);
+    UPDATE u_pignotarios SET nombre = REPLACE(nombre, '  ', ' ');
+    UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'ÃƒÂƒÃ‚', 'ª'); 
+    UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'ÂƒÃƒÂ‚', 'ª'); 
+    UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'ÃƒÂ‚', 'ª'); 
+    UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'Ã‚', 'ª'); 
+    UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'Ã‘', 'ª');
+    UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'Â‘', 'ª');
+    UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'Ñ‘', 'ª'); 
+    UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'N‘', 'ª');             
+    UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'ªª', 'º');             
+    UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'º', 'Ñ'); 
+
+-- 
+    SELECT * FROM `u_pignotarios` WHERE direccion LIKE "%‘%";           
+    UPDATE u_pignotarios SET direccion = REPLACE(direccion, 'ÃƒÂƒÃ‚', 'ª');
+    UPDATE u_pignotarios SET direccion = REPLACE(direccion, 'ÃƒÂ‘', 'ª');
+    UPDATE u_pignotarios SET direccion = REPLACE(direccion, 'Ã‚', 'ª'); 
+    UPDATE u_pignotarios SET direccion = REPLACE(direccion, 'Â‘', 'ª'); 
+    UPDATE u_pignotarios SET direccion = REPLACE(direccion, 'Ã‘', 'ª'); 
+    UPDATE u_pignotarios SET direccion = REPLACE(direccion, 'ªª', 'ª'); 
+    UPDATE u_pignotarios SET direccion = REPLACE(direccion, 'ª', 'Ñ'); 
+
+-- VSCRES51120420M500  ::: REPETIDO (13735 --> 21291)   
+    SELECT * FROM u_pignotarios WHERE ife = 'VSCRES51120420M500'; 
+    UPDATE u_pignotarios SET ife = 'VSCRES51120420M500_BORRAR' WHERE u_pignotarios.id = 13735 AND u_pignotarios.ife = 'VSCRES51120420M500'; 
+    UPDATE u_pignotarios SET telefono = '9512096237' WHERE u_pignotarios.id = 21291 AND u_pignotarios.ife = 'VSCRES51120420M500'; 
+    UPDATE h_t_boleta SET u_pignorante_id = 21291 WHERE u_pignorante_id = 13735; 
+    UPDATE t_boleta SET u_pignorante_id = 21291 WHERE u_pignorante_id = 13735; 
+    UPDATE t_empenios SET u_pignorante_id = 21291 WHERE u_pignorante_id = 13735; 
+    UPDATE t_boleta_cancelado SET u_pignorante_id = 21291 WHERE u_pignorante_id = 13735; 
     
-        /* u_pignotarios: Antes de migrar, se debera de ejecutar lo siguiente en la base de datos origen
-            SELECT * FROM `u_pignotarios` WHERE nombre LIKE "%‘%";          SON 409 REGISTROS
-            UPDATE u_pignotarios SET nombre = TRIM(nombre);
-            UPDATE u_pignotarios SET nombre = REPLACE(nombre, '  ', ' ');
-            UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'ÃƒÂƒÃ‚', 'ª'); 
-            UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'ÂƒÃƒÂ‚', 'ª'); 
-            UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'ÃƒÂ‚', 'ª'); 
-            UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'Ã‚', 'ª'); 
-            UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'Ã‘', 'ª');
-            UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'Â‘', 'ª');
-            UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'Ñ‘', 'ª'); 
-            UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'N‘', 'ª'); 
-            
-            UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'ªª', 'º');             
-            UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'º', 'Ñ'); 
+    MZCRMR86120120M300  ::: REPETIDO   (22870 --> 23996)
+    SELECT * FROM u_pignotarios WHERE ife = 'MZCRMR86120120M300'; 
+    UPDATE u_pignotarios SET ife = 'MZCRMR86120120M300_BORRAR' WHERE u_pignotarios.id = 22870 AND u_pignotarios.ife = 'MZCRMR86120120M300';  
+    UPDATE h_t_boleta SET u_pignorante_id = 23996 WHERE u_pignorante_id = 22870; 
+    UPDATE t_boleta SET u_pignorante_id = 23996 WHERE u_pignorante_id = 22870; 
+    UPDATE t_empenios SET u_pignorante_id = 23996 WHERE u_pignorante_id = 22870; 
+    UPDATE t_boleta_cancelado SET u_pignorante_id = 23996 WHERE u_pignorante_id = 22870;
 
+    GRGRCC85041220M600  ::: REPETIDO (5641 --> 2879)
+    SELECT * FROM u_pignotarios WHERE ife = 'GRGRCC85041220M600'; 
+    UPDATE u_pignotarios SET ife = 'GRGRCC85041220M600_BORRAR' WHERE u_pignotarios.id = 5641 AND u_pignotarios.ife = 'GRGRCC85041220M600'; 
+    UPDATE h_t_boleta SET u_pignorante_id = 2879 WHERE u_pignorante_id = 5641; 
+    UPDATE t_boleta SET u_pignorante_id = 2879 WHERE u_pignorante_id = 5641; 
+    UPDATE t_empenios SET u_pignorante_id = 2879 WHERE u_pignorante_id = 5641; 
+    UPDATE t_boleta_cancelado SET u_pignorante_id = 2879 WHERE u_pignorante_id = 5641; 
 
-            SELECT * FROM `u_pignotarios` WHERE direccion LIKE "%‘%";           SON 404 REGISTROS
-            UPDATE u_pignotarios SET direccion = REPLACE(direccion, 'ÃƒÂƒÃ‚', 'ª');
-            UPDATE u_pignotarios SET direccion = REPLACE(direccion, 'ÃƒÂ‘', 'ª');
-            UPDATE u_pignotarios SET direccion = REPLACE(direccion, 'Ã‚', 'ª'); 
-            UPDATE u_pignotarios SET direccion = REPLACE(direccion, 'Â‘', 'ª'); 
-            UPDATE u_pignotarios SET direccion = REPLACE(direccion, 'Ã‘', 'ª'); 
-            UPDATE u_pignotarios SET direccion = REPLACE(direccion, 'ªª', 'ª'); 
-            UPDATE u_pignotarios SET direccion = REPLACE(direccion, 'ª', 'Ñ'); 
+    MRGRCR63081520M400  >>> Cp MUY LARGO
+    SELECT * FROM u_pignotarios WHERE ife = 'MRGRCR63081520M400'; 
+    UPDATE `u_pignotarios` SET `cp` = '68150' WHERE `u_pignotarios`.`id` = 28228 AND `u_pignotarios`.`ife` = 'MRGRCR63081520M400'; 
 
-            
-            VSCRES51120420M500  ::: REPETIDO (13735 --> 21291)   
-            SELECT * FROM u_pignotarios WHERE ife = 'VSCRES51120420M500'; 
-            UPDATE u_pignotarios SET ife = 'VSCRES51120420M500_BORRAR' WHERE u_pignotarios.id = 13735 AND u_pignotarios.ife = 'VSCRES51120420M500'; 
-            UPDATE u_pignotarios SET telefono = '9512096237' WHERE u_pignotarios.id = 21291 AND u_pignotarios.ife = 'VSCRES51120420M500'; 
-            UPDATE h_t_boleta SET u_pignorante_id = 21291 WHERE u_pignorante_id = 13735; 
-            UPDATE t_boleta SET u_pignorante_id = 21291 WHERE u_pignorante_id = 13735; 
-            UPDATE t_empenios SET u_pignorante_id = 21291 WHERE u_pignorante_id = 13735; 
-            UPDATE t_boleta_cancelado SET u_pignorante_id = 21291 WHERE u_pignorante_id = 13735; 
-            
-            MZCRMR86120120M300  ::: REPETIDO   (22870 --> 23996)
-            SELECT * FROM u_pignotarios WHERE ife = 'MZCRMR86120120M300'; 
-            UPDATE u_pignotarios SET ife = 'MZCRMR86120120M300_BORRAR' WHERE u_pignotarios.id = 22870 AND u_pignotarios.ife = 'MZCRMR86120120M300';  
-            UPDATE h_t_boleta SET u_pignorante_id = 23996 WHERE u_pignorante_id = 22870; 
-            UPDATE t_boleta SET u_pignorante_id = 23996 WHERE u_pignorante_id = 22870; 
-            UPDATE t_empenios SET u_pignorante_id = 23996 WHERE u_pignorante_id = 22870; 
-            UPDATE t_boleta_cancelado SET u_pignorante_id = 23996 WHERE u_pignorante_id = 22870;
-
-            GRGRCC85041220M600  ::: REPETIDO (5641 --> 2879)
-            SELECT * FROM u_pignotarios WHERE ife = 'GRGRCC85041220M600'; 
-            UPDATE u_pignotarios SET ife = 'GRGRCC85041220M600_BORRAR' WHERE u_pignotarios.id = 5641 AND u_pignotarios.ife = 'GRGRCC85041220M600'; 
-            UPDATE h_t_boleta SET u_pignorante_id = 2879 WHERE u_pignorante_id = 5641; 
-            UPDATE t_boleta SET u_pignorante_id = 2879 WHERE u_pignorante_id = 5641; 
-            UPDATE t_empenios SET u_pignorante_id = 2879 WHERE u_pignorante_id = 5641; 
-            UPDATE t_boleta_cancelado SET u_pignorante_id = 2879 WHERE u_pignorante_id = 5641; 
-
-            MRGRCR63081520M400  >>> Cp MUY LARGO
-            SELECT * FROM u_pignotarios WHERE ife = 'MRGRCR63081520M400'; 
-            UPDATE `u_pignotarios` SET `cp` = '68150' WHERE `u_pignotarios`.`id` = 28228 AND `u_pignotarios`.`ife` = 'MRGRCR63081520M400'; 
-
-        */
-        /* u_pignotarios_solidarios
-            🔃 actualizamos todo a mayusculas, quitamos espacions dobles y eliminamos espacion en blanco al inicio y al final de los nombres
-              UPDATE u_pignotarios_solidarios SET pignorante_solidario = UPPER(pignorante_solidario); 
-              UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, '  ', ' '); 
-              UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'NADIE', ''); 
-              UPDATE u_pignotarios_solidarios SET pignorante_solidario = TRIM(pignorante_solidario); 
+        
+-------------------------------------------------  u_pignotarios_solidarios
+-- 🔃 actualizamos todo a mayusculas, quitamos espacions dobles y eliminamos espacion en blanco al inicio y al final de los nombres
+    UPDATE u_pignotarios_solidarios SET pignorante_solidario = UPPER(pignorante_solidario); 
+    UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, '  ', ' '); 
+    UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'NADIE', ''); 
+    UPDATE u_pignotarios_solidarios SET pignorante_solidario = TRIM(pignorante_solidario); 
 
             >>> Revisamos los registros de pignorante_solidarios sean nombres invalidos, para ser eliminados
             ❌  SELECT pignorante_solidario, COUNT(t_boleta_id) FROM u_pignotarios_solidarios WHERE LENGTH(pignorante_solidario) < 9 GROUP BY pignorante_solidario; 

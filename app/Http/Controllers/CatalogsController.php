@@ -22,9 +22,7 @@ class CatalogsController extends Controller
             11 =>['origen'=>'c_municipios', 'reg_o'=>DB::connection('sucursal')->table('c_municipios')->count()
                       ,'destino'=>'cat_loc_municipios','reg_d'=>DB::table('cat_loc_municipios')->count()
                       ,'avance'=>'0'],
-            12 =>['origen'  =>'c_tipo_metal', 'reg_o'=>DB::connection('sucursal')->table('c_tipo_metal')->count()
-                      ,'destino' =>'cat_metal_tipos','reg_d'=>DB::table('cat_metal_tipos')->count()
-                      ,'avance'=>'0'],
+            
             13 =>['origen'=>'c_precio_metal', 'reg_o'=>DB::connection('sucursal')->table('c_precio_metal')->count()
                       ,'destino'=>'cat_metal_precios','reg_d'=>DB::table('cat_metal_precios')->count()
                       ,'avance'=>'0'],
@@ -175,7 +173,6 @@ class CatalogsController extends Controller
         {
             case 10:    $this->compareEstados($catalogoId);               break;
             case 11:    $this->compareMunicipios($catalogoId);            break;
-            case 12:    $this->compareTiposMetal($catalogoId);            break;
             case 13:    $this->comparePreciosMetal($catalogoId);          break;
             case 14:    $this->compareCotizaMetales($catalogoId);         break;
             case 15:    $this->compareTiposProducto($catalogoId);         break;
@@ -184,14 +181,12 @@ class CatalogsController extends Controller
             case 18:    $this->compareCotizaProductos($catalogoId);       break;
             case 19:    $this->compareTiposPrestamo($catalogoId);         break;
             case 20:    $this->compareTiposPrestamoSucursal($catalogoId); break;
-            case 21:    $this->compareStatusEmpenio($catalogoId);         break;
         }
 
         return redirect()->route('catalogs.index');
     }
 
-    private function compareEstados($cat_id)
-    {
+    private function compareEstados($cat_id){
         $count_diferences = 0;
         $cat_SUCURSAL = DB::connection('sucursal')->table($this->allCatalogs[$cat_id]['origen'])->get();
         $num_reg_SUCURSAL = count($cat_SUCURSAL);
@@ -252,8 +247,7 @@ class CatalogsController extends Controller
             ]);
         }
     }
-    private function compareMunicipios($cat_id)
-    {
+    private function compareMunicipios($cat_id){
         $count_diferences = 0;
 
         $cat_SUCURSAL = DB::connection('sucursal')->table($this->allCatalogs[$cat_id]['origen'])->get();
@@ -339,11 +333,8 @@ class CatalogsController extends Controller
                 'fixed' => 'SINCRONIZADO'
             ]);
         }
-     }
-    private function compareTiposMetal($cat_id)
-    {    }
-    private function comparePreciosMetal($cat_id)
-    {
+    }   
+    private function comparePreciosMetal($cat_id){
         $count_diferences = 0;
 
         $cat_SUCURSAL = DB::connection('sucursal')->table($this->allCatalogs[$cat_id]['origen'])->get();
@@ -412,8 +403,7 @@ class CatalogsController extends Controller
             ]);
         }
     }
-    private function compareCotizaMetales($cat_id)
-    {
+    private function compareCotizaMetales($cat_id){
         $count_diferences = 0;
 
         $cat_SUCURSAL = DB::connection('sucursal')->table($this->allCatalogs[$cat_id]['origen'])->get();
@@ -483,8 +473,7 @@ class CatalogsController extends Controller
             ]);
         }
     }
-    private function compareTiposProducto($cat_id)
-    {
+    private function compareTiposProducto($cat_id){
         $count_diferences = 0;
 
         $cat_SUCURSAL = DB::connection('sucursal')->table($this->allCatalogs[$cat_id]['origen'])->get();
@@ -540,8 +529,7 @@ class CatalogsController extends Controller
             ]);
         }
     }
-    private function compareProductos($cat_id)
-    {
+    private function compareProductos($cat_id){
         $count_diferences = 0;
 
         $cat_SUCURSAL = DB::connection('sucursal')->table($this->allCatalogs[$cat_id]['origen'])->get();
@@ -653,8 +641,7 @@ class CatalogsController extends Controller
             ]);
         }
     }
-    private function compareSubProductos($cat_id)
-    {
+    private function compareSubProductos($cat_id){
         $count_diferences = 0;
 
         $cat_SUCURSAL = DB::connection('sucursal')->table($this->allCatalogs[$cat_id]['origen'])->get();
@@ -723,8 +710,7 @@ class CatalogsController extends Controller
             ]);
         }
     }
-    private function compareCotizaProductos($cat_id)
-    {
+    private function compareCotizaProductos($cat_id){
         $count_diferences = 0;
 
         $cat_SUCURSAL = DB::connection('sucursal')->table($this->allCatalogs[$cat_id]['origen'])->get();
@@ -1038,5 +1024,4 @@ class CatalogsController extends Controller
         }
 
     }
-    private function compareStatusEmpenio($cat_id){}
 }
