@@ -43,10 +43,10 @@ SELECT DISTINCT u_operadores.id, u_operadores.nombre, u_operadores.usuario FROM 
 
 
     UPDATE u_operadores SET id = id + 150000
-    UPDATE t_boleta     SET     u_operador_id = u_operador_id + 150000
-    UPDATE h_t_boleta   SET   u_operador_id = u_operador_id + 150000 WHERE 
+    UPDATE    t_boleta  SET    u_operador_id = u_operador_id + 150000   WHERE    u_operador_id < 150000 LIMIT 100000;
+    UPDATE h_t_boleta SET u_operador_id = u_operador_id + 150000 WHERE u_operador_id < 150000 LIMIT 200000; 
     UPDATE t_boleta_cancelado  SET    u_operador_id = u_operador_id + 150000
-    UPDATE t_caja_monto_operador  SET    u_operadores_id = u_operadores_id + 150000
+    UPDATE t_caja_monto_operador SET u_operadores_id = u_operadores_id + 150000 WHERE u_operadores_id < 150000 LIMIT 200000;
     UPDATE t_suspencion_dias  SET    u_operadores_id = u_operadores_id + 150000
     UPDATE t_concentrados  SET    id_operador = id_operador + 150000
     UPDATE t_descuentos  SET    id_operador = id_operador + 150000
@@ -54,168 +54,152 @@ SELECT DISTINCT u_operadores.id, u_operadores.nombre, u_operadores.usuario FROM 
     UPDATE t_reposicion  SET    id_usuario = id_usuario + 150000
 
 
-
 SHOW PROCESSLIST;
 
+------------------------------------------------- u_pignotarios 
+begin section
 
-------------------------------------------------- u_pignotarios
-    SELECT * FROM `u_pignotarios` WHERE nombre LIKE "%‘%";          
+ SELECT * FROM `u_pignotarios` WHERE nombre LIKE "%‘%";          
     UPDATE u_pignotarios SET nombre = TRIM(nombre);
-    UPDATE u_pignotarios SET nombre = REPLACE(nombre, '  ', ' ');
-    UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'ÃƒÂƒÃ‚', 'ª'); 
-    UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'ÂƒÃƒÂ‚', 'ª'); 
-    UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'ÃƒÂ‚', 'ª'); 
+    UPDATE u_pignotarios SET nombre = REPLACE(nombre, '  ', ' ');           -- x5
+    UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'Ãƒ', 'ª'); 
+    UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'Âƒ', 'ª'); 
     UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'Ã‚', 'ª'); 
+    UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'Â‚', 'ª'); 
     UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'Ã‘', 'ª');
     UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'Â‘', 'ª');
-    UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'Ñ‘', 'ª'); 
-    UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'N‘', 'ª');             
-    UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'ªª', 'º');             
-    UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'º', 'Ñ'); 
-
--- 
+    UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'N‘', 'ª'); 
+    UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'Ñ‘', 'ª');             
+    UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'ªª', 'ª');             -- x 5
+    UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'ª', 'Ñ'); 
+ -- 
     SELECT * FROM `u_pignotarios` WHERE direccion LIKE "%‘%";           
-    UPDATE u_pignotarios SET direccion = REPLACE(direccion, 'ÃƒÂƒÃ‚', 'ª');
-    UPDATE u_pignotarios SET direccion = REPLACE(direccion, 'ÃƒÂ‘', 'ª');
+    UPDATE u_pignotarios SET direccion = REPLACE(direccion, 'Âƒ', 'ª');
+    UPDATE u_pignotarios SET direccion = REPLACE(direccion, 'Ãƒ', 'ª');
     UPDATE u_pignotarios SET direccion = REPLACE(direccion, 'Ã‚', 'ª'); 
     UPDATE u_pignotarios SET direccion = REPLACE(direccion, 'Â‘', 'ª'); 
     UPDATE u_pignotarios SET direccion = REPLACE(direccion, 'Ã‘', 'ª'); 
     UPDATE u_pignotarios SET direccion = REPLACE(direccion, 'ªª', 'ª'); 
     UPDATE u_pignotarios SET direccion = REPLACE(direccion, 'ª', 'Ñ'); 
 
--- VSCRES51120420M500  ::: REPETIDO (13735 --> 21291)   
+ -- VSCRES51120420M500  ::: REPETIDO (13735 --> 21291)   
     SELECT * FROM u_pignotarios WHERE ife = 'VSCRES51120420M500'; 
-    UPDATE u_pignotarios SET ife = 'VSCRES51120420M500_BORRAR' WHERE u_pignotarios.id = 13735 AND u_pignotarios.ife = 'VSCRES51120420M500'; 
     UPDATE u_pignotarios SET telefono = '9512096237' WHERE u_pignotarios.id = 21291 AND u_pignotarios.ife = 'VSCRES51120420M500'; 
+    UPDATE u_pignotarios SET ife = 'DELETE_VSCRES51120420M500' WHERE u_pignotarios.id = 13735 AND u_pignotarios.ife = 'VSCRES51120420M500'; 
     UPDATE h_t_boleta SET u_pignorante_id = 21291 WHERE u_pignorante_id = 13735; 
     UPDATE t_boleta SET u_pignorante_id = 21291 WHERE u_pignorante_id = 13735; 
     UPDATE t_empenios SET u_pignorante_id = 21291 WHERE u_pignorante_id = 13735; 
     UPDATE t_boleta_cancelado SET u_pignorante_id = 21291 WHERE u_pignorante_id = 13735; 
     
-    MZCRMR86120120M300  ::: REPETIDO   (22870 --> 23996)
+ -- MZCRMR86120120M300  ::: REPETIDO   (22870 --> 23996)
     SELECT * FROM u_pignotarios WHERE ife = 'MZCRMR86120120M300'; 
-    UPDATE u_pignotarios SET ife = 'MZCRMR86120120M300_BORRAR' WHERE u_pignotarios.id = 22870 AND u_pignotarios.ife = 'MZCRMR86120120M300';  
+    UPDATE u_pignotarios SET ife = 'DELETE_MZCRMR86120120M300' WHERE u_pignotarios.id = 22870 AND u_pignotarios.ife = 'MZCRMR86120120M300';  
     UPDATE h_t_boleta SET u_pignorante_id = 23996 WHERE u_pignorante_id = 22870; 
     UPDATE t_boleta SET u_pignorante_id = 23996 WHERE u_pignorante_id = 22870; 
     UPDATE t_empenios SET u_pignorante_id = 23996 WHERE u_pignorante_id = 22870; 
     UPDATE t_boleta_cancelado SET u_pignorante_id = 23996 WHERE u_pignorante_id = 22870;
 
-    GRGRCC85041220M600  ::: REPETIDO (5641 --> 2879)
+ -- GRGRCC85041220M600  ::: REPETIDO (5641 --> 2879)
     SELECT * FROM u_pignotarios WHERE ife = 'GRGRCC85041220M600'; 
-    UPDATE u_pignotarios SET ife = 'GRGRCC85041220M600_BORRAR' WHERE u_pignotarios.id = 5641 AND u_pignotarios.ife = 'GRGRCC85041220M600'; 
+    UPDATE u_pignotarios SET ife = 'DELETE_GRGRCC85041220M600' WHERE u_pignotarios.id = 5641 AND u_pignotarios.ife = 'GRGRCC85041220M600'; 
     UPDATE h_t_boleta SET u_pignorante_id = 2879 WHERE u_pignorante_id = 5641; 
     UPDATE t_boleta SET u_pignorante_id = 2879 WHERE u_pignorante_id = 5641; 
     UPDATE t_empenios SET u_pignorante_id = 2879 WHERE u_pignorante_id = 5641; 
     UPDATE t_boleta_cancelado SET u_pignorante_id = 2879 WHERE u_pignorante_id = 5641; 
 
-    MRGRCR63081520M400  >>> Cp MUY LARGO
+ -- MRGRCR63081520M400  >>> Cp MUY LARGO
     SELECT * FROM u_pignotarios WHERE ife = 'MRGRCR63081520M400'; 
     UPDATE `u_pignotarios` SET `cp` = '68150' WHERE `u_pignotarios`.`id` = 28228 AND `u_pignotarios`.`ife` = 'MRGRCR63081520M400'; 
+    UPDATE u_pignotarios SET cp = '00000' WHERE cp = '0000000';        -- 0, 00, 000, 0000, 000000, 0000000
+end section
+   
 
-        
+       
 -------------------------------------------------  u_pignotarios_solidarios
--- 🔃 actualizamos todo a mayusculas, quitamos espacions dobles y eliminamos espacion en blanco al inicio y al final de los nombres
+begin section
+ -- 🔃 actualizamos todo a mayusculas, quitamos espacions dobles y eliminamos espacion en blanco al inicio y al final de los nombres
     UPDATE u_pignotarios_solidarios SET pignorante_solidario = UPPER(pignorante_solidario); 
-    UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, '  ', ' '); 
+    UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, '  ', ' ');    -- x 5
     UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'NADIE', ''); 
     UPDATE u_pignotarios_solidarios SET pignorante_solidario = TRIM(pignorante_solidario); 
 
-            >>> Revisamos los registros de pignorante_solidarios sean nombres invalidos, para ser eliminados
-            ❌  SELECT pignorante_solidario, COUNT(t_boleta_id) FROM u_pignotarios_solidarios WHERE LENGTH(pignorante_solidario) < 9 GROUP BY pignorante_solidario; 
-            DELETE FROM u_pignotarios_solidarios WHERE LENGTH(pignorante_solidario) < 9 ;
-            ❌  SELECT DISTINCT pignorante_solidario FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '% DEJA%'; 
-            DELETE FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '% DEJA%' AND LENGTH(pignorante_solidario) < 18;
-            ❌  SELECT DISTINCT pignorante_solidario FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '% MIS%' AND LENGTH(pignorante_solidario) < 16; 
-            DELETE FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '% MIS%' AND LENGTH(pignorante_solidario) < 16;
-            ❌  SELECT DISTINCT pignorante_solidario FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%EL M%' AND LENGTH(pignorante_solidario) < 12 
-            DELETE FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%EL M%' AND LENGTH(pignorante_solidario) < 12;  
-            ❌  SELECT DISTINCT pignorante_solidario FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%ELLA%' AND LENGTH(pignorante_solidario) < 15;
-            DELETE FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%ELLA%' AND LENGTH(pignorante_solidario) < 15;   
-            ❌  SELECT DISTINCT pignorante_solidario FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '% MIXSMO %'; 
-            DELETE FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%MIXSMO%';  
-            ❌  SELECT DISTINCT pignorante_solidario FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '% MISMO%'; 
-            DELETE FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '% MISMO%'; 
-            ❌  SELECT DISTINCT pignorante_solidario FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '% SOLA %' AND LENGTH(pignorante_solidario) < 12; 
-            DELETE FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%SOLA%' AND LENGTH(pignorante_solidario) < 12; 
+ -- 👀 Revisamos los registros de pignorante_solidarios NO sean nombres invalidos, para ser eliminados
+    SELECT pignorante_solidario, COUNT(t_boleta_id) FROM u_pignotarios_solidarios WHERE LENGTH(pignorante_solidario) < 10 GROUP BY pignorante_solidario; 
+        DELETE FROM u_pignotarios_solidarios WHERE LENGTH(pignorante_solidario) < 10;       --APROX ~51741
+    SELECT DISTINCT pignorante_solidario FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '% DEJA%'; 
+        DELETE FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '% DEJA%' AND LENGTH(pignorante_solidario) < 18;
+    SELECT DISTINCT pignorante_solidario FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '% MIS%' AND LENGTH(pignorante_solidario) < 16; 
+        DELETE FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '% MIS%' AND LENGTH(pignorante_solidario) < 16;
+    SELECT DISTINCT pignorante_solidario FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%EL M%' AND LENGTH(pignorante_solidario) < 12; 
+        DELETE FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%EL M%' AND LENGTH(pignorante_solidario) < 12;  
+    SELECT DISTINCT pignorante_solidario FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%ELLA%' AND LENGTH(pignorante_solidario) < 15;
+        DELETE FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%ELLA%' AND LENGTH(pignorante_solidario) < 15;   
+    SELECT DISTINCT pignorante_solidario FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '% MISMO%'; 
+        DELETE FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '% MISMO%'; 
+    SELECT DISTINCT pignorante_solidario FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '% SOLA %' AND LENGTH(pignorante_solidario) < 12; 
+        DELETE FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%SOLA%' AND LENGTH(pignorante_solidario) < 12; 
 
+ --  830 pignorantes solidarios con el nombre con caracteres invalidos
+    SELECT * FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%‘%';        
+            
+            UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'Âƒ', 'ª');
+            UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'Ãƒ', 'ª');
+            UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'Ã‚', 'ª');
+            UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'Â‚', 'ª');
+            UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'Â‘', 'ª');
+            UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'Â’', 'ª');
+            UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'Ã‘', 'ª');
+ 
+            UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'Â±', 'ª');
+            UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'Â†', 'ª');
+            UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'Ã†', 'ª');
+            UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'Æ’', 'ª');
+            UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'ªª', 'ª');
+    SELECT * FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%ª%';           
+            UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'ª', 'Ñ'); 
+end section        
 
-            * 873 pignorantes solidarios con el nombre con caracteres invalidos
-            SELECT * FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%‘%';        
-            
-            UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'ÂƒÃƒÂƒÃ‚', 'ª');
-            UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'ÃƒÂƒÃ‚', 'ª');
-            ÂƒÃƒÂ‚
-            ÃƒÂ‚
-            Ã‚            
-            Â‚
-            ÃƒÂ‘
-            Ã‘
-            Â‘
-            
-            Ãƒª’ªª’  -> fallo
-            Âƒª      -> fallo
-            Ãª       -> fallo
-            Âª
-            ªÂ     -> fallo
-            🔃  
-                UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, '±', 'ª');
-                UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, '†', 'ª');
-                UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'Æ', 'ª');
-                UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'ª‚', 'ª');
-            SELECT * FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%ª%';           
-
-                UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'ª‘', 'ª');
-                UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'ª’', 'ª');
-                UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'ªª', 'º'); 
-            SELECT * FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%º%';
-            🔃  UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'º', 'Ñ'); 
-            
-        */
+------------------------------------------------- t_boleta
+ -->> boleta con datos en null
+    DELETE FROM t_boleta WHERE t_boleta.id = 10474068               
+ -->> boleta con comision_avaluo numero muy largo (10604876)
+    UPDATE t_boleta SET comision_avaluo = '1095.81' WHERE t_boleta.id = 10604876;       
         
-        /* t_reposicion
-            ~~En tabla t_reposicion el pignorante ya esta referenciado, SE ALMACENA EL ID
-        */
-
-        /* t_boleta, h_boleta y t_boleta_pagos
-            
-            >>> boleta con datos en null
-                DELETE FROM t_boleta WHERE t_boleta.id = 10474068               
-            >>> boleta con comision_avaluo numero muy largo (10604876)
-                UPDATE t_boleta SET comision_avaluo = '1095.81' WHERE t_boleta.id = 10604876;       
-            >>> boleta con comision_avaluo numero muy largo (1771886, 1786792)
-                UPDATE h_t_boleta SET comision_avaluo = '1095.81' WHERE h_t_boleta.id_interno = 1771886; 
-                UPDATE h_t_boleta SET comision_avaluo = '1095.81' WHERE h_t_boleta.id_interno = 1786792; 
-
-            >>> Borramos 6356 registros de t_boleta_pagos que no existe relacion de 654 boletas en la tabla t_boleta 
-                SELECT DISTINCT t_boleta_pagos.t_boleta_id 
-                FROM t_boleta_pagos 
-                LEFT JOIN t_boleta ON t_boleta_pagos.t_boleta_id = t_boleta.id 
-                WHERE t_boleta.id IS null; 
-            ❌ DELETE t_boleta_pagos 
-                FROM t_boleta_pagos 
-                LEFT JOIN t_boleta ON t_boleta_pagos.t_boleta_id = t_boleta.id 
-                WHERE t_boleta.id IS null; 
-            
+------------------------------------------------- h_t_boleta
+ -->> boleta con comision_avaluo numero muy largo (1771886, 1786792)
+            UPDATE h_t_boleta SET comision_avaluo = '1095.81' WHERE h_t_boleta.id_interno = 1771886; 
+            UPDATE h_t_boleta SET comision_avaluo = '1095.81' WHERE h_t_boleta.id_interno = 1786792; 
             UPDATE h_t_boleta SET comision_avaluo = '109.581' WHERE comision_avaluo > 109581000; 
-        */
 
-        /* t_empenios_boleta_relacion, t_empenios, t_empenios_metal, t_empenios_productos
+------------------------------------------------- t_boleta_pagos
+ -->> Borramos 6368 registros de t_boleta_pagos que no existe relacion de 654 boletas en la tabla t_boleta 
+    SELECT DISTINCT t_boleta_pagos.t_boleta_id FROM t_boleta_pagos LEFT JOIN t_boleta ON t_boleta_pagos.t_boleta_id = t_boleta.id  WHERE t_boleta.id IS null; 
+        DELETE t_boleta_pagos FROM t_boleta_pagos LEFT JOIN t_boleta ON t_boleta_pagos.t_boleta_id = t_boleta.id WHERE t_boleta.id IS null; 
+            
 
 
-            >>> t_empenios :: se corrigue un error donde 4 registros de t_empenios no tiene un pignorante_id
-            🔃  UPDATE t_empenios SET u_pignorante_id = 1933 WHERE u_pignorante_id = 27441 AND id IN (144879, 152894,152893,193264); 
+
+------------------------------------------------- t_empenios_boleta_relacion, t_empenios, t_empenios_metal, t_empenios_productos
+-->> con esta consulta se encuentra el empeño repetido
+    SELECT t_empenios.id, COUNT(t_empenios_boleta_relacion.t_empenios_id ) as connteo FROM t_empenios_boleta_relacion LEFT JOIN t_empenios ON t_empenios_boleta_relacion.t_empenios_id = t_empenios.id GROUP BY t_empenios.id ORDER by COUNT(t_empenios_boleta_relacion.t_empenios_id ) DESC; 
+-->> se encontro que el t_empenio_id:236634 se repite en las boletas: (10571943, 10575026), 
+-->> pero a la boleta 10575026 le corresponde el id: 236635 de acuerdo a la numeracion de empeño-boleta-relacion 
+-->> Sin embargo la boleta con el numeo 10571943 no coincide los montos con el empeño 236634, por lo que se tiene que investigar a fondo que empeño es el correcto
+    SELECT * FROM t_empenios_boleta_relacion LEFT JOIN t_empenios ON t_empenios_boleta_relacion.t_empenios_id = t_empenios.id WHERE t_empenios.id = 236634; 
+-->> Con esta actualizacion se evita que se elimine por no tener realacion, pero los empeños siguen invertiddos
+        UPDATE `t_empenios_boleta_relacion` SET `t_empenios_id` = '236635' WHERE `t_empenios_boleta_relacion`.`id` = 236634; 
+        UPDATE `t_empenios_boleta_relacion` SET `t_empenios_id` = '236634' WHERE `t_empenios_boleta_relacion`.`id` = 236635; 
+
+
+------------------------------------------------- t_empenios, t_empenios_metal, t_empenios_productos
+-->> t_empenios :: se corrigue un error donde 4 registros de t_empenios no tiene un pignorante_id
+        UPDATE t_empenios SET u_pignorante_id = 1933 WHERE u_pignorante_id = 27441 AND id IN (144879, 152894,152893,193264); 
+            
             >>> Se corrigue un error donde el contenido de un productos no se guardo
             🔃  UPDATE t_empenios_productos SET contenido = '1' WHERE t_empenios_productos.id = 236634;
 
-            >>> con esta consulta se encuentra el empeño repetido
-            SELECT t_empenios.id, COUNT(t_empenios_boleta_relacion.t_empenios_id ) as connteo FROM t_empenios_boleta_relacion LEFT JOIN t_empenios ON t_empenios_boleta_relacion.t_empenios_id = t_empenios.id GROUP BY t_empenios.id ORDER by COUNT(t_empenios_boleta_relacion.t_empenios_id ) DESC; 
-            >>> se encontro que el t_empenio_id:236634 se repite en las boletas: (10571943, 10575026), 
-            >>> pero a la boleta 10575026 le corresponde el id: 236635 de acuerdo a la numeracion de empeño-boleta-relacion 
-            >>> Sin embargo la boleta con el numero #10571943 no coincide los montos con el empeño 236634, por lo que se tiene que investigar a fondo que empeño es el correcto
-            SELECT * FROM t_empenios_boleta_relacion LEFT JOIN t_empenios ON t_empenios_boleta_relacion.t_empenios_id = t_empenios.id WHERE t_empenios.id = 236634; 
-            🔃  Con esta actualizacion se evita que se elimine por no tener realacion, pero los empeños siguen invertiddos
-            UPDATE `t_empenios_boleta_relacion` SET `t_empenios_id` = '236635' WHERE `t_empenios_boleta_relacion`.`id` = 236634; 
-            UPDATE `t_empenios_boleta_relacion` SET `t_empenios_id` = '236634' WHERE `t_empenios_boleta_relacion`.`id` = 236635; 
+            
+            
         
             >>> t_empenios_boleta_relacion :: verificamos las t_boleta_id que no existen en la tabla t_boletas (~825 registros)
              📌 SELECT DISTINCT t_empenios_boleta_relacion.t_boleta_id, t_empenios.id 
