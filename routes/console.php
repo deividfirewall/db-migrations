@@ -14,7 +14,7 @@ Artisan::command('inspire', function () {
 Schedule::command(MigrationsCommand::class)
         ->everyMinute()
         //->everyFiveMinutes()
-        ->hourly()
+        // ->hourly()
         ->appendOutputTo('./storage/logs/migrations.log')
         ->after(function () {
             $completionTime = now()->format('Y-m-d H:i:s');

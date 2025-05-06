@@ -21,8 +21,7 @@ class CatalogsController extends Controller
                       ,'avance'=>'0'],
             11 =>['origen'=>'c_municipios', 'reg_o'=>DB::connection('sucursal')->table('c_municipios')->count()
                       ,'destino'=>'cat_loc_municipios','reg_d'=>DB::table('cat_loc_municipios')->count()
-                      ,'avance'=>'0'],
-            
+                      ,'avance'=>'0'],            
             13 =>['origen'=>'c_precio_metal', 'reg_o'=>DB::connection('sucursal')->table('c_precio_metal')->count()
                       ,'destino'=>'cat_metal_precios','reg_d'=>DB::table('cat_metal_precios')->count()
                       ,'avance'=>'0'],

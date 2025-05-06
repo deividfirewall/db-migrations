@@ -1,3 +1,15 @@
+--> Opción 1: (DESCARTADA) transferimos el archivo de la base de datos desde windows a docker
+$ cp /mnt/c/Users/Dell/Downloads/BD_30_abril/mp_matriz_250430.sql.gz ~/db-migrations/Windows/
+$ gunzip -c Windows/mp_matriz_250430.sql.gz | ./vendor/bin/sail exec -T mysql mysql -u root mp_matriz
+
+
+-->> Opción 2:(RECOMENDADA) Importacion de la base de datos directamente de la carpeta de dowloads de windows 
+-->> al contenedor de mysql de docker
+$ gunzip -c /mnt/c/Users/Dell/Downloads/BD_30_abril/mp_matriz_250430.sql.gz | ./vendor/bin/sail exec -T mysql mysql -u root mp_matriz
+
+-->> Borramos el archivo de la base de datos
+$ rm mp_matriz_250430.sql.gz
+
 -- ELIMINAMOS 29 TABLAS INNECESARIAS         
     DROP TABLE 
         c_cotiza_producto_08112015, 
@@ -32,6 +44,8 @@
         t_subasta_copy,
         u_directores;
 
+sail artisan db:seed --class=SedeSeeder
+
 DROP TRIGGER IF EXISTS `t_boleta_cancelar`
 DROP TRIGGER IF EXISTS `t_boleta_historico`
 DROP TRIGGER IF EXISTS `t_boleta_numeroInterno`
@@ -44,7 +58,9 @@ DROP TRIGGER IF EXISTS `suma_totales`
     WHERE t_boleta.u_operador_id IS null
     ORDER BY u_operadores.id
 
-SELECT DISTINCT u_operadores.id, u_operadores.nombre, u_operadores.usuario FROM u_operadores INNER JOIN t_boleta ON t_boleta.u_operador_id = u_operadores.id ORDER BY u_operadores.id; 
+SELECT DISTINCT u_operadores.id, u_operadores.nombre, u_operadores.usuario FROM u_operadores 
+INNER JOIN t_boleta ON t_boleta.u_operador_id = u_operadores.id 
+ORDER BY u_operadores.id; 
 
 
     UPDATE u_operadores SET id = id + 150000;
@@ -54,6 +70,8 @@ SELECT DISTINCT u_operadores.id, u_operadores.nombre, u_operadores.usuario FROM 
     UPDATE t_caja_monto_operador SET u_operadores_id = u_operadores_id + 150000 WHERE u_operadores_id < 150000 LIMIT 200000;
     UPDATE t_suspencion_dias  SET    u_operadores_id = u_operadores_id + 150000;
     UPDATE t_concentrados  SET    id_operador = id_operador + 150000;
+    -- checar antes los id de id_gerente
+    UPDATE t_concentrados  SET    id_gerente = id_gerente + 150000;
     UPDATE t_descuentos  SET    id_operador = id_operador + 150000;
     UPDATE r_ro_cg12    SET    id_operador = id_operador + 150000;
     UPDATE t_reposicion  SET    id_usuario = id_usuario + 150000;
@@ -66,7 +84,7 @@ begin section
 
  SELECT * FROM `u_pignotarios` WHERE nombre LIKE "%‘%";          
     UPDATE u_pignotarios SET nombre = TRIM(nombre);
-    UPDATE u_pignotarios SET nombre = REPLACE(nombre, '  ', ' ');           -- x5
+    UPDATE u_pignotarios SET nombre = REPLACE(nombre, '  ', ' ');           -- x3
     UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'Ãƒ', 'ª'); 
     UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'Âƒ', 'ª'); 
     UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'Ã‚', 'ª'); 
@@ -84,7 +102,7 @@ begin section
     UPDATE u_pignotarios SET direccion = REPLACE(direccion, 'Ã‚', 'ª'); 
     UPDATE u_pignotarios SET direccion = REPLACE(direccion, 'Â‘', 'ª'); 
     UPDATE u_pignotarios SET direccion = REPLACE(direccion, 'Ã‘', 'ª'); 
-    UPDATE u_pignotarios SET direccion = REPLACE(direccion, 'ªª', 'ª'); 
+    UPDATE u_pignotarios SET direccion = REPLACE(direccion, 'ªª', 'ª');     -- x 3
     UPDATE u_pignotarios SET direccion = REPLACE(direccion, 'ª', 'Ñ'); 
 
  -- VSCRES51120420M500  ::: REPETIDO (13735 --> 21291)   
@@ -124,13 +142,15 @@ end section
 begin section
  -- 🔃 actualizamos todo a mayusculas, quitamos espacions dobles y eliminamos espacion en blanco al inicio y al final de los nombres
     UPDATE u_pignotarios_solidarios SET pignorante_solidario = UPPER(pignorante_solidario); 
-    UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, '  ', ' ');    -- x 5
+    UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, '  ', ' ');    -- x 4
     UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'NADIE', ''); 
     UPDATE u_pignotarios_solidarios SET pignorante_solidario = TRIM(pignorante_solidario); 
 
+    UPDATE `u_pignotarios_solidarios` SET `pignorante_solidario` = 'EL MISMO' WHERE `u_pignotarios_solidarios`.`id` = 211770; 
+
  -- 👀 Revisamos los registros de pignorante_solidarios NO sean nombres invalidos, para ser eliminados
     SELECT pignorante_solidario, COUNT(t_boleta_id) FROM u_pignotarios_solidarios WHERE LENGTH(pignorante_solidario) < 10 GROUP BY pignorante_solidario; 
-        DELETE FROM u_pignotarios_solidarios WHERE LENGTH(pignorante_solidario) < 10;       --APROX ~51741
+        DELETE FROM u_pignotarios_solidarios WHERE LENGTH(pignorante_solidario) < 10;       --APROX ~51966
     SELECT DISTINCT pignorante_solidario FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '% DEJA%'; 
         DELETE FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '% DEJA%' AND LENGTH(pignorante_solidario) < 18;
     SELECT DISTINCT pignorante_solidario FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '% MIS%' AND LENGTH(pignorante_solidario) < 16; 
@@ -144,7 +164,7 @@ begin section
     SELECT DISTINCT pignorante_solidario FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '% SOLA %' AND LENGTH(pignorante_solidario) < 12; 
         DELETE FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%SOLA%' AND LENGTH(pignorante_solidario) < 12; 
 
- --  830 pignorantes solidarios con el nombre con caracteres invalidos
+ --  851 pignorantes solidarios con el nombre con caracteres invalidos
     SELECT * FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%‘%';        
             
         UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'Âƒ', 'ª');
@@ -156,10 +176,11 @@ begin section
         UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'Ã‘', 'ª');
 
         UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'Â±', 'ª');
+        UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'Â±', 'ª');
         UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'Â†', 'ª');
         UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'Ã†', 'ª');
         UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'Æ’', 'ª');
-        UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'ªª', 'ª');
+        UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'ªª', 'ª');    -- x8
     SELECT * FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%ª%';           
         UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'ª', 'Ñ'); 
 end section        
@@ -172,21 +193,21 @@ end section
         
 ------------------------------------------------- h_t_boleta
  -->> boleta con comision_avaluo numero muy largo (1771886, 1786792)
-            UPDATE h_t_boleta SET comision_avaluo = '1095.81' WHERE h_t_boleta.id_interno = 1771886; 
-            UPDATE h_t_boleta SET comision_avaluo = '1095.81' WHERE h_t_boleta.id_interno = 1786792; 
-            UPDATE h_t_boleta SET comision_avaluo = '109.581' WHERE comision_avaluo > 109581000; 
+        UPDATE h_t_boleta SET comision_avaluo = '1095.81' WHERE h_t_boleta.id_interno = 1771886; 
+        UPDATE h_t_boleta SET comision_avaluo = '1095.81' WHERE h_t_boleta.id_interno = 1786792; 
+        UPDATE h_t_boleta SET comision_avaluo = '109.581' WHERE comision_avaluo > 109581000; 
 
 ------------------------------------------------- t_boleta_pagos
- -->> Borramos 6368 registros de t_boleta_pagos que no existe relacion de 654 boletas en la tabla t_boleta 
-    SELECT DISTINCT t_boleta_pagos.t_boleta_id FROM t_boleta_pagos LEFT JOIN t_boleta ON t_boleta_pagos.t_boleta_id = t_boleta.id  WHERE t_boleta.id IS null; 
-        DELETE t_boleta_pagos FROM t_boleta_pagos LEFT JOIN t_boleta ON t_boleta_pagos.t_boleta_id = t_boleta.id WHERE t_boleta.id IS null; 
+ -->> Borramos 6392 registros de t_boleta_pagos que no existe relacion de 654 boletas en la tabla t_boleta 
+ -->> Sin embargo si existen en la tabla t_boleta_cancelado, pero deben de eliminarse para conservar la integridad de la base de datos
+SELECT DISTINCT t_boleta_pagos.t_boleta_id FROM t_boleta_pagos LEFT JOIN t_boleta ON t_boleta_pagos.t_boleta_id = t_boleta.id  WHERE t_boleta.id IS null; 
+    DELETE t_boleta_pagos FROM t_boleta_pagos LEFT JOIN t_boleta ON t_boleta_pagos.t_boleta_id = t_boleta.id WHERE t_boleta.id IS null; 
+    OPTIMIZE TABLE t_boleta_pagos
             
-
-
-
 ------------------------------------------------- t_empenios_boleta_relacion, t_empenios
 -->> con esta consulta se encuentra el empeño repetido
     SELECT t_empenios.id, COUNT(t_empenios_boleta_relacion.t_empenios_id ) as connteo FROM t_empenios_boleta_relacion LEFT JOIN t_empenios ON t_empenios_boleta_relacion.t_empenios_id = t_empenios.id GROUP BY t_empenios.id ORDER by COUNT(t_empenios_boleta_relacion.t_empenios_id ) DESC; 
+-->> se encontro que el t_empenio_id:157911 y 157912 estan invertidos con el id de la tabla t_empenios_boleta_relacion, investigar las boletas 10522796 y 10522794
 -->> se encontro que el t_empenio_id:236634 se repite en las boletas: (10571943, 10575026), 
 -->> pero a la boleta 10575026 le corresponde el id: 236635 de acuerdo a la numeracion de empeño-boleta-relacion 
 -->> Sin embargo la boleta con el numeo 10571943 no coincide los montos con el empeño 236634, por lo que se tiene que investigar a fondo que empeño es el correcto
@@ -195,15 +216,7 @@ end section
         UPDATE `t_empenios_boleta_relacion` SET `t_empenios_id` = '236635' WHERE `t_empenios_boleta_relacion`.`id` = 236634; 
         UPDATE `t_empenios_boleta_relacion` SET `t_empenios_id` = '236634' WHERE `t_empenios_boleta_relacion`.`id` = 236635; 
 
-
-------------------------------------------------- t_empenios, t_empenios_metal, t_empenios_productos
--->> t_empenios :: se corrigue un error donde 4 registros de t_empenios no tiene un pignorante_id
-        UPDATE t_empenios SET u_pignorante_id = 1933 WHERE u_pignorante_id = 27441 AND id IN (144879, 152894,152893,193264); 
-            
--->> Se corrigue un error donde el contenido de un productos no se guardo
-        UPDATE t_empenios_productos SET contenido = '1' WHERE t_empenios_productos.id = 236634;
-       
--->>  t_empenios_boleta_relacion :: verificamos las t_boleta_id que no existen en la tabla t_boletas (~825 registros)
+-->>  t_empenios_boleta_relacion :: verificamos las t_boleta_id que no existen en la tabla t_boletas (~827 registros)
 -->> Sin embargo si existen en la tabla t_boleta_cancelado, pero deben de eliminarse para conservar la integridad de la base de datos
     SELECT DISTINCT t_empenios_boleta_relacion.t_boleta_id, t_empenios.id 
     FROM t_empenios_boleta_relacion 
@@ -215,8 +228,14 @@ end section
         LEFT JOIN t_boleta ON t_empenios_boleta_relacion.t_boleta_id = t_boleta.id 
         LEFT JOIN t_empenios ON t_empenios_boleta_relacion.t_empenios_id = t_empenios.id 
         WHERE t_boleta.id IS NULL; 
-            
--->> t_empenios :: borramos los empeños que no tienen relacion t_empenios_boleta_relacion (~824 registros)
+    OPTIMIZE TABLE `t_empenios_boleta_relacion`
+
+------------------------------------------------- t_empenios, t_empenios_metal, t_empenios_productos
+-->> t_empenios :: se corrigue un error donde 4 registros de t_empenios no tiene un pignorante_id
+        UPDATE t_empenios SET u_pignorante_id = 1933 WHERE u_pignorante_id = 27441 AND id IN (144879, 152894,152893,193264); 
+
+
+-->> t_empenios :: borramos los empeños que no tienen relacion t_empenios_boleta_relacion (~826 registros)
     SELECT t_empenios.*
     FROM    t_empenios
     LEFT JOIN t_empenios_boleta_relacion ON t_empenios_boleta_relacion.t_empenios_id = t_empenios.id
@@ -226,7 +245,9 @@ end section
         LEFT JOIN t_empenios_boleta_relacion ON t_empenios_boleta_relacion.t_empenios_id = t_empenios.id
         WHERE t_empenios_boleta_relacion.id IS NULL;
 
--->> t_empenios_metal :: borramos los empeños que no tienen relacion t_empenios_boleta_relacion (~673 registros)
+        OPTIMIZE TABLE `t_empenios`
+
+-->> t_empenios_metal :: borramos los empeños que no tienen relacion t_empenios_boleta_relacion (~675 registros)
     SELECT t_empenios_metal.* FROM t_empenios_metal 
     LEFT JOIN t_empenios ON t_empenios.id = t_empenios_metal.t_empenios_id WHERE t_empenios.id IS NULL;
     SELECT t_empenios_metal.* FROM t_empenios_metal
@@ -236,12 +257,15 @@ end section
         FROM    t_empenios_metal
         LEFT JOIN t_empenios_boleta_relacion ON t_empenios_boleta_relacion.t_empenios_id = t_empenios_metal.t_empenios_id
         WHERE t_empenios_boleta_relacion.id IS NULL;
--->> t_empenios_productos :: borramos los empeños que no tienen relacion t_empenios_boleta_relacion (~114 registros)
+                    
+-->> t_empenios_productos :: borramos los empeños que no tienen relacion t_empenios_boleta_relacion (~115 registros)
         DELETE t_empenios_productos.*
         FROM    t_empenios_productos
         LEFT JOIN t_empenios_boleta_relacion ON t_empenios_boleta_relacion.t_empenios_id = t_empenios_productos.t_empenios_id
         WHERE t_empenios_boleta_relacion.id IS NULL;
 
+-->> Se corrigue un error donde el contenido de un productos no se guardo
+        UPDATE t_empenios_productos SET contenido = '1' WHERE t_empenios_productos.id = 236634;
 
 ------------------------------------------------- t_control_interno
 -->>  t_control_interno :: verificamos los registros que no tienen relacion con t_boleta    (1reg)
@@ -255,7 +279,7 @@ end section
 ------------------------------------------------- t_caja_monto_operador
 -->> t_caja_monto_operador :: las ventas en subasta, no guardan el id del operador en la tabla t_caja_monto_operador (20,986 registros)
     SELECT * FROM t_caja_monto_operador WHERE u_operadores_id = 0; 
-        UPDATE t_caja_monto_operador SET u_operadores_id = 150126 WHERE u_operadores_id = 0; 
+        UPDATE t_caja_monto_operador SET u_operadores_id = 150126 WHERE u_operadores_id = 150000; 
 -->> t_caja_monto_operador :: Se corrigue un error donde el monto de la caja rebasa el valor permitido de 8 enteros y 2 decimales (2reg)
     SELECT * FROM t_caja_monto_operador WHERE caja > 100000000; 
         UPDATE t_caja_monto_operador SET caja = 1000000.00 WHERE caja > 99999999;
@@ -288,7 +312,7 @@ end section
         
 ------------------------------------------------- t_retasas
 -->> el id 3220 tiene t_boleta_id = 1 que es invalido
-        DELETE FROM t_retasas WHERE `t_retasas`.`id` = 3220
+        DELETE FROM t_retasas WHERE `t_retasas`.`id` = 3220;
         
 ------------------------------------------------- t_concentrados
 -->> cambiar id_gerente e id_operador diferente de 0         ids: [24885, 25123, 28282, 29703]

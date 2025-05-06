@@ -519,8 +519,12 @@ class MigrationController extends Controller
 
         if(!$lastRecord){
             $oRegistros = DB::connection('sucursal')->table($oTable)->orderBy('id', 'asc')->limit(80000)->get();
+            $num_registros_origen = DB::connection('sucursal')->table($oTable)->count();
+            Tables::where('id', $table_selected)->update([
+                'num_registros_origen' => $num_registros_origen
+            ]);
         }else{
-            $oRegistros = DB::connection('sucursal')->table($oTable)->where('id', '>', $lastRecord->id)->orderBy('id', 'asc')->limit(80000)->get();
+            $oRegistros = DB::connection('sucursal')->table($oTable)->where('id', '>', $lastRecord->id)->orderBy('id', 'asc')->limit(75000)->get();
         }
         $regsel = [];
         $status = 'success';
@@ -575,7 +579,7 @@ class MigrationController extends Controller
             if(!$lastRecord){
                 $oRegistros = DB::connection('sucursal')->table($oTable)->orderBy('id', 'asc')->limit(50000)->get();
             }else{
-                $oRegistros = DB::connection('sucursal')->table($oTable)->where('id', '>', $lastRecord->id)->orderBy('id', 'asc')->limit(50000)->get();
+                $oRegistros = DB::connection('sucursal')->table($oTable)->where('id', '>', $lastRecord->id)->orderBy('id', 'asc')->limit(60000)->get();
             }
             $regsel = [];
             $status = 'success';
@@ -643,7 +647,7 @@ class MigrationController extends Controller
             $counter = 0;
             foreach ($oRegistros as $registro) {
                 $regsel = [
-                    'id'            => $registro->id,
+                    'id'           => $registro->id,
                     't_empenio_id' => $registro->t_empenios_id,
                     't_boleta_id'  => $registro->t_boleta_id,
                 ];
@@ -787,6 +791,10 @@ class MigrationController extends Controller
 
         if(!$lastRecord){
             $oRegistros = DB::connection('sucursal')->table($oTable)->orderBy('id_interno','asc')->limit(80000)->get();
+            $num_registros_origen = DB::connection('sucursal')->table($oTable)->count();
+            Tables::where('id', $table_selected)->update([
+                'num_registros_origen' => $num_registros_origen
+            ]);
         }else{
             $oRegistros = DB::connection('sucursal')->table($oTable)->where('id_interno', '>', $lastRecord->id)->orderBy('id_interno','asc')->limit(80000)->get();
         }
@@ -840,6 +848,11 @@ class MigrationController extends Controller
 
         if(!$lastRecord){
             $oRegistros = DB::connection('sucursal')->table($oTable)->orderBy('id','asc')->limit(60000)->get();
+
+            $num_registros_origen = DB::connection('sucursal')->table($oTable)->count();
+            Tables::where('id', $table_selected)->update([
+                'num_registros_origen' => $num_registros_origen
+            ]);
         }else{
             $oRegistros = DB::connection('sucursal')->table($oTable)->where('id', '>', $lastRecord->id)->orderBy('id','asc')->limit(60000)->get();
         }
@@ -903,8 +916,12 @@ class MigrationController extends Controller
 
         if(!$lastRecord){
             $oRegistros = DB::connection('sucursal')->table($oTable)->orderBy('id_interno','asc')->limit(50000)->get();
+            $num_registros_origen = DB::connection('sucursal')->table($oTable)->count();
+            Tables::where('id', $table_selected)->update([
+                'num_registros_origen' => $num_registros_origen
+            ]);
         }else{
-            $oRegistros = DB::connection('sucursal')->table($oTable)->where('id_interno', '>', $lastRecord->id)->orderBy('id_interno','asc')->limit(50000)->get();
+            $oRegistros = DB::connection('sucursal')->table($oTable)->where('id_interno', '>', $lastRecord->id)->orderBy('id_interno','asc')->limit(60000)->get();
         }
         $regsel = [];
         $status = 'success';
@@ -983,6 +1000,14 @@ class MigrationController extends Controller
                 ->orderBy('u_pignotarios_solidarios.pignorante_solidario')   
                 ->get();
 
+                $num_registros_origen = DB::connection('sucursal')->table('u_pignotarios_solidarios')->distinct()
+                    ->select('u_pignotarios_solidarios.pignorante_solidario','t_boleta.u_pignorante_id')
+                    ->join('t_boleta','t_boleta.id','=','u_pignotarios_solidarios.t_boleta_id')
+                    ->get()->count();
+                Tables::where('id', $table_selected)->update([
+                    'num_registros_origen' => $num_registros_origen
+                ]);
+
         }else{
             $oRegistros = DB::connection('sucursal')->table($oTable)->distinct()
             ->select('t_boleta.u_pignorante_id','u_pignotarios_solidarios.pignorante_solidario')
@@ -1020,16 +1045,17 @@ class MigrationController extends Controller
 
             $lastTBoleta = DB::table('t_boletas')->whereNotNull('pignorante_solidario_id')->orderBy('pignorante_id', 'desc')->first();
 
-            if(!$lastTBoleta)
+            if(!$lastTBoleta){
                 $PSolidarios = DB::table('pignorante_solidarios')
                                  ->orderBy('pignorante_id','asc')
                                  ->where('pignorante_id', '<', 1000)
                                  ->get();
-            else
+            }else{            
                 $PSolidarios = DB::table('pignorante_solidarios')
                                  ->whereBetween('pignorante_id', [$lastTBoleta->pignorante_id + 1, $lastTBoleta->pignorante_id + 1000])
                                  ->orderBy('pignorante_id','asc')
                                  ->get();
+            }
 
         
             DB::beginTransaction();

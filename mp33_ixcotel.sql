@@ -1,32 +1,30 @@
 $ gunzip -c mp_ixcotel_250430.sql.gz | ./vendor/bin/sail exec -T mysql mysql -u root mp_ixcotel
 $ rm mp_ixcotel_250430.sql.gz
 
-TRUNCATE `h_boletas`, 
-`pignorantes`, 
-`pignorante_solidarios`, 
-`tables`, 
-`t_boletas`, 
-`t_boleta_pagos`, 
-`t_cajas`, 
-`t_compradors`, 
-`t_concentrados`, 
-`t_ctrl_internos`, 
-`t_demasias_pagadas`, 
-`t_empenios`, 
-`t_empenio_metals`, 
-`t_empenio_products`, 
-`t_emp_bol_relations`, 
-`t_reposicions`, 
-`t_retasas`, 
-`t_sol_almonedas`, 
-`t_sol_dias_gracias`, 
-`t_sol_subastas`, 
-`t_subastas`, 
-`t_subasta_fechas`, 
-`t_suspencion_dias`, 
-`t_vitrina_compras`, 
-`t_vitrina_ventas`, 
-`users`;
+DROP TABLE `c_cotiza_producto_08112015`, 
+`c_fecha_reporte`, 
+`c_intereses`, 
+`c_nivel`, 
+`c_printer_operador`, 
+`c_printer_operador_tipo`, 
+`c_productos_08112015`, 
+`c_sub_productos_08112015`, 
+`c_sucursal_v1`, 
+`c_tipo_printer`, 
+`c_tipo_producto_08112015`, 
+`h_rp_subasta`, 
+`rg_dda07`, 
+`rg_ddd04`, 
+`rg_de02`, 
+`rg_dra06`, 
+`rg_drd03`, 
+`temporal`, 
+`t_boetas_pagos_mal_NoVenta`, 
+`t_boleta_migracion`, 
+`t_control_interno_cancelado`, 
+`t_migration_missing`, 
+`u_directores`, 
+`u_operadores_copy`;
 
 
 
@@ -79,12 +77,201 @@ INSERT INTO `users` VALUES
 35 --> 151552
 37 --> 151460
 
+
+UPDATE u_operadores SET id = 151453 WHERE id = 7;
+UPDATE u_operadores SET id = 151537 WHERE id = 8;
+UPDATE u_operadores SET id = 151529 WHERE id = 11;
+UPDATE u_operadores SET id = 151539 WHERE id = 12;
+UPDATE u_operadores SET id = 151530 WHERE id = 13;
+UPDATE u_operadores SET id = 151490 WHERE id = 15;
+UPDATE u_operadores SET id = 151473 WHERE id = 16;
+UPDATE u_operadores SET id = 151540 WHERE id = 17;
+UPDATE u_operadores SET id = 151482 WHERE id = 18;
+UPDATE u_operadores SET id = 151507 WHERE id = 20;
+UPDATE u_operadores SET id = 151459 WHERE id = 21;  
+UPDATE u_operadores SET id = 150118 WHERE id = 22;
+UPDATE u_operadores SET id = 151545 WHERE id = 23;
+UPDATE u_operadores SET id = 151547 WHERE id = 26;
+UPDATE u_operadores SET id = 151461 WHERE id = 27;
+UPDATE u_operadores SET id = 151487 WHERE id = 28;
+UPDATE u_operadores SET id = 151550 WHERE id = 31;
+UPDATE u_operadores SET id = 150131 WHERE id = 32;
+UPDATE u_operadores SET id = 151511 WHERE id = 33;
+UPDATE u_operadores SET id = 151454 WHERE id = 34;
+UPDATE u_operadores SET id = 151552 WHERE id = 35;
+UPDATE u_operadores SET id = 151460 WHERE id = 37;
+UPDATE u_operadores SET id = 330036 WHERE id = 36; 
+
     UPDATE t_boleta  SET    u_operador_id = 151453   WHERE    u_operador_id = 7;
+    UPDATE t_boleta  SET    u_operador_id = 151537   WHERE    u_operador_id = 8;
+    UPDATE t_boleta  SET    u_operador_id = 151529   WHERE    u_operador_id = 11;
+    UPDATE t_boleta  SET    u_operador_id = 151539   WHERE    u_operador_id = 12;
+    UPDATE t_boleta  SET    u_operador_id = 151530   WHERE    u_operador_id = 13;
+    UPDATE t_boleta  SET    u_operador_id = 151490   WHERE    u_operador_id = 15;
+    UPDATE t_boleta  SET    u_operador_id = 151473   WHERE    u_operador_id = 16;
+    UPDATE t_boleta  SET    u_operador_id = 151540   WHERE    u_operador_id = 17;
+    UPDATE t_boleta  SET    u_operador_id = 151482   WHERE    u_operador_id = 18;
+    UPDATE t_boleta  SET    u_operador_id = 151507   WHERE    u_operador_id = 20;
+    UPDATE t_boleta  SET    u_operador_id = 151459   WHERE    u_operador_id = 21;       -- 0
+    UPDATE t_boleta  SET    u_operador_id = 150118   WHERE    u_operador_id = 22;
+    UPDATE t_boleta  SET    u_operador_id = 151545   WHERE    u_operador_id = 23;       -- 0
+    UPDATE t_boleta  SET    u_operador_id = 151547   WHERE    u_operador_id = 26;
+    UPDATE t_boleta  SET    u_operador_id = 151461   WHERE    u_operador_id = 27;
+    UPDATE t_boleta  SET    u_operador_id = 151487   WHERE    u_operador_id = 28;       -- 0
+    UPDATE t_boleta  SET    u_operador_id = 151550   WHERE    u_operador_id = 31;
+    UPDATE t_boleta  SET    u_operador_id = 150131   WHERE    u_operador_id = 32;
+    UPDATE t_boleta  SET    u_operador_id = 151511   WHERE    u_operador_id = 33;
+    UPDATE t_boleta  SET    u_operador_id = 151454   WHERE    u_operador_id = 34;
+    UPDATE t_boleta  SET    u_operador_id = 151552   WHERE    u_operador_id = 35;       -- 0
+    UPDATE t_boleta  SET    u_operador_id = 330036   WHERE    u_operador_id = 36;
+    UPDATE t_boleta  SET    u_operador_id = 151460   WHERE    u_operador_id = 37;       -- 0
+
+
     UPDATE h_t_boleta SET u_operador_id = 151453   WHERE    u_operador_id = 7;
+    UPDATE h_t_boleta SET u_operador_id = 151537   WHERE    u_operador_id = 8;
+    UPDATE h_t_boleta SET u_operador_id = 151529   WHERE    u_operador_id = 11;
+    UPDATE h_t_boleta SET u_operador_id = 151539   WHERE    u_operador_id = 12;
+    UPDATE h_t_boleta SET u_operador_id = 151530   WHERE    u_operador_id = 13;
+    UPDATE h_t_boleta SET u_operador_id = 151490   WHERE    u_operador_id = 15;
+    UPDATE h_t_boleta SET u_operador_id = 151473   WHERE    u_operador_id = 16;
+    UPDATE h_t_boleta SET u_operador_id = 151540   WHERE    u_operador_id = 17;
+    UPDATE h_t_boleta SET u_operador_id = 151482   WHERE    u_operador_id = 18;
+    UPDATE h_t_boleta SET u_operador_id = 151507   WHERE    u_operador_id = 20;
+    UPDATE h_t_boleta SET u_operador_id = 151459   WHERE    u_operador_id = 21;
+    UPDATE h_t_boleta SET u_operador_id = 150118   WHERE    u_operador_id = 22;
+    UPDATE h_t_boleta SET u_operador_id = 151545   WHERE    u_operador_id = 23;
+    UPDATE h_t_boleta SET u_operador_id = 151547   WHERE    u_operador_id = 26;
+    UPDATE h_t_boleta SET u_operador_id = 151461   WHERE    u_operador_id = 27;
+    UPDATE h_t_boleta SET u_operador_id = 151487   WHERE    u_operador_id = 28;
+    UPDATE h_t_boleta SET u_operador_id = 151550   WHERE    u_operador_id = 31;
+    UPDATE h_t_boleta SET u_operador_id = 150131   WHERE    u_operador_id = 32;
+    UPDATE h_t_boleta SET u_operador_id = 151511   WHERE    u_operador_id = 33;
+    UPDATE h_t_boleta SET u_operador_id = 151454   WHERE    u_operador_id = 34;
+    UPDATE h_t_boleta SET u_operador_id = 151552   WHERE    u_operador_id = 35;
+    UPDATE h_t_boleta SET u_operador_id = 330036   WHERE    u_operador_id = 36;
+    UPDATE h_t_boleta SET u_operador_id = 151460   WHERE    u_operador_id = 37;
+
     UPDATE t_boleta_cancelado  SET    u_operador_id = 151453 WHERE u_operador_id = 7;
+    UPDATE t_boleta_cancelado  SET    u_operador_id = 151537 WHERE u_operador_id = 8;
+    UPDATE t_boleta_cancelado  SET    u_operador_id = 151529 WHERE u_operador_id = 11;--0
+    UPDATE t_boleta_cancelado  SET    u_operador_id = 151539 WHERE u_operador_id = 12;
+    UPDATE t_boleta_cancelado  SET    u_operador_id = 151530 WHERE u_operador_id = 13;    
+    UPDATE t_boleta_cancelado  SET    u_operador_id = 151490 WHERE u_operador_id = 15;--0
+    UPDATE t_boleta_cancelado  SET    u_operador_id = 151473 WHERE u_operador_id = 16;--0    
+    UPDATE t_boleta_cancelado  SET    u_operador_id = 151540 WHERE u_operador_id = 17;--0
+    UPDATE t_boleta_cancelado  SET    u_operador_id = 151482 WHERE u_operador_id = 18;--0
+    UPDATE t_boleta_cancelado  SET    u_operador_id = 151507 WHERE u_operador_id = 20;--0
+    UPDATE t_boleta_cancelado  SET    u_operador_id = 151459 WHERE u_operador_id = 21;--0
+    UPDATE t_boleta_cancelado  SET    u_operador_id = 150118 WHERE u_operador_id = 22;--0
+    UPDATE t_boleta_cancelado  SET    u_operador_id = 151545 WHERE u_operador_id = 23;--0
+    UPDATE t_boleta_cancelado  SET    u_operador_id = 151547 WHERE u_operador_id = 26;
+    UPDATE t_boleta_cancelado  SET    u_operador_id = 151461 WHERE u_operador_id = 27;--0
+    UPDATE t_boleta_cancelado  SET    u_operador_id = 151487 WHERE u_operador_id = 28;--0
+    UPDATE t_boleta_cancelado  SET    u_operador_id = 151550 WHERE u_operador_id = 31;--0
+    UPDATE t_boleta_cancelado  SET    u_operador_id = 150131 WHERE u_operador_id = 32;--0
+    UPDATE t_boleta_cancelado  SET    u_operador_id = 151511 WHERE u_operador_id = 33;--0
+    UPDATE t_boleta_cancelado  SET    u_operador_id = 151454 WHERE u_operador_id = 34;
+    UPDATE t_boleta_cancelado  SET    u_operador_id = 151552 WHERE u_operador_id = 35;--0
+    UPDATE t_boleta_cancelado  SET    u_operador_id = 330036 WHERE u_operador_id = 36;
+    UPDATE t_boleta_cancelado  SET    u_operador_id = 151460 WHERE u_operador_id = 37;--0
+
     UPDATE t_caja_monto_operador SET u_operadores_id = 151453 WHERE u_operadores_id = 7;
-    UPDATE t_suspencion_dias  SET    u_operadores_id = 151453 WHERE u_operadores_id = 7;
+    UPDATE t_caja_monto_operador SET u_operadores_id = 151537 WHERE u_operadores_id = 8;    
+    UPDATE t_caja_monto_operador SET u_operadores_id = 151529 WHERE u_operadores_id = 11;
+    UPDATE t_caja_monto_operador SET u_operadores_id = 151539 WHERE u_operadores_id = 12;
+    UPDATE t_caja_monto_operador SET u_operadores_id = 151530 WHERE u_operadores_id = 13;
+    UPDATE t_caja_monto_operador SET u_operadores_id = 151490 WHERE u_operadores_id = 15;
+    UPDATE t_caja_monto_operador SET u_operadores_id = 151473 WHERE u_operadores_id = 16;
+    UPDATE t_caja_monto_operador SET u_operadores_id = 151540 WHERE u_operadores_id = 17;
+    UPDATE t_caja_monto_operador SET u_operadores_id = 151482 WHERE u_operadores_id = 18;
+    UPDATE t_caja_monto_operador SET u_operadores_id = 151507 WHERE u_operadores_id = 20;
+    UPDATE t_caja_monto_operador SET u_operadores_id = 151459 WHERE u_operadores_id = 21;
+    UPDATE t_caja_monto_operador SET u_operadores_id = 150118 WHERE u_operadores_id = 22;
+    UPDATE t_caja_monto_operador SET u_operadores_id = 151545 WHERE u_operadores_id = 23;
+    UPDATE t_caja_monto_operador SET u_operadores_id = 151547 WHERE u_operadores_id = 26;
+    UPDATE t_caja_monto_operador SET u_operadores_id = 151461 WHERE u_operadores_id = 27;
+    UPDATE t_caja_monto_operador SET u_operadores_id = 151487 WHERE u_operadores_id = 28;
+    UPDATE t_caja_monto_operador SET u_operadores_id = 151550 WHERE u_operadores_id = 31;
+    UPDATE t_caja_monto_operador SET u_operadores_id = 150131 WHERE u_operadores_id = 32;
+    UPDATE t_caja_monto_operador SET u_operadores_id = 151511 WHERE u_operadores_id = 33;
+    UPDATE t_caja_monto_operador SET u_operadores_id = 151454 WHERE u_operadores_id = 34;
+    UPDATE t_caja_monto_operador SET u_operadores_id = 151552 WHERE u_operadores_id = 35;
+    UPDATE t_caja_monto_operador SET u_operadores_id = 330036 WHERE u_operadores_id = 36;
+    UPDATE t_caja_monto_operador SET u_operadores_id = 151460 WHERE u_operadores_id = 37;
+
+    UPDATE t_suspencion_dias SET u_operadores_id = 150126 WHERE u_operadores_id = 862; 
+
+
     UPDATE t_concentrados  SET    id_operador = 151453 WHERE id_operador = 7;
-    UPDATE t_descuentos  SET    id_operador = 151453 WHERE id_operador = 7;
+    UPDATE t_concentrados  SET    id_operador = 151537 WHERE id_operador = 8;
+    UPDATE t_concentrados  SET    id_operador = 151529 WHERE id_operador = 11;
+    UPDATE t_concentrados  SET    id_operador = 151539 WHERE id_operador = 12;
+    UPDATE t_concentrados  SET    id_operador = 151530 WHERE id_operador = 13;
+    UPDATE t_concentrados  SET    id_operador = 151490 WHERE id_operador = 15;--0
+    UPDATE t_concentrados  SET    id_operador = 151473 WHERE id_operador = 16;
+    UPDATE t_concentrados  SET    id_operador = 151540 WHERE id_operador = 17;--0
+    UPDATE t_concentrados  SET    id_operador = 151482 WHERE id_operador = 18;
+    UPDATE t_concentrados  SET    id_operador = 151507 WHERE id_operador = 20;--0
+    UPDATE t_concentrados  SET    id_operador = 151459 WHERE id_operador = 21;--0
+    UPDATE t_concentrados  SET    id_operador = 150118 WHERE id_operador = 22;--0
+    UPDATE t_concentrados  SET    id_operador = 151545 WHERE id_operador = 23;--0
+    UPDATE t_concentrados  SET    id_operador = 151547 WHERE id_operador = 26;
+    UPDATE t_concentrados  SET    id_operador = 151461 WHERE id_operador = 27;
+    UPDATE t_concentrados  SET    id_operador = 151487 WHERE id_operador = 28;--0
+    UPDATE t_concentrados  SET    id_operador = 151550 WHERE id_operador = 31;
+    UPDATE t_concentrados  SET    id_operador = 150131 WHERE id_operador = 32;--0
+    UPDATE t_concentrados  SET    id_operador = 151511 WHERE id_operador = 33;--0
+    UPDATE t_concentrados  SET    id_operador = 151454 WHERE id_operador = 34;
+    UPDATE t_concentrados  SET    id_operador = 151552 WHERE id_operador = 35;--0
+    UPDATE t_concentrados  SET    id_operador = 330036 WHERE id_operador = 36;
+    UPDATE t_concentrados  SET    id_operador = 151460 WHERE id_operador = 37;--0
+
+    -->> tabla vacia: UPDATE t_descuentos  SET    id_operador = 0  WHERE id_operador = 0;
+
+    UPDATE r_ro_cg12    SET    id_operador = 151539 WHERE id_operador = 1;
+    UPDATE r_ro_cg12    SET    id_operador = 150126 WHERE id_operador = 2;
     UPDATE r_ro_cg12    SET    id_operador = 151453 WHERE id_operador = 7;
+    UPDATE r_ro_cg12    SET    id_operador = 151537 WHERE id_operador = 8;
+    UPDATE r_ro_cg12    SET    id_operador = 151529 WHERE id_operador = 11;
+    UPDATE r_ro_cg12    SET    id_operador = 151539 WHERE id_operador = 12;
+    UPDATE r_ro_cg12    SET    id_operador = 151530 WHERE id_operador = 13;
+    UPDATE r_ro_cg12    SET    id_operador = 151490 WHERE id_operador = 15;
+    UPDATE r_ro_cg12    SET    id_operador = 151473 WHERE id_operador = 16;
+    UPDATE r_ro_cg12    SET    id_operador = 151540 WHERE id_operador = 17;
+    UPDATE r_ro_cg12    SET    id_operador = 151482 WHERE id_operador = 18;
+    UPDATE r_ro_cg12    SET    id_operador = 151507 WHERE id_operador = 20;
+    UPDATE r_ro_cg12    SET    id_operador = 151459 WHERE id_operador = 21;
+    UPDATE r_ro_cg12    SET    id_operador = 150118 WHERE id_operador = 22;
+    UPDATE r_ro_cg12    SET    id_operador = 151545 WHERE id_operador = 23;
+    UPDATE r_ro_cg12    SET    id_operador = 151547 WHERE id_operador = 26;
+    UPDATE r_ro_cg12    SET    id_operador = 151461 WHERE id_operador = 27;
+    UPDATE r_ro_cg12    SET    id_operador = 151487 WHERE id_operador = 28;
+    UPDATE r_ro_cg12    SET    id_operador = 151550 WHERE id_operador = 31;
+    UPDATE r_ro_cg12    SET    id_operador = 150131 WHERE id_operador = 32;
+    UPDATE r_ro_cg12    SET    id_operador = 151511 WHERE id_operador = 33;
+    UPDATE r_ro_cg12    SET    id_operador = 151454 WHERE id_operador = 34;
+    UPDATE r_ro_cg12    SET    id_operador = 151552 WHERE id_operador = 35;
+    UPDATE r_ro_cg12    SET    id_operador = 330036 WHERE id_operador = 36;
+    UPDATE r_ro_cg12    SET    id_operador = 151460 WHERE id_operador = 37;
+
+
     UPDATE t_reposicion  SET    id_usuario = 151453 WHERE id_usuario = 7;
+    UPDATE t_reposicion  SET    id_usuario = 151537 WHERE id_usuario = 8;
+    UPDATE t_reposicion  SET    id_usuario = 151529 WHERE id_usuario = 11;
+    UPDATE t_reposicion  SET    id_usuario = 151539 WHERE id_usuario = 12;
+    UPDATE t_reposicion  SET    id_usuario = 151530 WHERE id_usuario = 13;
+    UPDATE t_reposicion  SET    id_usuario = 151540 WHERE id_usuario = 17;
+    UPDATE t_reposicion  SET    id_usuario = 151482 WHERE id_usuario = 18;
+    UPDATE t_reposicion  SET    id_usuario = 151507 WHERE id_usuario = 20;
+    UPDATE t_reposicion  SET    id_usuario = 151459 WHERE id_usuario = 21;  
+    UPDATE t_reposicion  SET    id_usuario = 150118 WHERE id_usuario = 22;
+    UPDATE t_reposicion  SET    id_usuario = 151545 WHERE id_usuario = 23;
+    UPDATE t_reposicion  SET    id_usuario = 151547 WHERE id_usuario = 26;
+    UPDATE t_reposicion  SET    id_usuario = 151461 WHERE id_usuario = 27;
+    UPDATE t_reposicion  SET    id_usuario = 151487 WHERE id_usuario = 28;
+    UPDATE t_reposicion  SET    id_usuario = 151550 WHERE id_usuario = 31;
+    UPDATE t_reposicion  SET    id_usuario = 150131 WHERE id_usuario = 32;
+    UPDATE t_reposicion  SET    id_usuario = 151511 WHERE id_usuario = 33;
+    UPDATE t_reposicion  SET    id_usuario = 151454 WHERE id_usuario = 34;
+    UPDATE t_reposicion  SET    id_usuario = 151552 WHERE id_usuario = 35;
+    UPDATE t_reposicion  SET    id_usuario = 151460 WHERE id_usuario = 37;
