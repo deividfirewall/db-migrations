@@ -80,11 +80,11 @@ class WelcomeController extends Controller
             $grupo1 = ['file' => '', 'file_size' => 0, 'backup' => $backup1, 'descarga' => 0];
         }
 
-
         $backup2 = ($this->allTables[3]['avance'] == 100 && $this->allTables[5]['avance'] == 100 && 
                     $this->allTables[7]['avance'] == 100 && $this->allTables[8]['avance'] == 100 &&
                     $this->allTables[6]['avance'] == 100 && $this->allTables[21]['avance'] == 100 && 
                     $this->allTables[22]['avance'] == 100) ? 1 : 0;
+
         if (file_exists($grupo2_file)) {
             $file_size = round(filesize($grupo2_file)/1024,1);
             if($file_size > 1024)
@@ -95,7 +95,6 @@ class WelcomeController extends Controller
         }else{
             $grupo2 = ['file' => '', 'file_size' => 0, 'backup' => $backup2, 'descarga' => 0];
         }
-
 
         $backup3 = ($this->allTables[4]['avance'] == 100 && $this->allTables[10]['avance'] == 100 &&
                     $this->allTables[9]['avance'] == 100 && $this->allTables[11]['avance'] == 100 &&

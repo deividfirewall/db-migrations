@@ -321,7 +321,7 @@ class ProductosSeeder extends Seeder
             [72, 'D8', 231, NULL, NULL],
             [73, 'DIGITAL', 231, NULL, NULL],
             [74, 'HI8', 231, NULL, NULL],
-            [75, 'MONTAÃ‘A ', 232, NULL, NULL],
+            [75, 'MONTAÑA ', 232, NULL, NULL],
             [76, 'PISTA', 232, NULL, NULL],
             [77, 'TRICICLO', 232, NULL, NULL],
             [78, 'GRAN CILINDRADA MAYOR DE 125 CC ', 233, NULL, NULL],

@@ -84,7 +84,7 @@ begin section
 
  SELECT * FROM `u_pignotarios` WHERE nombre LIKE "%‘%";          
     UPDATE u_pignotarios SET nombre = TRIM(nombre);
-    UPDATE u_pignotarios SET nombre = REPLACE(nombre, '  ', ' ');           -- x3
+    UPDATE u_pignotarios SET nombre = REPLACE(nombre, '  ', ' ');           -- x2
     UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'Ãƒ', 'ª'); 
     UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'Âƒ', 'ª'); 
     UPDATE u_pignotarios SET nombre = REPLACE(nombre, 'Ã‚', 'ª'); 
