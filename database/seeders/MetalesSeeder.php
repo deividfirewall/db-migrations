@@ -25,8 +25,8 @@ class MetalesSeeder extends Seeder
                 'id' => 1,
                 'precio_compra' => 24000,
                 'precio_venta' => 25500,
-                'precio_gramo' => 1258.67,
-                'precio_gramo_venta' => 1258.67,
+                'precio_gramo' => 1760,
+                'precio_gramo_venta' => 1760,
                 'gramos' => 37.5,
                 'base' => 'CENTENARIO',
                 'cat_metal_tipo_id' => 1
@@ -35,8 +35,8 @@ class MetalesSeeder extends Seeder
                 'id' => 2,
                 'precio_compra' => 435,
                 'precio_venta' => 435,
-                'precio_gramo' => 16.67,
-                'precio_gramo_venta' => 16.67,
+                'precio_gramo' => 26.43,
+                'precio_gramo_venta' => 26.43,
                 'gramos' => 31.07,
                 'base' => 'ONZA LIBERTAD',
                 'cat_metal_tipo_id' => 2

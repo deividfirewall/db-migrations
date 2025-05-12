@@ -46,10 +46,10 @@ $ rm mp_matriz_250430.sql.gz
 
 sail artisan db:seed --class=SedeSeeder
 
-DROP TRIGGER IF EXISTS `t_boleta_cancelar`
-DROP TRIGGER IF EXISTS `t_boleta_historico`
-DROP TRIGGER IF EXISTS `t_boleta_numeroInterno`
-DROP TRIGGER IF EXISTS `suma_totales`
+DROP TRIGGER IF EXISTS `t_boleta_cancelar`;
+DROP TRIGGER IF EXISTS `t_boleta_historico`;
+DROP TRIGGER IF EXISTS `t_boleta_numeroIntern`;
+DROP TRIGGER IF EXISTS `suma_totales`;
 
 ------------------------------------------------- u_operadores
 -- Operadores que no estan en t_boleta
@@ -62,7 +62,9 @@ SELECT DISTINCT u_operadores.id, u_operadores.nombre, u_operadores.usuario FROM 
 INNER JOIN t_boleta ON t_boleta.u_operador_id = u_operadores.id 
 ORDER BY u_operadores.id; 
 
-
+    UPDATE u_operadores SET nombre = UPPER(nombre);
+    UPDATE u_operadores SET nombre = TRIM(nombre);
+    UPDATE u_operadores SET nombre = REPLACE(nombre, '  ', ' ');           -- x2
     UPDATE u_operadores SET id = id + 150000;
     UPDATE t_boleta  SET    u_operador_id = u_operador_id + 150000   WHERE    u_operador_id < 150000 LIMIT 100000;
     UPDATE h_t_boleta SET u_operador_id = u_operador_id + 150000 WHERE u_operador_id < 150000 LIMIT 200000; 
@@ -185,6 +187,7 @@ begin section
         UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'ª', 'Ñ'); 
 end section        
 
+begin section
 ------------------------------------------------- t_boleta
  -->> boleta con datos en null
     DELETE FROM t_boleta WHERE t_boleta.id = 10474068               
@@ -349,6 +352,8 @@ SELECT DISTINCT t_boleta_pagos.t_boleta_id FROM t_boleta_pagos LEFT JOIN t_bolet
         DELETE FROM t_num_tickes WHERE `t_num_tickes`.`id` = 2081;
         DELETE FROM t_num_tickes WHERE `t_num_tickes`.`id` = 158375;
        
+
+end section       
 ------------------------------------------------- OTRAS ANOMALIAS 
 -->> 3 de los pignorantes de t_boleta y t_empenios no coinciden (PORQUE???)
     SELECT t_empenios_boleta_relacion.t_empenios_id,    t_boleta.id, t_boleta.u_pignorante_id,    t_empenios.id,t_empenios.u_pignorante_id 
@@ -363,7 +368,7 @@ SELECT DISTINCT t_boleta_pagos.t_boleta_id FROM t_boleta_pagos LEFT JOIN t_bolet
 
 
 
-        /*  TERMINADA LA MIGRACION
+    /*  TERMINADA LA MIGRACION
             bash-4.4# mysql -u root -p
             mysql> exit
             # RESPALDO DE LA BASE DE DATOS SIEMP A UN ARCHIVO
