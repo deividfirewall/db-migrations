@@ -246,6 +246,7 @@ class ProductosSeeder extends Seeder
             ]);
         }
 
+        
         $subproductos = [
             [1, '37"', 123, NULL, NULL],
             [2, '50"', 123, NULL, NULL],
@@ -697,7 +698,7 @@ class ProductosSeeder extends Seeder
             [496, 'EQUIPO DE CORTE Y SOLDADURA', 328, NULL, NULL],
             [497, 'SIERRA SABLE', 256, NULL, NULL],
             [498, 'COMPACTADOR DE RODILLO INDUSTRIAL', 338, NULL, NULL],
-            [499, 'CARRO ELÃ‰CTRICO MONTABLE', 339, NULL, NULL],
+            [499, 'CARRO ELÉCTRICO MONTABLE', 339, NULL, NULL],
             [500, 'PLANCHA PARA SUBLIMAR', 340, NULL, NULL],
             [501, 'DESTORNILLADOR INDUSTRIAL RECARGABLE', 253, NULL, NULL],
             [502, 'BATIDORA SEMI INDUSTRIAL', 249, NULL, NULL],
@@ -745,14 +746,14 @@ class ProductosSeeder extends Seeder
             [544, 'FREIDORA DE AIRE', 249, NULL, NULL],
             [545, 'SILLAS PLEGABLES', 257, NULL, NULL],
             [546, 'PATINETA', 284, NULL, NULL],
-            [547, 'BOCINAS PORTÃTILES', 290, NULL, NULL],
+            [547, 'BOCINAS PORTÁTILES', 290, NULL, NULL],
             [548, 'MUEBLE DE CEDRO', 257, NULL, NULL],
             [549, 'SMARTWACH', 326, NULL, NULL],
             [550, 'HAMACA', 257, NULL, NULL],
             [551, 'CONTROLADOR DE DG', 296, NULL, NULL],
             [552, 'AIRE ACONDICIONADO', 267, NULL, NULL],
             [553, 'CAJA DE HERRAMIENTAS', 328, NULL, NULL],
-            [554, 'AUDÃFONOS BLUETOOTH', 337, NULL, NULL],
+            [554, 'AUDÍFONOS BLUETOOTH', 337, NULL, NULL],
             [555, 'BATERÍA PARA AUTO', 353, NULL, NULL],
             [556, 'CALENADOR SOLAR', 351, NULL, NULL],
             [557, 'UTENSILIO ROYAL PRESTIGE', 341, NULL, NULL],

@@ -4,33 +4,31 @@ gunzip -c /mnt/c/Users/Dell/Downloads/BD_30_abril/mp_xoxo26_250430.gz | ./vendor
 
 
     DROP TABLE `c_intereses`, `c_nivel`, `h_rp_subasta`, `rg_dda07`, `rg_ddd04`, `rg_de02`, `rg_dra06`, `rg_drd03`, `temporal`, `t_boleta_migracion`, `t_control_interno_cancelado`, `t_migration_missing`, `u_directores`;
+    DROP VIEW `boleta`
     DROP TRIGGER IF EXISTS t_boleta_cancelar;
     DROP TRIGGER IF EXISTS t_boleta_historico;
     DROP TRIGGER IF EXISTS t_boleta_numeroInterno;
     DROP TRIGGER IF EXISTS suma_totales;
 
 
-begin ------------------------------------------> CATALOGOS
+------------------------------------------> CATALOGOS
     UPDATE `c_municipios` SET `sigla` = REPLACE(sigla,"Ãƒ","Ñ"); 
     UPDATE `c_municipios` SET `sigla` = REPLACE(sigla,"Ã","Ñ"); 
     UPDATE `c_municipios` SET `sigla` = REPLACE(sigla,"GÑÂ","GÜÉ"); 
 
-
-    UPDATE c_productos SET nombre = UPPER(nombre);
-    UPDATE c_productos SET nombre = TRIM(nombre);
+    UPDATE c_productos SET nombre = UPPER(nombre) WHERE 1;
+    UPDATE c_productos SET nombre = TRIM(nombre) WHERE 1;
 
     -- ~464 registros que no se ocuparon en t_empenios
-    DELETE c_sub_productos FROM c_sub_productos LEFT JOIN t_empenios ON t_empenios.c_sub_productos_id = c_sub_productos.id WHERE t_empenios.id IS NULL;
+    DELETE c_sub_productos FROM c_sub_productos LEFT JOIN t_empenios ON t_empenios.c_sub_productos_id = c_sub_productos.id 
+    WHERE t_empenios.id IS NULL;
     -- ~422 registros eliminados que no tienen subproductos
-    DELETE c_cotiza_producto FROM c_cotiza_producto LEFT JOIN c_sub_productos  ON c_cotiza_producto.c_sub_productos_id = c_sub_productos.id WHERE c_sub_productos.id IS NULL;
-
-
-    -- UPDATE c_sub_productos SET subproducto = UPPER(subproducto);
-    -- UPDATE c_sub_productos SET subproducto = TRIM(subproducto); 
-    -- UPDATE c_sub_productos SET subproducto = REPLACE(subproducto, 'Ã‘', 'Ñ'); 
-    -- UPDATE c_sub_productos SET subproducto = REPLACE(subproducto, 'Ã¡', 'Á'); 
-    -- UPDATE c_sub_productos SET subproducto = REPLACE(subproducto, 'Ã­', 'Í');
-
+    DELETE c_cotiza_producto FROM c_cotiza_producto LEFT JOIN c_sub_productos  ON c_cotiza_producto.c_sub_productos_id = c_sub_productos.id 
+    WHERE c_sub_productos.id IS NULL;
+    UPDATE c_sub_productos SET subproducto = UPPER(subproducto);
+    UPDATE c_sub_productos SET subproducto = TRIM(subproducto); 
+    UPDATE c_sub_productos SET subproducto = REPLACE(subproducto, 'Ã‘', 'Ñ'); 
+    UPDATE c_sub_productos SET subproducto = REPLACE(subproducto, 'Ã', 'Á');     
 
     UPDATE `c_sub_productos` SET `c_producto_id` = 326 WHERE `c_sub_productos`.`id` = 549; 
     UPDATE `c_sub_productos` SET `id` = 610 WHERE `c_sub_productos`.`id` = 608; 
@@ -46,16 +44,17 @@ begin ------------------------------------------> CATALOGOS
     UPDATE t_empenios SET c_tipo_prestamo = 25 WHERE c_tipo_prestamo = 23;    --0 registros
     UPDATE t_empenios SET c_tipo_prestamo = 24 WHERE c_tipo_prestamo = 22;    --0 registros
 
-    UPDATE c_tipo_prestamo_sucursal SET c_tipo_prestamo = '26' WHERE c_tipo_prestamo_sucursal.id = 51; 
-    UPDATE c_tipo_prestamo_sucursal SET c_tipo_prestamo = '25' WHERE c_tipo_prestamo_sucursal.id = 50; 
-    UPDATE c_tipo_prestamo_sucursal SET c_tipo_prestamo = '24' WHERE c_tipo_prestamo_sucursal.id = 49; 
+    UPDATE c_tipo_prestamo_sucursal SET c_tipo_prestamo = '26' WHERE c_tipo_prestamo_sucursal.id = 51;  --0 registros
+    UPDATE c_tipo_prestamo_sucursal SET c_tipo_prestamo = '25' WHERE c_tipo_prestamo_sucursal.id = 50;  --0 registros
+    UPDATE c_tipo_prestamo_sucursal SET c_tipo_prestamo = '24' WHERE c_tipo_prestamo_sucursal.id = 49;  --0 registros
 
-end;
 
-begin ------------------------------------------> u_operadores
-    UPDATE u_operadores SET nombre = UPPER(nombre);
-    UPDATE u_operadores SET nombre = TRIM(nombre);
-    UPDATE u_operadores SET usuario = TRIM(nombre);
+
+------------------------------------------> u_operadores
+    UPDATE u_operadores SET nombre = UPPER(nombre) WHERE 1;
+    UPDATE u_operadores SET nombre = TRIM(nombre) WHERE 1;
+    UPDATE u_operadores SET usuario = TRIM(usuario) WHERE 1;
+    UPDATE t_suspencion_dias  SET    u_operadores_id = 150126 WHERE u_operadores_id = 862;
 
     -- marcamos a los operadores que  tienen registros en otras tablas
     UPDATE u_operadores AS u
@@ -70,14 +69,17 @@ begin ------------------------------------------> u_operadores
     OR EXISTS (SELECT 1 FROM t_descuentos          d  WHERE d.id_operador     = u.id)
     OR EXISTS (SELECT 1 FROM r_ro_cg12             p  WHERE p.id_operador     = u.id)
     OR EXISTS (SELECT 1 FROM t_reposicion          r  WHERE r.id_usuario      = u.id)
+ 
+ -- Se eliminan registros de operadores que no tienen relacion alguna ~37
+    DELETE FROM u_operadores WHERE genero < 100; 
 
-
-    UPDATE u_operadores SET id = 151482 WHERE id = 6;
+    UPDATE u_operadores SET id = 150126 WHERE id = 2;
     UPDATE u_operadores SET id = 151487 WHERE id = 7;
     UPDATE u_operadores SET id = 151453 WHERE id = 8;
     UPDATE u_operadores SET id = 151461 WHERE id = 11;
     UPDATE u_operadores SET id = 151524 WHERE id = 12;
     UPDATE u_operadores SET id = 151454 WHERE id = 15;
+    UPDATE u_operadores SET id = 151482 WHERE id = 16;
     UPDATE u_operadores SET id = 151550 WHERE id = 17;
     UPDATE u_operadores SET id = 151476 WHERE id = 19;
     UPDATE u_operadores SET id = 151552 WHERE id = 21;
@@ -87,7 +89,7 @@ begin ------------------------------------------> u_operadores
     UPDATE u_operadores SET id = 151507 WHERE id = 30;
     UPDATE u_operadores SET id = 151557 WHERE id = 32;
     UPDATE u_operadores SET id = id + 1260000 WHERE id = 13;
-    DELETE FROM u_operadores  WHERE id = 16;
+    DELETE FROM u_operadores  WHERE id = 6;
 
     UPDATE t_boleta  SET    u_operador_id = 151487 WHERE u_operador_id = 7;
     UPDATE t_boleta  SET    u_operador_id = 151453 WHERE u_operador_id = 8;
@@ -139,7 +141,6 @@ begin ------------------------------------------> u_operadores
     UPDATE t_caja_monto_operador SET u_operadores_id = 151557 WHERE u_operadores_id = 32;
     UPDATE t_caja_monto_operador SET u_operadores_id = u_operadores_id + 1260000 WHERE u_operadores_id = 13;
 
-    UPDATE t_suspencion_dias  SET    u_operadores_id = 150126 WHERE u_operadores_id = 862;
 
     UPDATE t_concentrados  SET    id_operador = 151487 WHERE id_operador = 7;
     UPDATE t_concentrados  SET    id_operador = 151453 WHERE id_operador = 8;
@@ -176,15 +177,16 @@ begin ------------------------------------------> u_operadores
     UPDATE t_reposicion  SET    id_usuario = 151550 WHERE id_usuario = 17;
     UPDATE t_reposicion  SET    id_usuario = 151552 WHERE id_usuario = 21;
 
-end;
+    -- Inserta usuario de informatica
+___________________________________________________________________________________________________
 
  ------------------------------------------> u_pignotarios
     UPDATE u_pignotarios SET nombre = TRIM(nombre);
-    SELECT * FROM `u_pignotarios` WHERE nombre LIKE "%‘%";
+    SELECT * FROM `u_pignotarios` WHERE nombre LIKE "%‘%";  -- 0 registros
 
 ------------------------------------------> u_pignotariosu_pignotarios
-    UPDATE u_pignotarios_solidarios SET pignorante_solidario = UPPER(pignorante_solidario);
-    UPDATE u_pignotarios_solidarios SET pignorante_solidario = TRIM(pignorante_solidario);
+    UPDATE u_pignotarios_solidarios SET pignorante_solidario = UPPER(pignorante_solidario) WHERE 1;
+    UPDATE u_pignotarios_solidarios SET pignorante_solidario = TRIM(pignorante_solidario) WHERE 1;
     SELECT * FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%‘%';
     
     UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'Âƒ', 'ª');
@@ -192,24 +194,16 @@ end;
     UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'Ã‚', 'ª');
     UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'Â‘', 'ª');
     UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'Ã‘', 'ª');
-    UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'ªª', 'ª');      --x3
     SELECT * FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%ª%';
+    UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'ªª', 'ª');      --x2
     UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'ª', 'Ñ');
 
-    UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'NO DEJA', ''); 
     SELECT pignorante_solidario, COUNT(t_boleta_id) FROM u_pignotarios_solidarios WHERE LENGTH(pignorante_solidario) < 9 GROUP BY pignorante_solidario; 
-
-begin ------------------------------------------> 
-end;
-
-begin ------------------------------------------> 
-end;
-
-begin ------------------------------------------> 
-end;
-
-begin ------------------------------------------> 
-end;
+    DELETE FROM u_pignotarios_solidarios WHERE LENGTH(pignorante_solidario) < 9 ;
+    -- Con esta consulta se verifica si hay pignorantes_solidarios que no tienen boleta asociada
+    SELECT * FROM u_pignotarios_solidarios LEFT JOIN t_boleta ON t_boleta.id = u_pignotarios_solidarios.t_boleta_id WHERE t_boleta.id IS null; 
+    -- Se eliminan los pignorantes_solidarios que no tienen boleta asociada: ~6 registros
+    DELETE u_pignotarios_solidarios FROM u_pignotarios_solidarios LEFT JOIN t_boleta ON t_boleta.id = u_pignotarios_solidarios.t_boleta_id WHERE t_boleta.id IS NULL; 
 
 
 
@@ -220,10 +214,3 @@ end;
 
 
 
-
-gunzip -c /mnt/c/Users/Dell/Downloads/BD_30_abril/autos_xoxo26_250430.gz | ./vendor/bin/sail exec -T mysql mysql -u root autos_xoxo26
-begin
-DROP TABLE `h_rp_subasta`, `rg_dda07`, `rg_ddd04`, `rg_de02`, `rg_dra06`, `rg_drd03`, `t_boleta_migracion`, 
-            `t_migration_missing`, `users`, `u_directores`;
-
-end;

@@ -36,7 +36,9 @@ class SedeSeeder extends Seeder
             [29, 'TLX', '020', 'Mixteca','Tlaxiaco', 1, 25000, 60000, '953 55 2 11 73', 1, 'Calle Aldama Num.6 entre las Calles Independencia e Hidalgo', '68000', 2000, '1', NULL],
             [30, '20N', '008', 'Valles Centrales','20 Noviembre', 1, 25000, 50000, '5144059', 1, '20 de noviembre 707 A, Col. Centro, Oaxaca.', NULL, 2000, '1', NULL],
             [31, 'TUX', '004', 'Cuenca','Tuxtepec', 1, 25000, 70000, '2878754055', 1, 'Avenida 20 de Noviembre No. 170 San Juan Bautista Tuxtepec', '68300', 2000, '1', NULL],
-            [32, 'LBO', '009', 'Cuenca','Loma Bonita', 1, 25000, 40000, '281- 87 20003', 1, 'Calle MichoacÃ¡n No. 25, local 3', '68400', 2000, '1', NULL],
+            [32, 'LBO', '009', 'Cuenca','Loma Bonita', 1, 25000, 40000, '281- 87 20003', 1, 'Calle Michoacán No. 25, local 3', '68400', 2000, '1', NULL],
+            [33, 'IXC', '025', 'Cuenca','Ixcotel', 1, 25000, 100000, '951-513-79-83', 1, 'Carretera Internacional 1810-A Santa Maria Ixcotel, Santa Lucia del Camino', '68100', 2000, '1', NULL],
+            [34, 'X26', '026', 'Cuenca','Xoxocotlan26', 1, 25000, 100000, '951-533-67-56', 1, 'Calle Pordirio Díaz, Paraje "Los Zapotales", Santa Cruz Xoxocotlán.', '68400', 2000, '1', NULL],
         ];
 
         foreach ($sucursales as $seed) {

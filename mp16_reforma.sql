@@ -1,9 +1,15 @@
 $ gunzip -c mp_reforma_250430.sql.gz | ./vendor/bin/sail exec -T mysql mysql -u root mp_reforma
 $ rm mp_reforma_250430.sql.gz 
 
-DROP TABLE `c_cotiza_producto_08112015`, `c_printer_operador_tipo`, `c_procesos_juridicos`, `c_sub_productos_08112015`, `c_sub_productos_2014_12_12`, `c_tipo_prestamo_12042015`, `h_rp_subasta`, `h_t_boleta_26_marzo_2015`, `migration_boletas`, `migrations`, `password_resets`, `r_rg_cg11+1Abril2015`, `r_rg_cg11_13_abril_2015`, `rg_dda07`, `rg_ddd04`, `rg_de02`, `rg_dra06`, `rg_drd03`, `rg_rod13+1Abril2015`, `t_boetas_pagos_mal_NoVenta`, `t_boleta_migracion`, `t_boleta_pagos_19022015`, `t_boleta_pagos_old_19022015`, `t_concentrados`, `t_empenios_2014_12_12`, `t_empenios_metal`, `t_empenios_metal_2014_12_12`, `t_empenios_productos_2014_12_12`, `t_migration_missing`, `t_subasta_copy`;
-DROP TABLE `c_sucursal_12042015`, `c_sucursal_v1`, `c_tipo_printer`, `h_t_boleta_copy`, `t_boleta_copy`;
-DROP TABLE `c_fecha_reporte`, `c_intereses`, `c_nivel`, `c_printer_operador`, `c_status_usuario`;
+DROP TABLE  `c_cotiza_producto_08112015`, `c_printer_operador_tipo`, `c_procesos_juridicos`, `c_sub_productos_08112015`, 
+            `c_sub_productos_2014_12_12`, `c_tipo_prestamo_12042015`, `h_rp_subasta`, `h_t_boleta_26_marzo_2015`, 
+            `migration_boletas`, `migrations`, `password_resets`, `r_rg_cg11+1Abril2015`, `r_rg_cg11_13_abril_2015`, 
+            `rg_dda07`, `rg_ddd04`, `rg_de02`, `rg_dra06`, `rg_drd03`, `rg_rod13+1Abril2015`, `t_boleta_migracion`, 
+            `t_boetas_pagos_mal_NoVenta`, `t_boleta_pagos_19022015`, `t_boleta_pagos_old_19022015`, `t_concentrados`, 
+            `t_empenios_2014_12_12`, `t_empenios_metal`, `t_empenios_metal_2014_12_12`, `t_empenios_productos_2014_12_12`,
+            `t_migration_missing`, `t_subasta_copy`, `users`, `u_directores`, `c_sucursal_12042015`, `c_sucursal_v1`, 
+            `c_tipo_printer`, `h_t_boleta_copy`, `t_boleta_copy`, `c_fecha_reporte`, `c_intereses`, `c_printer_operador`, 
+            `c_nivel`, `c_status_usuario`;
 
 begin section;
 ------------------------------------------------- u_pignotarios 
