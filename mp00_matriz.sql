@@ -1,88 +1,106 @@
+-- Active: 1747336191893@@localhost@3309@mp_matriz
 --> Opción 1: (DESCARTADA) transferimos el archivo de la base de datos desde windows a docker
 $ cp /mnt/c/Users/Dell/Downloads/BD_30_abril/mp_matriz_250430.sql.gz ~/db-migrations/Windows/
 $ gunzip -c Windows/mp_matriz_250430.sql.gz | ./vendor/bin/sail exec -T mysql mysql -u root mp_matriz
-
-
--->> Opción 2:(RECOMENDADA) Importacion de la base de datos directamente de la carpeta de dowloads de windows 
--->> al contenedor de mysql de docker
-$ gunzip -c /mnt/c/Users/Dell/Downloads/BD_30_abril/mp_matriz_250430.sql.gz | ./vendor/bin/sail exec -T mysql mysql -u root mp_matriz
-
 -->> Borramos el archivo de la base de datos
 $ rm mp_matriz_250430.sql.gz
 
+-->> Opción 2:(RECOMENDADA) Importacion de la base de datos directamente de la carpeta de dowloads de windows 
+-->> al contenedor de mysql de docker
+$ gunzip -c /mnt/c/Users/Dell/Downloads/BD_30_abril/mp_matriz.gz | ./vendor/bin/sail exec -T mysql mysql -u root mp_matriz
+
+/*
+⊢—⊣  —⊑=== === ===⊒ ⁅—————⁆ ‗‗‗‗‗‗‗‗‗‗‗‗⊢——————⊣⊺⊾⊶——⊷---⊸  ⇲⇱ 
+---⫟⫟⫠⫰⫯⪦⨷⊹⊹⊶⊶-- ⋌⋋⋉ —⫍—⊟—⊞—⊞—⫎—---|⪧⋊---—⫍⊤|⊏=== ===⊐---⫠⫞----⊣ ---|‾‾‾‾‾‾‾‾‾‾‾‾‾|--- ⨽---⨼–⫱=== ===————— 
+*/
+
+
 -- ELIMINAMOS 29 TABLAS INNECESARIAS         
     DROP TABLE 
-        c_cotiza_producto_08112015, 
-        c_fecha_reporte, 
-        c_nivel, 
-        c_printer_operador, 
-        c_printer_operador_tipo, 
-        c_sub_productos_08112015, 
-        c_sub_productos_2014_12_12, 
-        c_sucursal_12042015, 
-        c_sucursal_v1, 
-        c_status_usuario,
-        c_intereses,
-        c_tipo_prestamo_12042015, 
-        c_tipo_printer, 
-        h_rp_subasta, 
-        rg_dda07, 
-        rg_ddd04, 
-        rg_de02, 
-        rg_dra06, 
-        rg_drd03, 
-        temporal, 
-        t_boleta_202006, 
-        t_boleta_pagos_19022015, 
-        t_boleta_pagos_old_19022015,
-        t_boetas_pagos_mal_NoVenta, 
-        t_boleta_migracion,
-        t_empenios_2014_12_12, 
-        t_empenios_metal_2014_12_12, 
-        t_empenios_productos_2014_12_12, 
-        t_migration_missing, 
-        t_subasta_copy,
-        u_directores;
+        c_cotiza_producto_08112015,         c_fecha_reporte,         c_nivel,         c_printer_operador,         c_printer_operador_tipo, 
+        c_sub_productos_08112015,         c_sub_productos_2014_12_12,         c_sucursal_12042015,         c_sucursal_v1, 
+        c_status_usuario,        c_intereses,        c_tipo_prestamo_12042015,         c_tipo_printer,         h_rp_subasta, 
+        rg_dda07,         rg_ddd04,         rg_de02,         rg_dra06,         rg_drd03,         temporal,         t_boleta_202006, 
+        t_boleta_pagos_19022015,         t_boleta_pagos_old_19022015,        t_boetas_pagos_mal_NoVenta,         t_boleta_migracion,
+        t_empenios_2014_12_12,         t_empenios_metal_2014_12_12,         t_empenios_productos_2014_12_12,         t_migration_missing, 
+        t_subasta_copy,        u_directores;
+    DROP VIEW boleta;
 
-sail artisan db:seed --class=SedeSeeder
+$ sail artisan migrate:fresh --seed
 
 DROP TRIGGER IF EXISTS `t_boleta_cancelar`;
 DROP TRIGGER IF EXISTS `t_boleta_historico`;
-DROP TRIGGER IF EXISTS `t_boleta_numeroIntern`;
+DROP TRIGGER IF EXISTS `t_boleta_numeroInterno`;
+DROP TRIGGER IF EXISTS `agregar_cancelado`;
 DROP TRIGGER IF EXISTS `suma_totales`;
 
-------------------------------------------------- u_operadores
+/*  catalogos   --------------------------------------------------------------------------------|*/
+UPDATE `c_sucursal` SET `monto_max_concentrado` = id WHERE 1;   -- Rspaldo del id original
+UPDATE c_sucursal SET id = 100 WHERE id = 15;
+UPDATE c_sucursal SET id = 101 WHERE id = 16;
+UPDATE c_sucursal SET id = 102 WHERE id = 12;
+UPDATE c_sucursal SET id = 103 WHERE id = 28;
+UPDATE c_sucursal SET id = 104 WHERE id = 31;
+UPDATE c_sucursal SET id = 105 WHERE id = 24;
+UPDATE c_sucursal SET id = 106 WHERE id = 13;
+UPDATE c_sucursal SET id = 107 WHERE id = 17;
+UPDATE c_sucursal SET id = 108 WHERE id = 30;
+UPDATE c_sucursal SET id = 109 WHERE id = 32;
+UPDATE c_sucursal SET id = 110 WHERE id = 25;
+UPDATE c_sucursal SET id = 111 WHERE id = 18;
+UPDATE c_sucursal SET id = 112 WHERE id = 14;
+UPDATE c_sucursal SET id = 113 WHERE id = 19;
+UPDATE c_sucursal SET id = 114 WHERE id = 20;
+UPDATE c_sucursal SET id = 115 WHERE id = 22;
+UPDATE c_sucursal SET id = 116 WHERE id = 11;
+UPDATE c_sucursal SET id = 117 WHERE id = 21;
+UPDATE c_sucursal SET id = 118 WHERE id = 27;
+UPDATE c_sucursal SET id = 119 WHERE id = 23;
+UPDATE c_sucursal SET id = 120 WHERE id = 29;
+UPDATE c_sucursal SET id = 121 WHERE id = 26;
+UPDATE c_sucursal SET id = 125 WHERE id = 33;
+UPDATE c_sucursal SET id = 126 WHERE id = 34;
+
+
+
+
+/*  u_operadores   --------------------------------------------------------------------------------|*/
 -- Operadores que no estan en t_boleta
     SELECT        u_operadores.id    FROM        u_operadores
     LEFT JOIN t_boleta ON t_boleta.u_operador_id = u_operadores.id
     WHERE t_boleta.u_operador_id IS null
     ORDER BY u_operadores.id
 
-SELECT DISTINCT u_operadores.id, u_operadores.nombre, u_operadores.usuario FROM u_operadores 
-INNER JOIN t_boleta ON t_boleta.u_operador_id = u_operadores.id 
-ORDER BY u_operadores.id; 
+    SELECT DISTINCT u_operadores.id, u_operadores.nombre, u_operadores.usuario FROM u_operadores 
+    INNER JOIN t_boleta ON t_boleta.u_operador_id = u_operadores.id 
+    ORDER BY u_operadores.id; 
 
-    UPDATE u_operadores SET nombre = UPPER(nombre);
-    UPDATE u_operadores SET nombre = TRIM(nombre);
-    UPDATE u_operadores SET nombre = REPLACE(nombre, '  ', ' ');           -- x2
-    UPDATE u_operadores SET id = id + 150000;
-    UPDATE t_boleta  SET    u_operador_id = u_operador_id + 150000   WHERE    u_operador_id < 150000 LIMIT 100000;
-    UPDATE h_t_boleta SET u_operador_id = u_operador_id + 150000 WHERE u_operador_id < 150000 LIMIT 200000; 
-    UPDATE t_boleta_cancelado  SET    u_operador_id = u_operador_id + 150000;
-    UPDATE t_caja_monto_operador SET u_operadores_id = u_operadores_id + 150000 WHERE u_operadores_id < 150000 LIMIT 200000;
-    UPDATE t_suspencion_dias  SET    u_operadores_id = u_operadores_id + 150000;
-    UPDATE t_concentrados  SET    id_operador = id_operador + 150000;
-    -- checar antes los id de id_gerente
-    UPDATE t_concentrados  SET    id_gerente = id_gerente + 150000;
-    UPDATE t_descuentos  SET    id_operador = id_operador + 150000;
-    UPDATE r_ro_cg12    SET    id_operador = id_operador + 150000;
-    UPDATE t_reposicion  SET    id_usuario = id_usuario + 150000;
+    UPDATE u_operadores SET nombre = UPPER(nombre) WHERE 1;
+    UPDATE u_operadores SET nombre = TRIM(nombre) WHERE 1;
+    UPDATE u_operadores SET nombre = REPLACE(nombre, '  ', ' ') WHERE 1;           -- x2
+    UPDATE    `u_operadores` SET    `rfc` = id WHERE 1;
 
+ -- marcamos a los operadores que  tienen registros en otras tablas
+    UPDATE u_operadores AS u SET genero = genero + 100000000 WHERE EXISTS (SELECT 1 FROM t_boleta b WHERE b.u_operador_id = u.id LIMIT 1); 
+    UPDATE u_operadores AS u SET genero = genero + 20000000 WHERE EXISTS (SELECT 1 FROM h_t_boleta h  WHERE h.u_operador_id   = u.id LIMIT 1); 
+    UPDATE u_operadores AS u SET genero = genero + 3000000 WHERE EXISTS (SELECT 1 FROM t_caja_monto_operador m  WHERE m.u_operadores_id = u.id LIMIT 1);
+    UPDATE u_operadores AS u SET genero = genero + 400000 WHERE EXISTS (SELECT 1 FROM r_ro_cg12 p  WHERE p.id_operador     = u.id LIMIT 1);
+    UPDATE u_operadores AS u SET genero = genero + 50000 WHERE EXISTS (SELECT 1 FROM t_concentrados t  WHERE t.id_operador     = u.id LIMIT 1);
+    UPDATE u_operadores AS u SET genero = genero + 60000 WHERE EXISTS (SELECT 1 FROM t_concentrados t2 WHERE t2.id_gerente     = u.id LIMIT 1);
+    UPDATE u_operadores AS u SET genero = genero + 1000 WHERE EXISTS (SELECT 1 FROM t_reposicion          r  WHERE r.id_usuario      = u.id LIMIT 1);
+    UPDATE u_operadores AS u SET genero = genero + 200 WHERE EXISTS (SELECT 1 FROM t_boleta_cancelado    c  WHERE c.u_operador_id   = u.id LIMIT 1);
+    UPDATE u_operadores AS u SET genero = genero + 30 WHERE EXISTS (SELECT 1 FROM t_suspencion_dias     s  WHERE s.u_operadores_id = u.id LIMIT 1);
+    UPDATE u_operadores AS u SET genero = genero + 4 WHERE EXISTS (SELECT 1 FROM t_descuentos          d  WHERE d.id_operador     = u.id LIMIT 1);
+
+    UPDATE `u_operadores` SET id = id - 1300 WHERE id > 1000; 
+
+
+    UPDATE `t_concentrados` SET `id_gerente` = '121' WHERE `id_gerente` = 0; -- para evitar errores de integridad referencial
 
 SHOW PROCESSLIST;
 
-------------------------------------------------- u_pignotarios 
-begin section
+
+/*  u_pignotarios   --------------------------------------------------------------------------------|*/
 
  SELECT * FROM `u_pignotarios` WHERE nombre LIKE "%‘%";          
     UPDATE u_pignotarios SET nombre = TRIM(nombre);
@@ -136,12 +154,10 @@ begin section
     SELECT * FROM u_pignotarios WHERE ife = 'MRGRCR63081520M400'; 
     UPDATE `u_pignotarios` SET `cp` = '68150' WHERE `u_pignotarios`.`id` = 28228 AND `u_pignotarios`.`ife` = 'MRGRCR63081520M400'; 
     UPDATE u_pignotarios SET cp = '00000' WHERE cp = '0000000';        -- 0, 00, 000, 0000, 000000, 0000000
-end section
    
 
        
--------------------------------------------------  u_pignotarios_solidarios
-begin section
+/*-------------------------------------------------  u_pignotarios_solidarios   */
  -- 🔃 actualizamos todo a mayusculas, quitamos espacions dobles y eliminamos espacion en blanco al inicio y al final de los nombres
     UPDATE u_pignotarios_solidarios SET pignorante_solidario = UPPER(pignorante_solidario); 
     UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, '  ', ' ');    -- x 4
@@ -185,29 +201,34 @@ begin section
         UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'ªª', 'ª');    -- x8
     SELECT * FROM u_pignotarios_solidarios WHERE pignorante_solidario LIKE '%ª%';           
         UPDATE u_pignotarios_solidarios SET pignorante_solidario = REPLACE(pignorante_solidario, 'ª', 'Ñ'); 
-end section        
 
-begin section
-------------------------------------------------- t_boleta
+
+/*  t_boleta   --------------------------------------------------------------------------------|*/
+
  -->> boleta con datos en null
     DELETE FROM t_boleta WHERE t_boleta.id = 10474068               
  -->> boleta con comision_avaluo numero muy largo (10604876)
     UPDATE t_boleta SET comision_avaluo = '1095.81' WHERE t_boleta.id = 10604876;       
         
-------------------------------------------------- h_t_boleta
+
+/*  h_t_boleta   --------------------------------------------------------------------------------|*/
+
  -->> boleta con comision_avaluo numero muy largo (1771886, 1786792)
         UPDATE h_t_boleta SET comision_avaluo = '1095.81' WHERE h_t_boleta.id_interno = 1771886; 
         UPDATE h_t_boleta SET comision_avaluo = '1095.81' WHERE h_t_boleta.id_interno = 1786792; 
         UPDATE h_t_boleta SET comision_avaluo = '109.581' WHERE comision_avaluo > 109581000; 
 
-------------------------------------------------- t_boleta_pagos
+
+/*  t_boleta_pagos   --------------------------------------------------------------------------------|*/
+
  -->> Borramos 6392 registros de t_boleta_pagos que no existe relacion de 654 boletas en la tabla t_boleta 
  -->> Sin embargo si existen en la tabla t_boleta_cancelado, pero deben de eliminarse para conservar la integridad de la base de datos
 SELECT DISTINCT t_boleta_pagos.t_boleta_id FROM t_boleta_pagos LEFT JOIN t_boleta ON t_boleta_pagos.t_boleta_id = t_boleta.id  WHERE t_boleta.id IS null; 
     DELETE t_boleta_pagos FROM t_boleta_pagos LEFT JOIN t_boleta ON t_boleta_pagos.t_boleta_id = t_boleta.id WHERE t_boleta.id IS null; 
     OPTIMIZE TABLE t_boleta_pagos
             
-------------------------------------------------- t_empenios_boleta_relacion, t_empenios
+/*  t_empenios_boleta_relacion, t_empenios   --------------------------------------------------------------------------------|*/
+
 -->> con esta consulta se encuentra el empeño repetido
     SELECT t_empenios.id, COUNT(t_empenios_boleta_relacion.t_empenios_id ) as connteo FROM t_empenios_boleta_relacion LEFT JOIN t_empenios ON t_empenios_boleta_relacion.t_empenios_id = t_empenios.id GROUP BY t_empenios.id ORDER by COUNT(t_empenios_boleta_relacion.t_empenios_id ) DESC; 
 -->> se encontro que el t_empenio_id:157911 y 157912 estan invertidos con el id de la tabla t_empenios_boleta_relacion, investigar las boletas 10522796 y 10522794
@@ -233,7 +254,9 @@ SELECT DISTINCT t_boleta_pagos.t_boleta_id FROM t_boleta_pagos LEFT JOIN t_bolet
         WHERE t_boleta.id IS NULL; 
     OPTIMIZE TABLE `t_empenios_boleta_relacion`
 
-------------------------------------------------- t_empenios, t_empenios_metal, t_empenios_productos
+
+/*  t_empenios, t_empenios_metal, t_empenios_productos   --------------------------------------------------------------------------------|*/
+
 -->> t_empenios :: se corrigue un error donde 4 registros de t_empenios no tiene un pignorante_id
         UPDATE t_empenios SET u_pignorante_id = 1933 WHERE u_pignorante_id = 27441 AND id IN (144879, 152894,152893,193264); 
 
@@ -270,7 +293,8 @@ SELECT DISTINCT t_boleta_pagos.t_boleta_id FROM t_boleta_pagos LEFT JOIN t_bolet
 -->> Se corrigue un error donde el contenido de un productos no se guardo
         UPDATE t_empenios_productos SET contenido = '1' WHERE t_empenios_productos.id = 236634;
 
-------------------------------------------------- t_control_interno
+
+/*  t_control_interno   --------------------------------------------------------------------------------|*/
 -->>  t_control_interno :: verificamos los registros que no tienen relacion con t_boleta    (1reg)
     SELECT *  FROM t_control_interno 
     LEFT JOIN t_boleta ON t_control_interno.t_boleta_id = t_boleta.id 
@@ -279,7 +303,8 @@ SELECT DISTINCT t_boleta_pagos.t_boleta_id FROM t_boleta_pagos LEFT JOIN t_bolet
         LEFT JOIN t_boleta ON t_control_interno.t_boleta_id = t_boleta.id 
         WHERE t_boleta.id IS null;
 
-------------------------------------------------- t_caja_monto_operador
+/*  t_caja_monto_operador   --------------------------------------------------------------------------------|*/
+
 -->> t_caja_monto_operador :: las ventas en subasta, no guardan el id del operador en la tabla t_caja_monto_operador (20,986 registros)
     SELECT * FROM t_caja_monto_operador WHERE u_operadores_id = 0; 
         UPDATE t_caja_monto_operador SET u_operadores_id = 150126 WHERE u_operadores_id = 150000; 
@@ -288,14 +313,16 @@ SELECT DISTINCT t_boleta_pagos.t_boleta_id FROM t_boleta_pagos LEFT JOIN t_bolet
         UPDATE t_caja_monto_operador SET caja = 1000000.00 WHERE caja > 99999999;
         
 
-------------------------------------------------- t_subasta y c_fecha_subasta
+/*  t_subasta y c_fecha_subasta   --------------------------------------------------------------------------------|*/
+
 -->> t_subasta :: se corrigue un error donde t_boleta_id es nulo (1reg) 
             DELETE FROM t_subasta WHERE `t_subasta`.`id` = 13739;
 
 -->> Se elimina el registro 407 porque tiene una fecha erronea
             DELETE FROM c_fecha_subasta WHERE id = 407;
 
-------------------------------------------------- t_comprador   y   t_compra_vitrina    
+/*  t_comprador   y   t_compra_vitrina   --------------------------------------------------------------------------------|*/
+
 -->> el comprador del registro 6 no tiene nombre
             UPDATE `t_comprador` SET `nombre` = 'xxxx' WHERE `t_comprador`.`id` = 6;
         
@@ -313,23 +340,19 @@ SELECT DISTINCT t_boleta_pagos.t_boleta_id FROM t_boleta_pagos LEFT JOIN t_bolet
             UPDATE t_compra_vitrina SET t_comprador_id = 3806 WHERE t_comprador_id = 3894; 
          
         
-------------------------------------------------- t_retasas
+/*  t_retasas       -------------------------------------------------*/
 -->> el id 3220 tiene t_boleta_id = 1 que es invalido
         DELETE FROM t_retasas WHERE `t_retasas`.`id` = 3220;
         
-------------------------------------------------- t_concentrados
--->> cambiar id_gerente e id_operador diferente de 0         ids: [24885, 25123, 28282, 29703]
-    SELECT * FROM `t_concentrados` WHERE id_gerente = 0; 
+/*  t_concentrados      -------------------------------------------------*/
 
--->> todo da cero, mejor eliminamos
-        DELETE FROM t_concentrados WHERE `t_concentrados`.`id` = 24885;
+    SELECT * FROM `t_concentrados` WHERE id_gerente = 0; -->> cambiar id_gerente e id_operador diferente de 0         ids: [24885, 25123, 28282, 29703]
+    UPDATE `t_concentrados` SET `id_gerente` = '121' WHERE id_gerente = 0;  
 
-    SELECT * FROM `t_concentrados` WHERE id > 25120 LIMIT 10; 
-        UPDATE `t_concentrados` SET `id_gerente` = '150121' WHERE `t_concentrados`.`id` = 25123;  
-        UPDATE `t_concentrados` SET `id_gerente` = '150121' WHERE `t_concentrados`.`id` = 28282; 
-        UPDATE `t_concentrados` SET `id_gerente` = '150121' WHERE `t_concentrados`.`id` = 29703; 
+    DELETE FROM t_concentrados WHERE `t_concentrados`.`id` = 24885; -->> todo da cero, mejor eliminamos
 
-------------------------------------------------- t_compra_vitrina
+
+/*  t_compra_vitrina        -------------------------------------------------*/
 -->> el id 17161 tiene "cantidad" => 5.4714600912857E+15
         UPDATE `t_compra_vitrina` SET `cantidad` = '5610' WHERE `t_compra_vitrina`.`id` = 17161; 
         UPDATE `t_compra_vitrina` SET `cantidad` = '4995' WHERE `t_compra_vitrina`.`id` = 37160; 
@@ -343,17 +366,17 @@ SELECT DISTINCT t_boleta_pagos.t_boleta_id FROM t_boleta_pagos LEFT JOIN t_bolet
         DELETE FROM t_compra_vitrina WHERE `t_compra_vitrina`.`id` = 25380;
 
 
-------------------------------------------------- t_suspencion_dias
--->> t_suspencion_dias :: se corrigue un error donde el id del operador no existe (150862) y se cambia por 150126
-        UPDATE `t_suspencion_dias` SET `u_operadores_id` = 150126 WHERE u_operadores_id = 150862; 
-------------------------------------------------- t_num_tickes
+/*  t_suspencion_dias       -------------------------------------------------*/
+-->> t_suspencion_dias :: se corrigue un error donde el id del operador no existe (862) y se cambia por 126
+        UPDATE `t_suspencion_dias` SET `u_operadores_id` = 126 WHERE u_operadores_id = 862; 
+/*  t_num_tickes        -------------------------------------------------*/
     SELECT * FROM t_num_tickes LEFT JOIN t_boletas ON t_num_tickes.t_boleta_id = t_boletas.id WHERE t_boletas.id IS null; 
 -->> 2081 y 158375 no tienen t_boleta_id
         DELETE FROM t_num_tickes WHERE `t_num_tickes`.`id` = 2081;
         DELETE FROM t_num_tickes WHERE `t_num_tickes`.`id` = 158375;
        
 
-end section       
+     
 ------------------------------------------------- OTRAS ANOMALIAS 
 -->> 3 de los pignorantes de t_boleta y t_empenios no coinciden (PORQUE???)
     SELECT t_empenios_boleta_relacion.t_empenios_id,    t_boleta.id, t_boleta.u_pignorante_id,    t_empenios.id,t_empenios.u_pignorante_id 

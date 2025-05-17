@@ -1,0 +1,3 @@
+-- Active: 1747336191893@@localhost@3309@mp_abastos
+DROP TABLE `c_cotiza_producto_08112015`, `c_fecha_reporte`, `c_intereses`, `c_nivel`, `c_printer_operador`, `c_printer_operador_tipo`, `c_productos_08112015`, `c_status_usuario`, `c_sub_productos_08112015`, `c_sucursal_12042015`, `c_sucursal_v1`, `c_tipo_prestamo_12042015`, `c_tipo_printer`, `c_tipo_producto_08112015`, `h_rp_subasta`, `rg_dda07`, `rg_ddd04`, `rg_de02`, `rg_dra06`, `rg_drd03`, `rg_drd03_a`, `temporal`, `t_boetas_pagos_mal_NoVenta`, `t_boleta_migracion`, `t_boleta_migracion_copy`, `t_compra_vitrina_23052014`, `t_compra_vitrina_old`, `t_control_interno_old`, `t_empenios_08112015`, `t_migration_missing`, `t_migration_missing_copy`, `u_directores`, `t_baja_baja`;
+DROP VIEW `boleta`;

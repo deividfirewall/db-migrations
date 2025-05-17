@@ -1,3 +1,4 @@
+-- Active: 1747336191893@@localhost@3309@mp_reforma
 $ gunzip -c mp_reforma_250430.sql.gz | ./vendor/bin/sail exec -T mysql mysql -u root mp_reforma
 $ rm mp_reforma_250430.sql.gz 
 

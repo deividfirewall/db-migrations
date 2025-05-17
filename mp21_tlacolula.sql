@@ -1,0 +1,2 @@
+-- Active: 1747336191893@@localhost@3309@mp_tlacolula
+DROP TABLE `c_cotiza_producto_08112015`, `c_fecha_reporte`, `c_intereses`, `c_nivel`, `c_printer_operador`, `c_printer_operador_tipo`, `c_productos_08112015`, `c_status_usuario`, `c_sub_productos_08112015`, `c_sucursal_v1`, `c_tipo_printer`, `c_tipo_producto_08112015`, `h_rp_subasta`, `migration_boletas`, `rg_dda07`, `rg_ddd04`, `rg_de02`, `rg_dra06`, `rg_drd03`, `temporal`, `t_boetas_pagos_mal_NoVenta`, `t_boleta_migracion`, `t_migration_missing`, `u_directores`;

@@ -1,3 +1,4 @@
+-- Active: 1747336191893@@localhost@3309@mp_ixcotel
 $ gunzip -c mp_ixcotel_250430.sql.gz | ./vendor/bin/sail exec -T mysql mysql -u root mp_ixcotel
 $ rm mp_ixcotel_250430.sql.gz
 
