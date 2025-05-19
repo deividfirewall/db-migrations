@@ -37,8 +37,8 @@ class SedeSeeder extends Seeder
             [119, 'POC', '019', 'Costa','Pochutla', 1, 25000, 70000, '58 40370', 1, 'Av. Lázaro Cárdenas Nº128 Esq. Allende, Col. Centro', NULL, 2000, '1', NULL],
             [120, 'TLX', '020', 'Mixteca','Tlaxiaco', 1, 25000, 60000, '953 55 2 11 73', 1, 'Calle Aldama Num.6 entre las Calles Independencia e Hidalgo', '68000', 2000, '1', NULL],
             [121, 'TLC', '021', 'Valles Centrales','Tlacolula', 1, 25000, 80000, '56 20309', 1, 'Calle 2 de Abril Num. 20 esq. Calle Vicente Guerrero', '68000', 2000, '1', NULL],
-            [125, 'IXC', '025', 'Cuenca','Ixcotel', 1, 25000, 100000, '951-513-79-83', 1, 'Carretera Internacional 1810-A Santa Maria Ixcotel, Santa Lucia del Camino', '68100', 2000, '1', NULL],
-            [126, 'X26', '026', 'Cuenca','Xoxocotlan26', 1, 25000, 100000, '951-533-67-56', 1, 'Calle Pordirio Díaz, Paraje "Los Zapotales", Santa Cruz Xoxocotlán.', '68400', 2000, '1', NULL],
+            [125, 'IXC', '025', 'Valles Centrales','Ixcotel', 1, 25000, 100000, '951-513-79-83', 1, 'Carretera Internacional 1810-A Santa Maria Ixcotel, Santa Lucia del Camino', '68100', 2000, '1', NULL],
+            [126, 'X26', '026', 'Valles Centrales','Xoxocotlan26', 1, 25000, 100000, '951-533-67-56', 1, 'Calle Pordirio Díaz, Paraje "Los Zapotales", Santa Cruz Xoxocotlán.', '68400', 2000, '1', NULL],
         ];
 
         foreach ($sucursales as $seed) {
