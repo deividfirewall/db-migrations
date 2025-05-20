@@ -36,17 +36,19 @@ class BackupTableCommand extends Command
             $sqlFileName = "bkp_{$table}.sql"; //"{$table}_bkp_{$timestamp}.sql";
             $zipFileName = "bkp_{$table}.zip"; //"{$table}_bkp_{$timestamp}.zip";
         }
-        // Paths
-        $sqlFilePath = storage_path("app/public/{$sqlFileName}");
-        $zipFilePath = storage_path("app/public/{$zipFileName}");
 
         // Prepare the `mysqldump` command
         $dbHost = env('DB_HOST', 'mysql');
         $dbPort = env('DB_PORT', '3306');
         $dbUser = env('DB_USERNAME', 'root');
         $dbName = env('DB_DATABASE', 'siemp');
+        $Folder = env('DB_DATABASE_SUC', 'sucursal');
+
+        // Paths
+        $sqlFilePath = storage_path("app/public/{$Folder}/{$sqlFileName}");
+        $zipFilePath = storage_path("app/public/{$Folder}/{$zipFileName}");
         
-        $command = "mysqldump -h {$dbHost} -P {$dbPort} -u {$dbUser} {$dbName} {$table} > {$sqlFilePath}";
+        $command = "mysqldump --no-create-info -h {$dbHost} -P {$dbPort} -u {$dbUser} {$dbName} {$table} > {$sqlFilePath}";
 
         $this->info("Respaldo realizado: {$command}");
 

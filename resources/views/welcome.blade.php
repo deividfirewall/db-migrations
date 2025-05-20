@@ -152,33 +152,49 @@
                                     <h2 class="text-xl font-semibold text-black dark:text-white">DOWNLOADS</h2>                                    
                                     Grupo 1:
                                     @if( $grupos[1]['backup'] === 1 )
-                                        <a href="{{ route('backup.table','pignorantes pignorante_solidarios t_compradors') }}" class="mt-4 text-sm/relaxed text-blue-700 underline">Dump </a>,
+                                        <a href="{{ route('backup.table','pignorantes pignorante_solidarios t_compradors') }}" class="mt-4 text-sm/relaxed text-blue-700 underline">Dump 🗜 </a>,
                                         @if( $grupos[1]['descarga'] === 1 )
                                             <a href="{{ route('backup.download','grupo1') }}" class="mt-4 text-sm/relaxed text-blue-700 underline">Download {{$grupos[1]['file_size']}}</a>
                                         @endif
-                                    @endif
-                                    
+                                    @endif                                    
                                     <p class="mb-4 text-sm/relaxed"> 1:pignorantes, 2:pignorante_solidarios, 3:t_compradores, 4:, </p>
+
                                     Grupo 2: 
                                     @if( $grupos[2]['backup'] === 1 )
-                                        <a href="{{ route('backup.table','t_boletas t_empenios t_emp_bol_relations t_empenio_metals t_empenio_products t_reposicions t_concentrados') }}" class="mt-4 text-sm/relaxed text-blue-700 underline">Dump </a>,
+                                        <a href="{{ route('backup.table','t_boletas t_empenios t_emp_bol_relations t_empenio_metals t_empenio_products t_reposicions t_concentrados') }}" class="mt-4 text-sm/relaxed text-blue-700 underline">Dump 🗜 </a>,
                                         @if( $grupos[2]['descarga'] === 1 )
                                             <a href="{{ route('backup.download','grupo2') }}" class="mt-4 text-sm/relaxed text-blue-700 underline">Download {{$grupos[2]['file_size']}} </a>
                                         @endif
                                     @endif                                    
                                     <p class="mb-4 text-sm/relaxed"> 1:t_boletas, 2:t_empenios, 3:t_empenio_metals, 4:t_empenio_products, 5:t_emp_bol_relations, 6:t_reposicions, 7:t_concentrados </p>
+
                                     Grupo 3:
                                     @if( $grupos[3]['backup'] === 1 )
-                                        <a href="{{ route('backup.table','t_sol_dias_gracias t_sol_almonedas t_sol_subastas t_subastas t_retasas t_vitrina_ventas t_vitrina_compras t_demasias_pagadas t_suspencion_dias') }}" class="mt-4 text-sm/relaxed text-blue-700 underline">Dump </a>,
+                                        <a href="{{ route('backup.table','t_sol_dias_gracias t_sol_almonedas t_sol_subastas t_subastas t_retasas t_vitrina_ventas t_vitrina_compras t_demasias_pagadas t_suspencion_dias') }}" class="mt-4 text-sm/relaxed text-blue-700 underline">Dump 🗜 </a>,
                                         @if( $grupos[3]['descarga'] === 1 )
                                             <a href="{{ route('backup.download','grupo3') }}" class="mt-4 text-sm/relaxed text-blue-700 underline">Download {{$grupos[3]['file_size']}} </a>
                                         @endif
                                     @endif
-                                    <p class="mb-4 text-sm/relaxed"> 1:t_sol_dias_gracias, 2:t_sol_almonedas, 3:t_sol_subastas, 4:t_subastas, 5:t_retasas, 6:t_vitrina_ventas, 7:t_vitrina_compras, 8:t_demasias_pagadas, 9:t_suspencion_dias, 10:  </p>
-                                    <p class="mb-4 text-sm/relaxed text-black">Archivos unicos (Debido al tamaño) </p>
-                                    <p class="mb-4 text-sm/relaxed"> h_boletas, t_boleta_pagos, t_cajas, t_ctrl_internos </p>
-                                    <p class="mb-4 text-sm/relaxed text-black">Para base de datos (Central) </p>
-                                    <p class="mb-4 text-sm/relaxed"> t_subasta_fechas </p>
+                                    <p class="mb-4 text-sm/relaxed"> 1:t_sol_dias_gracias, 2:t_sol_almonedas, 3:t_sol_subastas, 4:t_subastas, 5:t_retasas, 6:t_vitrina_ventas, 7:t_vitrina_compras, 8:t_demasias_pagadas, 9:t_suspencion_dias  </p>
+
+                                    Grupo 4:
+                                    @if( $grupos[4]['backup'] === 1 )
+                                        <a href="{{ route('backup.table','t_descuentos t_num_tickets rg_rod13 r_rg_cg11 r_ro_cg12 t_boleta_cancelado t_control_interno_cancelado') }}" class="mt-4 text-sm/relaxed text-blue-700 underline">Dump 🗜</a>,
+                                        @if( $grupos[4]['descarga'] === 1 )
+                                            <a href="{{ route('backup.download','grupo4') }}" class="mt-4 text-sm/relaxed text-blue-700 underline">Download {{$grupos[4]['file_size']}} 💾</a>
+                                        @endif
+                                    @endif
+                                    <p class="mb-4 text-sm/relaxed"> 1:t_descuentos, 2:t_num_tickets, 3:rg_rod13, 4:r_rg_cg11, 5:r_ro_cg12, 6:t_boleta_cancelado, 7:t_control_interno_cancelado </p>
+                                    Grupo 5:
+                                    @if( $grupos[5]['backup'] === 1 )
+                                        <a href="{{ route('backup.table','t_boleta_pagos t_cajas h_boletas t_ctrl_internos') }}" class="mt-4 text-sm/relaxed text-blue-700 underline">Dump 🗜 </a>,
+                                        @if( $grupos[5]['descarga'] === 1 )
+                                            <a href="{{ route('backup.download','grupo5') }}" class="mt-4 text-sm/relaxed text-blue-700 underline">Download {{$grupos[5]['file_size']}} 💾</a>
+                                        @endif
+                                    @endif
+                                    <p class="mb-4 text-sm/relaxed"> Toda la base (solo para sucursales chicas o medianas) </p>
+                                    
+                                    
                                 </div>
                             </div>
                         </div>

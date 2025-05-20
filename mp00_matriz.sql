@@ -78,6 +78,10 @@ UPDATE `t_concentrados` SET `sucursal` = 112 WHERE sucursal = 14;   -- Modulo az
 UPDATE `t_concentrados` SET `sucursal` = 121 WHERE sucursal = 26;   -- Tlacolula
 
 UPDATE `t_descuentos` SET `c_sucursal` = 100 WHERE c_sucursal = 15; 
+UPDATE `t_compra_vitrina` SET `c_sucursal_id` = 100 WHERE c_sucursal_id = 15; 
+UPDATE t_suspencion_dias SET c_sucursal_id = 100 WHERE c_sucursal_id = 15;
+UPDATE t_control_interno_cancelado SET c_sucursal_id = 100 WHERE c_sucursal_id = 15;
+UPDATE t_control_interno_cancelado SET c_sucursal_id = 100 WHERE c_sucursal_id = 0;
 
 /*  u_operadores   --------------------------------------------------------------------------------|*/
 -- Operadores que no estan en t_boleta
@@ -144,12 +148,12 @@ UPDATE `t_descuentos` SET `c_sucursal` = 100 WHERE c_sucursal = 15;
     UPDATE t_reposicion SET id_usuario = id_usuario - 1300 WHERE id_usuario > 1000; 
     UPDATE t_descuentos SET id_operador = id_operador - 1300 WHERE id_operador > 1000 AND c_sucursal = 100; 
 
+    UPDATE t_suspencion_dias SET u_operadores_id = 126 WHERE u_operadores_id = 862;
 
     UPDATE r_ro_cg12 SET id_operador = id_operador - 1300 WHERE id_operador > 1000 AND sucursal_id = 100; 
     -- Operadores repetidos se unifican
     UPDATE r_ro_cg12 SET id_operador = 100 WHERE id_operador = 666;     --> 100 para el administrador
     UPDATE r_ro_cg12 SET id_operador = 100 WHERE id_operador = 0;     --> 100 para el administrador
-    UPDATE r_ro_cg12 SET id_operador = 206 WHERE id_operador = 920;     --> pertenece a la sucursal 20 de noviembre
     UPDATE r_ro_cg12 SET id_operador = 116 WHERE id_operador = 129;
     UPDATE r_ro_cg12 SET id_operador = 118 WHERE id_operador = 130;
     UPDATE r_ro_cg12 SET id_operador = 151 WHERE id_operador = 142;
@@ -157,9 +161,10 @@ UPDATE `t_descuentos` SET `c_sucursal` = 100 WHERE c_sucursal = 15;
     UPDATE r_ro_cg12 SET id_operador = 196 WHERE id_operador = 171;
     UPDATE r_ro_cg12 SET id_operador = 197 WHERE id_operador = 195;
     UPDATE r_ro_cg12 SET id_operador = 229 WHERE id_operador = 224;
-    UPDATE r_ro_cg12 SET id_operador = 160 WHERE id_operador = 168 AND sucursal_id = 112;
-    UPDATE r_ro_cg12 SET id_operador = 201 WHERE id_operador = 205 AND sucursal_id = 108;
-    UPDATE r_ro_cg12 SET id_operador = 202 WHERE id_operador = 206 AND sucursal_id = 108;
+    UPDATE r_ro_cg12 SET id_operador = 160 WHERE id_operador = 168 AND sucursal_id = 112;   --> Modulo Azul
+    UPDATE r_ro_cg12 SET id_operador = 206 WHERE id_operador = 920 AND sucursal_id = 108;   --> 20 de noviembre    
+    UPDATE r_ro_cg12 SET id_operador = 201 WHERE id_operador = 205 AND sucursal_id = 108;   --> 20 de noviembre    
+    UPDATE r_ro_cg12 SET id_operador = 202 WHERE id_operador = 206 AND sucursal_id = 108;   --> 20 de noviembre
 
 SHOW PROCESSLIST;
 
@@ -458,7 +463,7 @@ SELECT * FROM t_empenios_boleta_relacion LEFT JOIN t_empenios ON t_empenios_bole
 -->> t_suspencion_dias :: se corrigue un error donde el id del operador no existe (862) y se cambia por 126
         UPDATE `t_suspencion_dias` SET `u_operadores_id` = 126 WHERE u_operadores_id = 862; 
 /*  t_num_tickes        -------------------------------------------------*/
-    SELECT * FROM t_num_tickes LEFT JOIN t_boletas ON t_num_tickes.t_boleta_id = t_boletas.id WHERE t_boletas.id IS null; 
+    SELECT * FROM `t_num_tickes` LEFT JOIN t_boleta ON t_num_tickes.t_boleta_id = t_boleta.id WHERE t_boleta.id IS null; 
 -->> 2081 y 158375 no tienen t_boleta_id
         DELETE FROM t_num_tickes WHERE `t_num_tickes`.`id` = 2081;
         DELETE FROM t_num_tickes WHERE `t_num_tickes`.`id` = 158375;

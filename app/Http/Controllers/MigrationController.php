@@ -42,25 +42,16 @@ class MigrationController extends Controller
             25 => ['origen' =>'t_demasias_pagadas',         'reg_o'=> 0,'destino'=>'t_demasias_pagadas'   ,'reg_d'=> 0   ,'avance'=>'0'],
             26 => ['origen' =>'t_suspencion_dias',          'reg_o'=> 0,'destino'=>'t_suspencion_dias'    ,'reg_d'=> 0   ,'avance'=>'0'],
             27 => ['origen' =>'t_descuentos',               'reg_o'=> 0,'destino'=>'t_descuentos'         ,'reg_d'=> 0   ,'avance'=>'0'],
-            // 28 => ['origen' =>'t_num_tickets',              'reg_o'=> 0,'destino'=>'t_num_tickets'        ,'reg_d'=> 0   ,'avance'=>'0'],
-            // 29 => ['origen' =>'t_boleta_cancelado',         'reg_o'=> 0,'destino'=>'t_boleta_cancels'     ,'reg_d'=> 0   ,'avance'=>'0'],
-            // 30 => ['origen' =>'t_control_interno_cancelado','reg_o'=> 0,'destino'=>'t_ctrl_int_cancels'   ,'reg_d'=> 0   ,'avance'=>'0'],  
-            // 31 => ['origen' =>'rg_rod13',                   'reg_o'=> 0,'destino'=>'rpt01_diarios'        ,'reg_d'=> 0   ,'avance'=>'0'],          
-            // 32 => ['origen' =>'r_rg_cg11',                  'reg_o'=> 0,'destino'=>'rpt02_grales'         ,'reg_d'=> 0   ,'avance'=>'0'],
-            // 33 => ['origen' =>'r_ro_cg12',                  'reg_o'=> 0,'destino'=>'rpt03_diario'         ,'reg_d'=> 0   ,'avance'=>'0'],
+            28 => ['origen' =>'t_num_tickes',               'reg_o'=> 0,'destino'=>'t_tickets'            ,'reg_d'=> 0   ,'avance'=>'0'],  
+            29 => ['origen' =>'rg_rod13',                   'reg_o'=> 0,'destino'=>'rpt_op01_diarios'     ,'reg_d'=> 0   ,'avance'=>'0'],          
+            30 => ['origen' =>'r_ro_cg12',                  'reg_o'=> 0,'destino'=>'rpt_ge01_diarios'     ,'reg_d'=> 0   ,'avance'=>'0'],
+            31 => ['origen' =>'r_rg_cg11',                  'reg_o'=> 0,'destino'=>'rpt_ge02_grales'      ,'reg_d'=> 0   ,'avance'=>'0'],
+            32 => ['origen' =>'t_boleta_cancelado',         'reg_o'=> 0,'destino'=>'trsh_cancel_boletas'  ,'reg_d'=> 0   ,'avance'=>'0'],
+            33 => ['origen' =>'t_control_interno_cancelado','reg_o'=> 0,'destino'=>'trsh_cancel_ctrl_ints','reg_d'=> 0   ,'avance'=>'0'],
         ];
 
 
         /* Faltan las tablas
-            rg_rod13
-            r_rg_cg11
-            r_ro_cg12 [u_operador_id]
-            t_boleta_cancelado [t_boleta_id, u_operador_id, c_status_empenio_id, c_tipo_operacion_id, u_pignorante_id, c_tipo_producto_id]
-            t_control_interno_cancelado [t_boleta_id]
-            t_descuentos [t_boleta_id, u_operador_id, c_status, c_status_operacion_id]
-            t_num_tickets [t_boleta_id, c_status_boleta_id]
-            
-            
             t_bloqueadas        SOLO HAY 46 BOLETAS antigua:10460349 del 2019-12-06, reciente:10555424 DEL 2020-02-28
             t_boletas_pagos_mal_no_venta    >>> 127 boletas, ultimo uso en 2018
             t_boleta_migracion              >>> ultimo uso en 2014
@@ -254,13 +245,13 @@ class MigrationController extends Controller
             case 24: $this->migraTVitrinaCompras(24);   break;
             case 25: $this->migraTDemasiasPagadas(25);  break;
             case 26: $this->migraTSuspencionDias(26);   break;
-            case 27: $this->migraTDescuentos(32);       break;
-            case 28: $this->migraTTickets(33);          break;
-            case 29: $this->migraTBoletaCancels(30);    break;
-            case 30: $this->migraTCtrlIntCancels(31);   break;
-            case 31: $this->migraRpt01Diario(27);       break;
-            case 32: $this->migraRpt02Diario(28);       break;
-            case 33: $this->migraRpt03Diario(29);       break;
+            case 27: $this->migraTDescuentos(27);       break;
+            case 28: $this->migraTTickets(28);          break;
+            case 29: $this->migraRptOp01Diario(29);      break;
+            case 30: $this->migraRptG01Diario(30);      break;
+            case 31: $this->migraRptG02Grales(31);      break;
+            case 32: $this->migraTBoletaCancels(32);    break;
+            case 33: $this->migraTCtrlIntCancels(33);   break;
             default: return to_route('migrations.index')->with('error', 'no existe tabla seleccionada');
         }
         
@@ -1158,6 +1149,10 @@ class MigrationController extends Controller
 
         if(!$lastRecord){
             $oRegistros = DB::connection('sucursal')->table($oTable)->orderBy('id_reg','asc')->limit(50000)->get();
+            $num_registros_origen = DB::connection('sucursal')->table($oTable)->count();
+            Tables::where('id', $table_selected)->update([
+                'num_registros_origen' => $num_registros_origen
+            ]);
         }else{
             $oRegistros = DB::connection('sucursal')->table($oTable)->where('id_reg', '>', $lastRecord->id)->orderBy('id_reg','asc')->limit(50000)->get();
         }
@@ -1212,6 +1207,10 @@ class MigrationController extends Controller
 
         if(!$lastRecord){
             $oRegistros = DB::connection('sucursal')->table($oTable)->orderBy('id_reg','asc')->limit(50000)->get();
+            $num_registros_origen = DB::connection('sucursal')->table($oTable)->count();
+            Tables::where('id', $table_selected)->update([
+                'num_registros_origen' => $num_registros_origen
+            ]);
         }else{
             $oRegistros = DB::connection('sucursal')->table($oTable)->where('id_reg', '>', $lastRecord->id)->orderBy('id_reg','asc')->limit(50000)->get();
         }
@@ -1269,6 +1268,10 @@ class MigrationController extends Controller
 
         if(!$lastRecord){
             $oRegistros = DB::connection('sucursal')->table($oTable)->orderBy('id_reg','asc')->limit(50000)->get();
+            $num_registros_origen = DB::connection('sucursal')->table($oTable)->count();
+            Tables::where('id', $table_selected)->update([
+                'num_registros_origen' => $num_registros_origen
+            ]);
         }else{
             $oRegistros = DB::connection('sucursal')->table($oTable)->where('id_reg', '>', $lastRecord->id)->orderBy('id_reg','asc')->limit(50000)->get();
         }
@@ -1323,6 +1326,10 @@ class MigrationController extends Controller
 
         if(!$lastRecord){
             $oRegistros = DB::connection('sucursal')->table($oTable)->orderBy('id','asc')->limit(40000)->get();
+            $num_registros_origen = DB::connection('sucursal')->table($oTable)->count();
+            Tables::where('id', $table_selected)->update([
+                'num_registros_origen' => $num_registros_origen
+            ]);
         }else{
             $oRegistros = DB::connection('sucursal')->table($oTable)->where('id', '>', $lastRecord->id)->orderBy('id','asc')->limit(40000)->get();
         }
@@ -1376,6 +1383,10 @@ class MigrationController extends Controller
 
         if(!$lastRecord){
             $oRegistros = DB::connection('sucursal')->table($oTable)->orderBy('id','asc')->limit(1000)->get();
+            $num_registros_origen = DB::connection('sucursal')->table($oTable)->count();
+            Tables::where('id', $table_selected)->update([
+                'num_registros_origen' => $num_registros_origen
+            ]);
         }else{
             $oRegistros = DB::connection('sucursal')->table($oTable)->where('id', '>', $lastRecord->id)->orderBy('id','asc')->limit(1000)->get();
         }
@@ -1495,6 +1506,10 @@ class MigrationController extends Controller
 
         if(!$lastRecord){
             $oRegistros = DB::connection('sucursal')->table($oTable)->orderBy('id','asc')->limit(10000)->get();
+            $num_registros_origen = DB::connection('sucursal')->table($oTable)->count();
+            Tables::where('id', $table_selected)->update([
+                'num_registros_origen' => $num_registros_origen
+            ]);
         }else{
             $oRegistros = DB::connection('sucursal')->table($oTable)->where('id', '>', $lastRecord->id)->orderBy('id','asc')->limit(10000)->get();
         }
@@ -1546,6 +1561,10 @@ class MigrationController extends Controller
 
         if(!$lastRecord){
             $oRegistros = DB::connection('sucursal')->table($oTable)->orderBy('idRep','asc')->limit(5000)->get();
+            $num_registros_origen = DB::connection('sucursal')->table($oTable)->count();
+            Tables::where('id', $table_selected)->update([
+                'num_registros_origen' => $num_registros_origen
+            ]);
         }else{
             $oRegistros = DB::connection('sucursal')->table($oTable)->where('idRep', '>', $lastRecord->id)->orderBy('idRep','asc')->limit(5000)->get();
         }
@@ -1621,6 +1640,10 @@ class MigrationController extends Controller
 
         if(!$lastRecord){
             $oRegistros = DB::connection('sucursal')->table($oTable)->orderBy('id','asc')->limit(50000)->get();
+            $num_registros_origen = DB::connection('sucursal')->table($oTable)->count();
+            Tables::where('id', $table_selected)->update([
+                'num_registros_origen' => $num_registros_origen
+            ]);
         }else{
             $oRegistros = DB::connection('sucursal')->table($oTable)->where('id', '>', $lastRecord->id)->orderBy('id','asc')->limit(50000)->get();
         }
@@ -1676,6 +1699,10 @@ class MigrationController extends Controller
 
         if(!$lastRecord){
             $oRegistros = DB::connection('sucursal')->table($oTable)->orderBy('id','asc')->limit(10000)->get();
+            $num_registros_origen = DB::connection('sucursal')->table($oTable)->count();
+            Tables::where('id', $table_selected)->update([
+                'num_registros_origen' => $num_registros_origen
+            ]);
         }else{
             $oRegistros = DB::connection('sucursal')->table($oTable)->where('id', '>', $lastRecord->id)->orderBy('id','asc')->limit(10000)->get();
         }
@@ -1734,6 +1761,10 @@ class MigrationController extends Controller
 
         if(!$lastRecord){
             $oRegistros = DB::connection('sucursal')->table($oTable)->orderBy('id','asc')->limit(50000)->get();
+            $num_registros_origen = DB::connection('sucursal')->table($oTable)->count();
+            Tables::where('id', $table_selected)->update([
+                'num_registros_origen' => $num_registros_origen
+            ]);
         }else{
             $oRegistros = DB::connection('sucursal')->table($oTable)->where('id', '>', $lastRecord->id)->orderBy('id','asc')->limit(50000)->get();
         }
@@ -1808,6 +1839,10 @@ class MigrationController extends Controller
 
         if(!$lastRecord){
             $oRegistros = DB::connection('sucursal')->table($oTable)->orderBy('id','asc')->limit(5000)->get();
+            $num_registros_origen = DB::connection('sucursal')->table($oTable)->count();
+            Tables::where('id', $table_selected)->update([
+                'num_registros_origen' => $num_registros_origen
+            ]);
         }else{
             $oRegistros = DB::connection('sucursal')->table($oTable)->where('id', '>', $lastRecord->id)->orderBy('id','asc')->limit(5000)->get();
         }
@@ -1865,6 +1900,10 @@ class MigrationController extends Controller
 
         if(!$lastRecord){
             $oRegistros = DB::connection('sucursal')->table($oTable)->orderBy('id','asc')->limit(1000)->get();
+            $num_registros_origen = DB::connection('sucursal')->table($oTable)->count();
+            Tables::where('id', $table_selected)->update([
+                'num_registros_origen' => $num_registros_origen
+            ]);
         }else{
             $oRegistros = DB::connection('sucursal')->table($oTable)->where('id', '>', $lastRecord->id)->orderBy('id','asc')->limit(1000)->get();
         }
@@ -1912,13 +1951,364 @@ class MigrationController extends Controller
 
         return redirect('migrations.index')->with($status, $mesage);
     }
-    private function migraRpt01Diario($table_selected){    }
-    private function migraRpt02Diario($table_selected){    }
-    private function migraRpt03Diario($table_selected){    }
+    private function migraTDescuentos($table_selected){ 
+        $oTable = $this->allTables[$table_selected]['origen'];
+        $dTable = $this->allTables[$table_selected]['destino'];
+        
+        $lastRecord = DB::table($dTable)->orderBy('id', 'desc')->first();
+
+        if(!$lastRecord){
+            $oRegistros = DB::connection('sucursal')->table($oTable)->orderBy('id','asc')->limit(1000)->get();
+            $num_registros_origen = DB::connection('sucursal')->table($oTable)->count();
+            Tables::where('id', $table_selected)->update([
+                'num_registros_origen' => $num_registros_origen
+            ]);
+        }else{
+            $oRegistros = DB::connection('sucursal')->table($oTable)->where('id', '>', $lastRecord->id)->orderBy('id','asc')->limit(1000)->get();
+        }
+        $regsel = [];
+        $status = 'success';
+        $mesage = 'Registros migrados correctamente';
+
+        DB::beginTransaction();
+        try{
+            $counter = 0;
+            foreach ($oRegistros as $registro) {
+
+                $regsel = [
+                    'id'                    => $registro->id,
+                    't_boleta_id'           => $registro->t_boleta_id,
+                    'cat_status_empenio_id' => $registro->c_status,
+                    'cat_operacion_tipo_id' => $registro->operacion,
+                    'cobro'                 => $registro->cobro,
+                    'fecha'                 => $registro->fecha,
+                    'user_id'               => $registro->id_operador,
+                    'adm_sede_id'           => $registro->c_sucursal,
+                ];
+
+                DB::table($dTable)->insert($regsel);
+                $counter++;
+
+                if ($counter % 100 == 0) {
+                    DB::commit();
+                    DB::beginTransaction();
+                }
+            }
+            DB::commit();
+        }catch(\Exception $e){
+            DB::rollback();
+            $status = 'error'; 
+            $mesage = $e->getMessage();
+            dd($regsel,$mesage);
+        }
+        $num_registros_origen = $this->allTables[$table_selected]['reg_o'];
+        $num_registros_destino = DB::table($this->allTables[$table_selected]['destino'])->count();
+        $avance = $num_registros_destino / $num_registros_origen * 100;
+        Tables::where('id', $table_selected)->update([
+            'num_registros_destino' => $num_registros_destino,
+            'avance' => $avance
+        ]);
+        return redirect('migrations.index')->with($status, $mesage);
+
+    }
+    private function migraTTickets($table_selected){    
+        $oTable = $this->allTables[$table_selected]['origen'];
+        $dTable = $this->allTables[$table_selected]['destino'];
+        
+        $lastRecord = DB::table($dTable)->orderBy('id', 'desc')->first();
+
+        if(!$lastRecord){
+            $oRegistros = DB::connection('sucursal')->table($oTable)->orderBy('id','asc')->limit(5000)->get();
+            $num_registros_origen = DB::connection('sucursal')->table($oTable)->count();
+            Tables::where('id', $table_selected)->update([
+                'num_registros_origen' => $num_registros_origen
+            ]);
+        }else{
+            $oRegistros = DB::connection('sucursal')->table($oTable)->where('id', '>', $lastRecord->id)->orderBy('id','asc')->limit(40000)->get();
+        }
+        $regsel = [];
+        $status = 'success';
+        $mesage = 'Registros migrados correctamente';
+        
+        DB::beginTransaction();
+        try{
+            $counter = 0;
+            foreach ($oRegistros as $registro) {
+                $regsel = [
+                    'id'                    => $registro->id,
+                    't_boleta_id'           => $registro->t_boleta_id,
+                    'cat_status_empenio_id' => $registro->c_status_boleta,
+                    'fecha'                 => $registro->fecha,
+                ];
+                DB::table($dTable)->insert($regsel);
+                $counter++;
+
+                if ($counter % 100 == 0) {
+                    DB::commit();
+                    DB::beginTransaction();
+                }
+            }
+            DB::commit();
+        }catch(\Exception $e){
+            DB::rollback();
+            $status = 'error'; 
+            $mesage = $e->getMessage();
+            dd($regsel,$mesage);
+        }
+
+        // Actualizar el avance de la migración
+        $num_registros_origen = $this->allTables[$table_selected]['reg_o'];
+        $num_registros_destino = DB::table($this->allTables[$table_selected]['destino'])->count();
+        $avance = $num_registros_destino / $num_registros_origen * 100;
+        Tables::where('id', $table_selected)->update([
+            'num_registros_destino' => $num_registros_destino,
+            'avance' => $avance
+        ]);
+
+        return redirect('migrations.index')->with($status, $mesage);
+    }
+    private function migraRptOp01Diario($table_selected){    
+        $oTable = $this->allTables[$table_selected]['origen'];
+        $dTable = $this->allTables[$table_selected]['destino'];
+        
+        $lastRecord = DB::table($dTable)->orderBy('id', 'desc')->first();
+
+        if(!$lastRecord){
+            $oRegistros = DB::connection('sucursal')->table($oTable)->orderBy('id','asc')->limit(5000)->get();
+            $num_registros_origen = DB::connection('sucursal')->table($oTable)->count();
+            Tables::where('id', $table_selected)->update([
+                'num_registros_origen' => $num_registros_origen
+            ]);
+        }else{
+            $oRegistros = DB::connection('sucursal')->table($oTable)->where('id', '>', $lastRecord->id)->orderBy('id','asc')->limit(5000)->get();
+        }
+        $regsel = [];
+        $status = 'success';
+        $mesage = 'Registros migrados correctamente';
+        
+        DB::beginTransaction();
+        try{
+            $counter = 0;
+            foreach ($oRegistros as $registro) {
+                $regsel = [
+                    'id'                           => $registro->id,
+                    'fecha'                        => $registro->fecha,
+                    'adm_sede_id'                  => $registro->sucursal_id,
+                    'desempenio'                   => $registro->desempenio,
+                    'desempenio_acu'               => $registro->desempenio_acu,
+                    'refrendo'                     => $registro->refrendo,
+                    'refrendo_acu'                 => $registro->refrendo_acu,
+                    'abono'                        => $registro->abono,
+                    'abono_acu'                    => $registro->abono_acu,
+                    'venta'                        => $registro->venta,
+                    'venta_acu'                    => $registro->venta_acu,
+                    'reposicion'                   => $registro->reposicion,
+                    'reposicion_acu'               => $registro->reposicion_acu,
+                    'acredores_demasia'            => $registro->acredores_demasia,
+                    'acredores_demasia_acu'        => $registro->acredores_demasia_acu,
+                    'empenios'                     => $registro->empenios,
+                    'empenios_acu'                 => $registro->empenios_acu,
+                    'demasia'                      => $registro->demasia,
+                    'demasia_acu'                  => $registro->demasia_acu,
+                    'cant_empenios'                => $registro->cant_empenios,
+                    'cant_empenios_acu'            => $registro->cant_empenios_acu,
+                    'cant_desempenio'              => $registro->cant_desempenio,
+                    'cant_desempenio_acu'          => $registro->cant_desempenio_acu,
+                    'cant_refrendo'                => $registro->cant_refrendo,
+                    'cant_refrendo_acu'            => $registro->cant_refrendo_acu,
+                    'cant_abono'                   => $registro->cant_abono,
+                    'cant_abono_acu'               => $registro->cant_abono_acu,
+                    'cant_venta'                   => $registro->cant_venta,
+                    'cant_venta_acu'               => $registro->cant_venta_acu,
+                    'cant_reposicion'              => $registro->cant_reposicion,
+                    'cant_reposicion_acu'          => $registro->cant_reposicion_acu,
+                    'cant_demasia'                 => $registro->cant_demasia,
+                    'cant_demasia_acu'             => $registro->cant_demasia_acu,
+                    'cant_demasia_cheque'          => $registro->cant_demasia_cheque,
+                    'cant_demasia_cheque_acu'      => $registro->cant_demasia_cheque_acu,
+                    'comision_desempenio_alm'      => $registro->comision_desempenio_alm,
+                    'comision_desempenio_alm_acu'  => $registro->comision_desempenio_alm_acu,
+                    'comision_venta_alm'           => $registro->comision_venta_alm,
+                    'comision_venta_alm_acu'       => $registro->comision_venta_alm_acu,
+                    'comision_refrendo_alm'        => $registro->comision_refrendo_alm,
+                    'comision_refrendo_alm_acu'    => $registro->comision_refrendo_alm_acu,
+                    'capital_recuperadoDesmp'      => $registro->capital_recuperadoDesmp,
+                    'capital_recuperadoDesmp_acu'  => $registro->capital_recuperadoDesmp_acu,
+                    'capital_recuperadoVentas'     => $registro->capital_recuperadoVentas,
+                    'capital_recuperadoVentas_acu' => $registro->capital_recuperadoVentas_acu,
+                    'demasia_pagada_che'           => $registro->demasia_pagada_che,
+                    'demasia_pagada_che_acu'       => $registro->demasia_pagada_che_acu,
+                    'capital_refrendado'           => $registro->capital_refrendado,
+                    'capital_refrendado_acu'       => $registro->capital_refrendado_acu,
+                ];
+                DB::table($dTable)->insert($regsel);
+                $counter++;
+
+                if ($counter % 100 == 0) {
+                    DB::commit();
+                    DB::beginTransaction();
+                }
+            }
+            DB::commit();
+        }catch(\Exception $e){
+            DB::rollback();
+            $status = 'error'; 
+            $mesage = $e->getMessage();
+            dd($regsel,$mesage);
+        }
+
+        // Actualizar el avance de la migración
+        $num_registros_origen = $this->allTables[$table_selected]['reg_o'];
+        $num_registros_destino = DB::table($this->allTables[$table_selected]['destino'])->count();
+        $avance = $num_registros_destino / $num_registros_origen * 100;
+        Tables::where('id', $table_selected)->update([
+            'num_registros_destino' => $num_registros_destino,
+            'avance' => $avance
+        ]);
+
+        return redirect('migrations.index')->with($status, $mesage);
+    }
+    private function migraRptG01Diario($table_selected){    
+        $oTable = $this->allTables[$table_selected]['origen'];
+        $dTable = $this->allTables[$table_selected]['destino'];
+        
+        $lastRecord = DB::table($dTable)->orderBy('id', 'desc')->first();
+
+        if(!$lastRecord){
+            $oRegistros = DB::connection('sucursal')->table($oTable)->orderBy('id','asc')->limit(1000)->get();
+            $num_registros_origen = DB::connection('sucursal')->table($oTable)->count();
+            Tables::where('id', $table_selected)->update([
+                'num_registros_origen' => $num_registros_origen
+            ]);
+        }else{
+            $oRegistros = DB::connection('sucursal')->table($oTable)->where('id', '>', $lastRecord->id)->orderBy('id','asc')->limit(1000)->get();
+        }
+        $regsel = [];
+        $status = 'success';
+        $mesage = 'Registros migrados correctamente';
+        
+        DB::beginTransaction();
+        try{
+            $counter = 0;
+            foreach ($oRegistros as $registro) {
+                $regsel = [
+                    'id'                    => $registro->id,
+                    'adm_sede_id'           => $registro->sucursal_id,
+                    'fecha'                 => $registro->fecha,
+                    'user_id'               => $registro->id_operador ,
+                    'num_desempenio'        => $registro->num_desempenio,
+                    'desempenio'            => $registro->desempenio,
+                    'num_reposicion'        => $registro->num_reposicion,
+                    'reposicion'            => $registro->reposicion,
+                    'num_refrendos'         => $registro->num_refrendos,
+                    'refrendos'             => $registro->refrendos,
+                    'num_empenio'           => $registro->num_empenio,
+                    'empenio'               => $registro->empenio,
+                    'num_abono'             => $registro->num_abono,
+                    'abono'                 => $registro->abono,
+                    'num_venta_subasta'     => $registro->num_venta_subasta,
+                    'venta_subasta'         => $registro->venta_subasta,
+                    'num_venta_mostrador'   => $registro->num_venta_mostrador,
+                    'venta_mostrador'       => $registro->venta_mostrador,
+                    'caja_inicio'           => $registro->caja_inicio,
+                    'caja_abonos'           => $registro->caja_abonos,
+                    'consolidados'          => $registro->consolidados,
+                    'corte_caja'            => $registro->corte_caja,
+                    'num_refrendo_almo'     => $registro->num_refrendo_almo,
+                    'refrendo_almo'         => $registro->refrendo_almo,
+                    'num_desempenio_almo'   => $registro->num_desempenio_almo,
+                    'desempenio_almo'       => $registro->desempenio_almo,
+                    'num_reposicion_almo'   => $registro->num_reposicion_almo,
+                    'reposicion_almo'       => $registro->reposicion_almo,
+                    'num_demasia_almo'      => $registro->num_demasia_almo,
+                    'demasia_almo'          => $registro->demasia_almo,
+                ];
+                DB::table($dTable)->insert($regsel);
+                $counter++;
+                if ($counter % 100 == 0) {
+                    DB::commit();
+                    DB::beginTransaction();
+                }
+            }
+            DB::commit();
+        }catch(\Exception $e){
+            DB::rollback();
+            $status = 'error'; 
+            $mesage = $e->getMessage();
+            dd($regsel,$mesage);
+        }
+        // Actualizar el avance de la migración
+        $num_registros_origen = $this->allTables[$table_selected]['reg_o'];
+        $num_registros_destino = DB::table($this->allTables[$table_selected]['destino'])->count();
+        $avance = $num_registros_destino / $num_registros_origen * 100;
+        Tables::where('id', $table_selected)->update([
+            'num_registros_destino' => $num_registros_destino,
+            'avance' => $avance
+        ]);
+        return redirect('migrations.index')->with($status, $mesage);
+    }
+    private function migraRptG02Grales($table_selected){    
+        $oTable = $this->allTables[$table_selected]['origen'];
+        $dTable = $this->allTables[$table_selected]['destino'];
+        
+        $lastRecord = DB::table($dTable)->orderBy('id', 'desc')->first();
+
+        if(!$lastRecord){
+            $oRegistros = DB::connection('sucursal')->table($oTable)->orderBy('id','asc')->limit(1000)->get();
+            $num_registros_origen = DB::connection('sucursal')->table($oTable)->count();
+            Tables::where('id', $table_selected)->update([
+                'num_registros_origen' => $num_registros_origen
+            ]);
+        }else{
+            $oRegistros = DB::connection('sucursal')->table($oTable)->where('id', '>', $lastRecord->id)->orderBy('id','asc')->limit(1000)->get();
+        }
+        $regsel = [];
+        $status = 'success';
+        $mesage = 'Registros migrados correctamente';
+        
+        DB::beginTransaction();
+        try{
+            $counter = 0;
+            foreach ($oRegistros as $registro) {
+                $regsel = [
+                    'id'                    => $registro->id,
+                    'adm_sede_id'           => $registro->sucursal_id,
+                    'fecha'                 => $registro->fecha,
+                    'depositaria_reg_m'     => $registro->depositaria_reg_m,
+                    'depositaria_cant_m'    => $registro->depositaria_cant_m,
+                    'depositaria_reg_v'     => $registro->depositaria_reg_v,
+                    'depositaria_cant_v'    => $registro->depositaria_cant_v,
+                    'almoneda_reg_m'        => $registro->almoneda_reg_m,
+                    'almoneda_cant_m'       => $registro->almoneda_cant_m,
+                    'almoneda_reg_v'        => $registro->almoneda_reg_v,
+                    'almoneda_cant_v'       => $registro->almoneda_cant_v,
+                ];
+                DB::table($dTable)->insert($regsel);
+                $counter++;
+                if ($counter % 100 == 0) {
+                    DB::commit();
+                    DB::beginTransaction();
+                }
+            }
+            DB::commit();
+        }catch(\Exception $e){
+            DB::rollback();
+            $status = 'error'; 
+            $mesage = $e->getMessage();
+            dd($regsel,$mesage);
+        }
+        // Actualizar el avance de la migración
+        $num_registros_origen = $this->allTables[$table_selected]['reg_o'];
+        $num_registros_destino = DB::table($this->allTables[$table_selected]['destino'])->count();
+        $avance = $num_registros_destino / $num_registros_origen * 100;
+        Tables::where('id', $table_selected)->update([
+            'num_registros_destino' => $num_registros_destino,
+            'avance' => $avance
+        ]);
+        return redirect('migrations.index')->with($status, $mesage);
+    }
     private function migraTBoletaCancels($table_selected){    }
     private function migraTCtrlIntCancels($table_selected){     }
-    private function migraTDescuentos($table_selected){    }
-    private function migraTTickets($table_selected){    }
 
 
 }
